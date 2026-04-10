@@ -2,16 +2,16 @@
 <html lang="ar">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>🚀 Galactic Rivals - لعبة 1 أو 2 لاعبين</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>💰 Galactic Kareem - فلوس كريم + جوستيك</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
-
         body {
             background: radial-gradient(circle at 20% 30%, #0a0f2a, #030617);
             font-family: 'Segoe UI', 'Orbitron', monospace;
@@ -19,127 +19,95 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 16px;
         }
-
         .game-container {
-            max-width: 1300px;
+            max-width: 1400px;
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(3px);
+            background: rgba(0,0,0,0.5);
             border-radius: 48px;
             padding: 20px;
-            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.6);
         }
-
-        .mode-selector {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .mode-btn {
-            background: linear-gradient(135deg, #2a3a60, #152238);
-            border: 2px solid gold;
-            padding: 12px 30px;
-            border-radius: 60px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-
-        .mode-btn.active {
-            background: gold;
-            color: #1a2a44;
-            transform: scale(1.02);
-        }
-
-        .players-panel {
+        .main-panel {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
-            margin-bottom: 20px;
         }
-
-        .player-card {
-            flex: 1;
-            background: rgba(10, 20, 40, 0.8);
+        .canvas-area {
+            flex: 3;
+            min-width: 300px;
+            position: relative;
+        }
+        canvas {
+            width: 100%;
+            height: auto;
+            background: #03061a;
             border-radius: 28px;
-            padding: 15px;
-            border: 1px solid rgba(255,215,0,0.5);
-            backdrop-filter: blur(4px);
+            box-shadow: 0 0 0 3px gold;
+            cursor: none;
+            aspect-ratio: 1000 / 600;
         }
-
-        .player-card h3 {
-            color: gold;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .stat-row {
+        .info-bar {
             display: flex;
             justify-content: space-between;
-            margin: 8px 0;
+            background: rgba(0,0,0,0.8);
+            border-radius: 40px;
+            padding: 12px 20px;
+            margin: 15px 0;
             color: white;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
         }
-
-        .hearts {
+        .timer-box {
+            background: #000000aa;
+            padding: 5px 15px;
+            border-radius: 30px;
+            color: #ffaa44;
             font-size: 1.4rem;
-            letter-spacing: 3px;
+            font-family: monospace;
         }
-
-        canvas {
-            display: block;
-            width: 100%;
-            background: #010118;
-            border-radius: 28px;
-            box-shadow: 0 0 0 3px rgba(255,200,100,0.3);
-            cursor: none;
-            margin-bottom: 20px;
-        }
-
-        .shop-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .shop-col {
+        .shop-panel {
             flex: 1;
-            background: rgba(0,0,0,0.6);
+            min-width: 240px;
+            background: rgba(0,0,0,0.85);
             border-radius: 28px;
-            padding: 12px;
+            padding: 15px;
+            backdrop-filter: blur(8px);
         }
-
-        .ship-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 10px;
+        .joystick-container {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            width: 120px;
+            height: 120px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 2px solid gold;
+            z-index: 10;
         }
-
-        .ship-card {
-            background: #0f1a2f;
-            border-radius: 20px;
-            padding: 8px;
-            text-align: center;
+        .joystick-base {
+            position: absolute;
             width: 100px;
+            height: 100px;
+            background: #2a3a60;
+            border-radius: 50%;
+            top: 10px;
+            left: 10px;
+        }
+        .joystick-thumb {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: gold;
+            border-radius: 50%;
+            top: 37.5px;
+            left: 37.5px;
+            transition: transform 0.02s;
             cursor: pointer;
-            border: 2px solid #3e5a7c;
-            transition: 0.1s;
         }
-
-        .ship-card.active {
-            border-color: gold;
-            background: #2a3f5e;
-            box-shadow: 0 0 12px gold;
-        }
-
         button {
             background: linear-gradient(135deg, #2a3a60, #152238);
             border: none;
@@ -147,79 +115,68 @@
             padding: 8px 16px;
             border-radius: 40px;
             font-weight: bold;
-            cursor: pointer;
             margin: 5px;
-            border: 1px solid #ffcc44;
-        }
-
-        .touch-controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-        }
-
-        .touch-btn {
-            background: #1e2f44;
-            padding: 12px 28px;
-            border-radius: 60px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: gold;
             border: 1px solid gold;
+            cursor: pointer;
         }
-
-        @media (min-width: 800px) {
-            .touch-controls { display: none; }
-        }
-
-        .message {
+        .shop-item {
+            background: #0f1a2f;
+            border-radius: 20px;
+            padding: 12px;
+            margin: 12px 0;
             text-align: center;
-            margin-top: 10px;
-            color: #ffbb77;
+        }
+        .big-timer {
+            font-size: 2rem;
             font-weight: bold;
+            background: #000;
+            padding: 5px 15px;
+            border-radius: 50px;
+            display: inline-block;
+            letter-spacing: 3px;
+        }
+        @media (max-width: 800px) {
+            .joystick-container { width: 90px; height: 90px; }
+            .joystick-base { width: 70px; height: 70px; top: 10px; left: 10px; }
+            .joystick-thumb { width: 30px; height: 30px; top: 30px; left: 30px; }
+            .timer-box { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
 <div class="game-container">
-    <div class="mode-selector">
-        <div class="mode-btn" data-mode="1">🎮 لاعب واحد</div>
-        <div class="mode-btn" data-mode="2">👥 لاعبان</div>
-    </div>
-
-    <canvas id="gameCanvas" width="1000" height="550" style="width:100%; height:auto; max-width:1000px; aspect-ratio:1000/550"></canvas>
-
-    <div class="players-panel" id="playersPanel">
-        <!-- يتم تعبئتها بالجافا سكريبت -->
-    </div>
-
-    <div class="shop-area">
-        <div class="shop-col">
-            <h3 style="color:gold;">🚀 أسطول المركبات</h3>
-            <div id="shipsContainerP1" class="ship-grid"></div>
-            <div id="shipsContainerP2" class="ship-grid" style="margin-top: 15px;"></div>
-        </div>
-        <div class="shop-col">
-            <h3 style="color:gold;">🛒 متجر القلوب & الإعدادات</h3>
-            <button id="buyHeartP1">❤️ لاعب1 شراء قلب (100)</button>
-            <button id="buyHeartP2">❤️ لاعب2 شراء قلب (100)</button>
-            <button id="wheelBtn">🎡 عجلة الحظ (30s)</button>
-            <div style="margin-top: 12px;">
-                <label>🔊 صوت: <input type="checkbox" id="soundToggle" checked></label><br>
-                <label>🎚️ صعوبة تلقائية: <input type="checkbox" id="autoDifficulty" checked></label><br>
-                <button id="resetProgressBtn">⚠️ إعادة ضبط الكل</button>
-                <button id="resetRoundBtn">🔄 إعادة الجولة</button>
+    <div class="main-panel">
+        <div class="canvas-area">
+            <canvas id="gameCanvas" width="1000" height="600"></canvas>
+            <div class="joystick-container" id="joystickContainer">
+                <div class="joystick-base"></div>
+                <div class="joystick-thumb" id="joystickThumb"></div>
             </div>
         </div>
+        <div class="shop-panel">
+            <h3 style="color:gold; text-align:center;">🛒 متجر كريم</h3>
+            <div id="shipsList"></div>
+            <div class="shop-item">
+                <h4>❤️ شراء قلب</h4>
+                <button id="buyHeartBtn">💰 100 عملة</button>
+            </div>
+            <div class="shop-item">
+                <h4>🚀 ترقية الصاروخ</h4>
+                <button id="upgradeRocketBtn">💰 200 عملة</button>
+                <span>المستوى: <span id="rocketLevel">1</span></span>
+            </div>
+            <button id="resetGameBtn" style="background:#aa3333;">⚠️ إعادة ضبط اللعبة</button>
+            <button id="skipRoundBtn" style="background:#ff8800;">⚡ شراء الدور التالي (إنهاء مبكر)</button>
+        </div>
     </div>
-    <div id="gameMessage" class="message"></div>
-    <div class="touch-controls">
-        <div class="touch-btn" id="leftTouchP1">◀ P1</div>
-        <div class="touch-btn" id="rightTouchP1">P1 ▶</div>
-        <div class="touch-btn" id="leftTouchP2">◀ P2</div>
-        <div class="touch-btn" id="rightTouchP2">P2 ▶</div>
+    <div class="info-bar">
+        <span>🌀 الدور: <span id="roundNum">1</span></span>
+        <span>❤️ الحياة: <span id="lives">5</span></span>
+        <span>💰 العملات: <span id="coins">0</span> <span style="color:gold;">(كريم!)</span></span>
+        <span>⭐ نقاط الدور: <span id="roundScore">0</span></span>
+        <span class="timer-box">⏱️ <span id="timer" class="big-timer">10:00</span></span>
     </div>
+    <div id="gameMessage" style="text-align:center; margin-top:10px; color:#ffbb77; font-size:1.2rem;"></div>
 </div>
 
 <script>
@@ -228,295 +185,225 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
         
-        // وضع اللاعبين (1 أو 2)
-        let playerMode = 1;   // 1 أو 2
+        // متغيرات الأدوار
+        let currentRound = 1;
+        let roundActive = true;
+        let roundTimeLeft = 600; // 10 دقائق
+        let roundScore = 0;
         let gameRunning = true;
-        let frameCounter = 0;
-        let particles = [];
         
-        // عناصر اللعبة المشتركة
-        let stars = [];
-        let meteors = [];
-        
-        // مستوى الصعوبة المشترك
-        let level = 1;
-        let starSpawnRate = 28;
-        let meteorSpawnRate = 45;
-        let baseMeteorSpeed = 3.2;
-        
-        // بيانات اللاعبين
-        let players = [
-            { // لاعب 1 (فهرس 0)
-                id: 0,
-                name: "اللاعب 1",
-                shipId: "basic",
-                ownedShips: ["basic"],
-                coins: 0,
-                lives: 5,
-                score: 0,
-                x: 150,
-                y: 0, // يتم تعيينها لاحقاً
-                width: 46,
-                height: 46,
-                speed: 5.5,
-                leftPressed: false,
-                rightPressed: false,
-                active: true
-            },
-            { // لاعب 2 (فهرس 1)
-                id: 1,
-                name: "اللاعب 2",
-                shipId: "basic",
-                ownedShips: ["basic"],
-                coins: 0,
-                lives: 5,
-                score: 0,
-                x: 0,
-                y: 0,
-                width: 46,
-                height: 46,
-                speed: 5.5,
-                leftPressed: false,
-                rightPressed: false,
-                active: false
-            }
-        ];
-        
-        // بيانات المركبات
-        const shipsData = {
-            "basic": { name: "🛸 صاروخ أساسي", speed: 5.5, width: 46, height: 46, price: 0, emoji: "🚀" },
-            "falcon": { name: "🐦 الصقر الفضي", speed: 7.2, width: 50, height: 50, price: 350, emoji: "🦅" },
-            "phantom": { name: "👻 الشبح المظلم", speed: 6.8, width: 44, height: 44, price: 520, emoji: "🌙" },
-            "titan": { name: "🛡️ المدرع العملاق", speed: 4.2, width: 58, height: 58, price: 780, emoji: "🐉" },
-            "lightning": { name: "⚡ البرق السريع", speed: 9.0, width: 42, height: 42, price: 1200, emoji: "⚡" }
+        // اللاعب
+        let player = {
+            x: canvas.width/2 - 25,
+            y: canvas.height - 80,
+            width: 45,
+            height: 45,
+            speed: 5.5,
+            lives: 5,
+            shipId: "basic",
+            ownedShips: ["basic"],
+            velX: 0,
+            velY: 0
         };
         
-        // إعدادات عامة
-        let soundEnabled = true;
-        let autoDifficulty = true;
-        let wheelCooldown = 0;
+        // العملات - كريمة جداً
+        let coins = 500;   // نبدأ بـ 500 عملة عشان يشتري على طول
+        let rocketLevel = 1;
+        let rockets = [];
+        let rocketCooldown = 0;
         
-        // ------------------- دوال الحفظ والتحميل -------------------
+        let enemies = [];
+        let stars = [];
+        let particles = [];
+        let frameCounter = 0;
+        
+        let enemySpawnRate = 45;
+        let starSpawnRate = 30;
+        let baseEnemySpeed = 1.8;
+        
+        // أنواع الأعداء
+        const enemyTypes = [
+            { name: "طائر ناري", color: "#ff6633", shape: "bird", hp: 1, points: 30, emoji: "🐦‍🔥", speedMult: 1.2 },
+            { name: "عفريت فضائي", color: "#aa44ff", shape: "alien", hp: 2, points: 50, emoji: "👾", speedMult: 0.9 },
+            { name: "فرخة طائرة", color: "#ffcc44", shape: "chicken", hp: 1, points: 25, emoji: "🐔", speedMult: 1.4 },
+            { name: "وحش عملاق", color: "#884400", shape: "monster", hp: 4, points: 120, emoji: "👹", speedMult: 0.6 },
+            { name: "زواحف فضية", color: "#aaccff", shape: "lizard", hp: 2, points: 60, emoji: "🦎", speedMult: 1.1 },
+            { name: "درون قاتل", color: "#ff44aa", shape: "drone", hp: 1, points: 40, emoji: "🚁", speedMult: 1.5 },
+            { name: "ملك الظلام", color: "#2a0a3a", shape: "boss", hp: 6, points: 250, emoji: "👑", speedMult: 0.5 },
+            { name: "نجم الشهاب", color: "#ffaa22", shape: "comet", hp: 1, points: 80, emoji: "☄️", speedMult: 1.8 }
+        ];
+        
+        const ships = {
+            "basic": { name: "صاروخ ابتدائي", speed: 5, width: 45, height: 45, price: 0, emoji: "🚀", color: "#4aa3ff" },
+            "falcon": { name: "صقر الفضاء", speed: 6.5, width: 48, height: 48, price: 300, emoji: "🦅", color: "#66ccff" },
+            "phantom": { name: "الشبح المظلم", speed: 7, width: 42, height: 42, price: 500, emoji: "🌙", color: "#9966ff" },
+            "thunder": { name: "صاعقة الجليد", speed: 8, width: 40, height: 40, price: 800, emoji: "⚡", color: "#aaffdd" },
+            "titan": { name: "المدرع الخارق", speed: 4.5, width: 55, height: 55, price: 1000, emoji: "🛡️", color: "#88aa88" }
+        };
+        
+        // حفظ وتحميل
         function saveGame() {
-            let data = {
-                playerMode: playerMode,
-                players: players.map(p => ({
-                    shipId: p.shipId,
-                    ownedShips: p.ownedShips,
-                    coins: p.coins,
-                    lives: p.lives,
-                    score: p.score
-                })),
-                soundEnabled: soundEnabled,
-                autoDifficulty: autoDifficulty
-            };
-            localStorage.setItem("galacticRivals", JSON.stringify(data));
+            let data = { currentRound, coins, player: { lives: player.lives, shipId: player.shipId, ownedShips: player.ownedShips }, rocketLevel, roundScore, roundTimeLeft };
+            localStorage.setItem("galacticKareem", JSON.stringify(data));
         }
         
         function loadGame() {
-            let raw = localStorage.getItem("galacticRivals");
-            if(!raw) return;
-            try {
-                let data = JSON.parse(raw);
-                playerMode = data.playerMode || 1;
-                for(let i=0; i<data.players.length && i<players.length; i++) {
-                    players[i].shipId = data.players[i].shipId;
-                    players[i].ownedShips = data.players[i].ownedShips;
-                    players[i].coins = data.players[i].coins;
-                    players[i].lives = data.players[i].lives;
-                    players[i].score = data.players[i].score;
-                }
-                soundEnabled = data.soundEnabled;
-                autoDifficulty = data.autoDifficulty;
-                document.getElementById("soundToggle").checked = soundEnabled;
-                document.getElementById("autoDifficulty").checked = autoDifficulty;
-            } catch(e) {}
-            // تأكد من أن المركبة الحالية موجودة في المملوكات
-            for(let p of players) {
-                if(!p.ownedShips.includes(p.shipId)) p.shipId = "basic";
-                applyShipStats(p);
+            let raw = localStorage.getItem("galacticKareem");
+            if(raw) {
+                try {
+                    let data = JSON.parse(raw);
+                    currentRound = data.currentRound || 1;
+                    coins = data.coins || 500;
+                    player.lives = data.player.lives || 5;
+                    player.shipId = data.player.shipId || "basic";
+                    player.ownedShips = data.player.ownedShips || ["basic"];
+                    rocketLevel = data.rocketLevel || 1;
+                    roundScore = data.roundScore || 0;
+                    roundTimeLeft = data.roundTimeLeft || 600;
+                } catch(e) {}
             }
+            if(!player.ownedShips.includes(player.shipId)) player.shipId = "basic";
+            applyShipStats();
+            updateUI();
         }
         
-        function applyShipStats(player) {
-            let ship = shipsData[player.shipId];
+        function applyShipStats() {
+            let ship = ships[player.shipId];
             if(ship) {
                 player.speed = ship.speed;
                 player.width = ship.width;
                 player.height = ship.height;
-                // ضبط حدود x
-                player.x = Math.min(Math.max(player.x, 5), canvas.width - player.width - 5);
+                player.x = Math.min(Math.max(player.x, 10), canvas.width - player.width - 10);
+                player.y = Math.min(Math.max(player.y, 10), canvas.height - player.height - 10);
             }
         }
         
         function updateUI() {
-            // تحديث لوحة اللاعبين
-            let panel = document.getElementById("playersPanel");
-            panel.innerHTML = "";
-            for(let i=0; i<playerMode; i++) {
-                let p = players[i];
-                let hearts = "";
-                for(let j=0; j<p.lives; j++) hearts += "❤️";
-                for(let j=p.lives; j<5; j++) hearts += "🖤";
-                panel.innerHTML += `
-                    <div class="player-card">
-                        <h3>${p.name} ${shipsData[p.shipId].emoji}</h3>
-                        <div class="stat-row">💰 العملات: ${p.coins}</div>
-                        <div class="stat-row">⭐ النقاط: ${p.score}</div>
-                        <div class="stat-row">❤️ الحياة: <span class="hearts">${hearts}</span></div>
-                        <div class="stat-row">🚀 السرعة: ${p.speed}</div>
-                    </div>
-                `;
-            }
-            // تحديث واجهة المركبات لكل لاعب
-            renderShipsForPlayer(0, "shipsContainerP1");
-            if(playerMode === 2) renderShipsForPlayer(1, "shipsContainerP2");
-            else document.getElementById("shipsContainerP2").innerHTML = "<i>لا يوجد لاعب ثان</i>";
-        }
-        
-        function renderShipsForPlayer(playerIdx, containerId) {
-            let container = document.getElementById(containerId);
-            if(!container) return;
-            container.innerHTML = "";
-            let player = players[playerIdx];
-            for(let [id, data] of Object.entries(shipsData)) {
+            document.getElementById("roundNum").innerText = currentRound;
+            document.getElementById("lives").innerText = player.lives;
+            document.getElementById("coins").innerText = coins;
+            document.getElementById("roundScore").innerText = roundScore;
+            document.getElementById("rocketLevel").innerText = rocketLevel;
+            let minutes = Math.floor(roundTimeLeft / 60);
+            let seconds = roundTimeLeft % 60;
+            document.getElementById("timer").innerHTML = `${minutes}:${seconds.toString().padStart(2,'0')}`;
+            // تحديث المتجر
+            let shipsDiv = document.getElementById("shipsList");
+            shipsDiv.innerHTML = "";
+            for(let [id, data] of Object.entries(ships)) {
                 let owned = player.ownedShips.includes(id);
                 let active = (player.shipId === id);
-                let div = document.createElement("div");
-                div.className = `ship-card ${active ? 'active' : ''}`;
-                div.innerHTML = `<div style="font-size:24px;">${data.emoji}</div>
-                                 <div style="font-size:11px;">${data.name}</div>
-                                 <div>⚡${data.speed}</div>
-                                 ${!owned ? `<div style="color:gold;">💰${data.price}</div>` : '<div style="color:#88ff88;">✅</div>'}`;
-                if(!owned) {
-                    div.onclick = () => buyShip(playerIdx, id);
-                } else {
-                    div.onclick = () => setShip(playerIdx, id);
-                }
-                container.appendChild(div);
+                let btn = document.createElement("button");
+                btn.innerText = `${data.emoji} ${data.name} ${owned ? (active ? " (مستخدم)" : " (مملوك)") : `💰 ${data.price}`}`;
+                btn.disabled = (owned && active);
+                btn.onclick = () => {
+                    if(owned && !active) {
+                        player.shipId = id;
+                        applyShipStats();
+                        saveGame();
+                        updateUI();
+                        showMessage(`تم تجهيز ${data.name}`, "gold");
+                    } else if(!owned && coins >= data.price) {
+                        coins -= data.price;
+                        player.ownedShips.push(id);
+                        saveGame();
+                        updateUI();
+                        showMessage(`اشتريت ${data.name}!`, "lightgreen");
+                    } else if(!owned) {
+                        showMessage(`لا تملك ${data.price} عملة`, "#ffaa88");
+                    }
+                };
+                shipsDiv.appendChild(btn);
             }
-        }
-        
-        function buyShip(playerIdx, shipId) {
-            let p = players[playerIdx];
-            let ship = shipsData[shipId];
-            if(p.coins >= ship.price && !p.ownedShips.includes(shipId)) {
-                p.coins -= ship.price;
-                p.ownedShips.push(shipId);
-                saveGame();
-                updateUI();
-                showMessage(`${p.name} اشترى ${ship.name}!`, "#aaffaa");
-            } else {
-                showMessage(`${p.name} لا يملك ${ship.price} عملة`, "#ffaa88");
-            }
-        }
-        
-        function setShip(playerIdx, shipId) {
-            let p = players[playerIdx];
-            if(p.ownedShips.includes(shipId)) {
-                p.shipId = shipId;
-                applyShipStats(p);
-                saveGame();
-                updateUI();
-                showMessage(`${p.name} استخدم ${shipsData[shipId].name}`, "gold");
-            }
-        }
-        
-        function buyHeart(playerIdx) {
-            let p = players[playerIdx];
-            if(p.coins >= 100 && gameRunning) {
-                p.coins -= 100;
-                p.lives = Math.min(p.lives+1, 10);
-                saveGame();
-                updateUI();
-                showMessage(`${p.name} اشترى قلباً إضافياً!`, "lightgreen");
-            } else if(!gameRunning) {
-                showMessage("اللعبة منتهية، أعد التشغيل أولاً", "#ff8888");
-            } else {
-                showMessage(`${p.name} يحتاج 100 عملة لشراء قلب`, "#ffaa66");
-            }
-        }
-        
-        function resetRound() {
-            gameRunning = true;
-            level = 1;
-            stars = [];
-            meteors = [];
-            particles = [];
-            frameCounter = 0;
-            for(let p of players) {
-                if(playerMode === 1 && p.id === 1) continue;
-                p.lives = 5;
-                p.score = 0;
-                // لا نمسح العملات والمركبات
-                p.x = (p.id === 0) ? canvas.width*0.3 : canvas.width*0.7;
-                p.x = Math.min(Math.max(p.x, 5), canvas.width - p.width - 5);
-                p.leftPressed = false;
-                p.rightPressed = false;
-            }
-            updateDifficulty();
-            updateUI();
-            showMessage("تمت إعادة الجولة! حظاً موفقاً", "#88ff88");
-        }
-        
-        function fullReset() {
-            for(let p of players) {
-                p.ownedShips = ["basic"];
-                p.shipId = "basic";
-                p.coins = 0;
-                p.lives = 5;
-                p.score = 0;
-                applyShipStats(p);
-            }
-            saveGame();
-            resetRound();
-            updateUI();
-            showMessage("♻️ تمت إعادة ضبط كل التقدم!", "#ffaa66");
-        }
-        
-        function spinWheel() {
-            if(wheelCooldown > 0) {
-                showMessage(`⏳ تبريد عجلة الحظ: ${Math.ceil(wheelCooldown)} ثانية`, "#ffaa88");
-                return;
-            }
-            let reward = Math.floor(Math.random() * 150) + 30;
-            // منح العملات لكل لاعب نشط
-            for(let i=0; i<playerMode; i++) {
-                players[i].coins += reward;
-            }
-            saveGame();
-            updateUI();
-            showMessage(`🎡 عجلة الحظ: كل لاعب ربح ${reward} عملة!`, "gold");
-            wheelCooldown = 30;
         }
         
         function showMessage(msg, color="#ffdd99") {
             let msgDiv = document.getElementById("gameMessage");
             msgDiv.innerHTML = msg;
             msgDiv.style.color = color;
-            setTimeout(()=>{ if(msgDiv.innerHTML === msg) msgDiv.innerHTML = ""; }, 2000);
+            setTimeout(()=>{ if(msgDiv.innerHTML === msg) msgDiv.innerHTML = ""; }, 2500);
         }
         
-        // ------------------- ميكانيكيات اللعبة -------------------
-        function updateDifficulty() {
-            if(!autoDifficulty) return;
-            let lvl = Math.max(1, level);
-            starSpawnRate = Math.max(18, 32 - Math.floor(lvl * 1.5));
-            meteorSpawnRate = Math.max(28, 50 - Math.floor(lvl * 2.2));
-            baseMeteorSpeed = 3.0 + (lvl-1) * 0.45;
-            baseMeteorSpeed = Math.min(baseMeteorSpeed, 7.5);
+        function completeRound() {
+            if(!roundActive) return;
+            roundActive = false;
+            gameRunning = false;
+            let reward = 300 + currentRound * 20; // مكافأة كبيرة
+            coins += reward;
+            saveGame();
+            updateUI();
+            showMessage(`🎉 أكملت الدور ${currentRound}! 🎉 مكافأة: ${reward} عملة. اضغط "شراء الدور التالي"`, "gold");
+            let buyBtn = document.createElement("button");
+            buyBtn.innerText = `🔄 شراء الدور ${currentRound+1} (💰 ${getNextRoundCost()})`;
+            buyBtn.style.position = "fixed";
+            buyBtn.style.bottom = "20px";
+            buyBtn.style.left = "50%";
+            buyBtn.style.transform = "translateX(-50%)";
+            buyBtn.style.zIndex = "100";
+            buyBtn.style.background = "gold";
+            buyBtn.style.color = "black";
+            buyBtn.style.fontSize = "1.3rem";
+            buyBtn.style.padding = "12px 24px";
+            buyBtn.id = "buyRoundBtn";
+            buyBtn.onclick = () => {
+                let cost = getNextRoundCost();
+                if(coins >= cost) {
+                    coins -= cost;
+                    currentRound++;
+                    roundScore = 0;
+                    roundTimeLeft = 600;
+                    roundActive = true;
+                    gameRunning = true;
+                    enemies = [];
+                    stars = [];
+                    rockets = [];
+                    particles = [];
+                    frameCounter = 0;
+                    applyRoundDifficulty();
+                    saveGame();
+                    updateUI();
+                    document.getElementById("buyRoundBtn")?.remove();
+                    showMessage(`🚀 بدأ الدور ${currentRound}! حظاً موفقاً.`, "#88ff88");
+                } else {
+                    showMessage(`💰 لا تملك ${cost} عملة لشراء الدور!`, "#ffaa66");
+                }
+            };
+            document.body.appendChild(buyBtn);
         }
         
-        function updateLevel() {
-            let totalScore = 0;
-            for(let i=0; i<playerMode; i++) totalScore += players[i].score;
-            let newLevel = 1 + Math.floor(totalScore / 200);
-            newLevel = Math.min(newLevel, 30);
-            if(newLevel !== level) {
-                level = newLevel;
-                updateDifficulty();
-                showMessage(`✨ المستوى ${level}! الصعوبة تزداد ✨`, "#ffaa55");
-            }
+        function getNextRoundCost() {
+            return 100 + currentRound * 15;
+        }
+        
+        function skipRound() {
+            if(roundActive && gameRunning) completeRound();
+            else showMessage("لا يمكن الشراء الآن", "#ff8888");
+        }
+        
+        function applyRoundDifficulty() {
+            let factor = 1 + (currentRound-1) * 0.12;
+            enemySpawnRate = Math.max(20, Math.floor(45 / factor));
+            starSpawnRate = Math.max(20, Math.floor(35 / factor));
+            baseEnemySpeed = 1.5 + (currentRound-1) * 0.2;
+            baseEnemySpeed = Math.min(baseEnemySpeed, 6);
+        }
+        
+        // Spawn
+        function spawnEnemy() {
+            let type = { ...enemyTypes[Math.floor(Math.random() * enemyTypes.length)] };
+            let hp = type.hp;
+            if(currentRound > 20) hp += Math.floor(currentRound/20);
+            enemies.push({
+                x: Math.random() * (canvas.width - 70) + 35,
+                y: -30,
+                width: 42,
+                height: 42,
+                type: type,
+                hp: hp,
+                maxHp: hp,
+                speedY: baseEnemySpeed * (type.speedMult || 1),
+                rotation: 0
+            });
         }
         
         function spawnStar() {
@@ -524,339 +411,214 @@
                 x: Math.random() * (canvas.width - 24) + 12,
                 y: -15,
                 radius: 10,
-                value: 10,
-                speedY: 2.8 + Math.random() * 2
+                value: 50, // كل نجمة 50 عملة
+                speedY: 2 + Math.random() * 2
             });
         }
         
-        function spawnMeteor() {
-            meteors.push({
-                x: Math.random() * (canvas.width - 44) + 22,
-                y: -30,
-                width: 36,
-                height: 36,
-                speedY: baseMeteorSpeed + Math.random() * 2.2,
-                rotation: 0
-            });
-        }
-        
-        function addParticles(x,y,color) {
-            for(let i=0;i<8;i++) {
-                particles.push({
-                    x:x, y:y, vx:(Math.random()-0.5)*5, vy:(Math.random()-0.5)*5-1,
-                    life:0.9, color:color, size:Math.random()*4+2
+        function autoFire() {
+            if(!roundActive || !gameRunning) return;
+            if(rocketCooldown <= 0) {
+                let cd = Math.max(10, 25 - rocketLevel * 2);
+                rocketCooldown = cd;
+                rockets.push({
+                    x: player.x + player.width/2 - 4,
+                    y: player.y - 10,
+                    width: 8,
+                    height: 12,
+                    damage: 1 + Math.floor(rocketLevel / 2),
+                    speedY: -10
                 });
-            }
+                playSound(1200);
+            } else rocketCooldown--;
         }
         
-        function updateParticles() {
-            for(let i=0;i<particles.length;i++) {
-                particles[i].x += particles[i].vx;
-                particles[i].y += particles[i].vy;
-                particles[i].life -= 0.02;
-                particles[i].vy += 0.1;
-                if(particles[i].life<=0 || particles[i].y>canvas.height+50) {
-                    particles.splice(i,1); i--;
+        function updateRockets() {
+            for(let i=0; i<rockets.length; i++) {
+                rockets[i].y += rockets[i].speedY;
+                if(rockets[i].y + rockets[i].height < 0 || rockets[i].y > canvas.height) {
+                    rockets.splice(i,1); i--; continue;
                 }
+                let hit = false;
+                for(let j=0; j<enemies.length; j++) {
+                    let e = enemies[j];
+                    let left = e.x - e.width/2, right = e.x + e.width/2;
+                    let top = e.y - e.height/2, bottom = e.y + e.height/2;
+                    if(rockets[i].x < right && rockets[i].x+rockets[i].width > left &&
+                       rockets[i].y < bottom && rockets[i].y+rockets[i].height > top) {
+                        e.hp -= rockets[i].damage;
+                        if(e.hp <= 0) {
+                            coins += e.type.points;
+                            roundScore += e.type.points;
+                            addParticles(e.x, e.y, "#ffaa44");
+                            enemies.splice(j,1);
+                            updateUI();
+                            saveGame();
+                        } else addParticles(rockets[i].x, rockets[i].y, "#ffaa66");
+                        rockets.splice(i,1);
+                        hit = true;
+                        break;
+                    }
+                }
+                if(hit) i--;
             }
         }
         
-        function updateGame() {
-            if(!gameRunning) return;
-            // تحديث النجوم والتصادم مع اللاعبين
+        function updateStars() {
             for(let i=0; i<stars.length; i++) {
                 stars[i].y += stars[i].speedY;
                 if(stars[i].y > canvas.height+40) {
                     stars.splice(i,1); i--; continue;
                 }
-                for(let pi=0; pi<playerMode; pi++) {
-                    let p = players[pi];
-                    let playerRect = {x: p.x, y: canvas.height - p.height - 20, w: p.width, h: p.height};
-                    let starRect = {x: stars[i].x - stars[i].radius, y: stars[i].y - stars[i].radius, w: stars[i].radius*2, h: stars[i].radius*2};
-                    if(playerRect.x < starRect.x+starRect.w && playerRect.x+playerRect.w > starRect.x &&
-                       playerRect.y < starRect.y+starRect.h && playerRect.y+playerRect.h > starRect.y) {
-                        p.score += stars[i].value;
-                        p.coins += stars[i].value;
-                        addParticles(stars[i].x, stars[i].y, "#FFD966");
-                        stars.splice(i,1);
-                        i--;
-                        updateUI();
-                        updateLevel();
-                        saveGame();
-                        break;
+                let playerRect = {x: player.x, y: player.y, w: player.width, h: player.height};
+                let starRect = {x: stars[i].x - stars[i].radius, y: stars[i].y - stars[i].radius, w: stars[i].radius*2, h: stars[i].radius*2};
+                if(playerRect.x < starRect.x+starRect.w && playerRect.x+playerRect.w > starRect.x &&
+                   playerRect.y < starRect.y+starRect.h && playerRect.y+playerRect.h > starRect.y) {
+                    coins += stars[i].value;
+                    roundScore += stars[i].value;
+                    addParticles(stars[i].x, stars[i].y, "#FFD966");
+                    stars.splice(i,1);
+                    i--;
+                    updateUI();
+                    saveGame();
+                }
+            }
+        }
+        
+        function updateEnemies() {
+            for(let i=0; i<enemies.length; i++) {
+                enemies[i].y += enemies[i].speedY;
+                enemies[i].rotation += 0.05;
+                if(enemies[i].y > canvas.height+70) {
+                    enemies.splice(i,1); i--; continue;
+                }
+                let playerRect = {x: player.x, y: player.y, w: player.width, h: player.height};
+                let enemyRect = {x: enemies[i].x - enemies[i].width/2, y: enemies[i].y - enemies[i].height/2, w: enemies[i].width, h: enemies[i].height};
+                if(playerRect.x < enemyRect.x+enemyRect.w && playerRect.x+playerRect.w > enemyRect.x &&
+                   playerRect.y < enemyRect.y+enemyRect.h && playerRect.y+playerRect.h > enemyRect.y) {
+                    player.lives--;
+                    addParticles(playerRect.x+playerRect.w/2, playerRect.y+playerRect.h/2, "#FF0000");
+                    enemies.splice(i,1);
+                    i--;
+                    updateUI();
+                    if(player.lives <= 0) {
+                        gameRunning = false;
+                        roundActive = false;
+                        showMessage("💀 لقد خسرت! اضغط إعادة ضبط اللعبة 💀", "#ff6666");
                     }
-                }
-            }
-            // تحديث النيازك والتصادم مع اللاعبين
-            for(let i=0; i<meteors.length; i++) {
-                meteors[i].y += meteors[i].speedY;
-                meteors[i].rotation += 0.08;
-                if(meteors[i].y > canvas.height+70) {
-                    meteors.splice(i,1); i--; continue;
-                }
-                for(let pi=0; pi<playerMode; pi++) {
-                    let p = players[pi];
-                    let playerRect = {x: p.x, y: canvas.height - p.height - 20, w: p.width, h: p.height};
-                    let metRect = {x: meteors[i].x - meteors[i].width/2, y: meteors[i].y - meteors[i].height/2, w: meteors[i].width, h: meteors[i].height};
-                    if(playerRect.x < metRect.x+metRect.w && playerRect.x+playerRect.w > metRect.x &&
-                       playerRect.y < metRect.y+metRect.h && playerRect.y+playerRect.h > metRect.y) {
-                        p.lives--;
-                        addParticles(playerRect.x+playerRect.w/2, playerRect.y+playerRect.h/2, "#FF6644");
-                        meteors.splice(i,1);
-                        i--;
-                        updateUI();
-                        if(p.lives <= 0) {
-                            gameRunning = false;
-                            showMessage(`💀 ${p.name} خسر! اضغط إعادة الجولة 💀`, "#ff6666");
-                        }
-                        if(soundEnabled) playBeep();
-                        break;
-                    }
+                    playSound(440);
+                    break;
                 }
             }
         }
         
-        function playBeep() {
-            try {
-                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                let osc = audioCtx.createOscillator();
-                let gain = audioCtx.createGain();
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.frequency.value = 880;
-                gain.gain.value = 0.15;
-                osc.start();
-                gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime+0.2);
-                osc.stop(audioCtx.currentTime+0.2);
-            } catch(e) {}
-        }
-        
-        function updatePlayersMovement() {
-            for(let pi=0; pi<playerMode; pi++) {
-                let p = players[pi];
-                let yPos = canvas.height - p.height - 20;
-                if(p.leftPressed && p.x > 5) p.x -= p.speed;
-                if(p.rightPressed && p.x < canvas.width - p.width - 5) p.x += p.speed;
-                p.x = Math.min(Math.max(p.x, 5), canvas.width - p.width - 5);
+        function updateTimer() {
+            if(roundActive && gameRunning && roundTimeLeft > 0) {
+                roundTimeLeft -= 1/60;
+                if(roundTimeLeft <= 0) { roundTimeLeft = 0; completeRound(); }
+                updateUI();
             }
         }
         
-        // ------------------- الرسم -------------------
-        function drawBackground() {
-            ctx.fillStyle = "#010118";
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-            for(let i=0;i<150;i++) {
-                ctx.fillStyle = `rgba(255,240,180,${Math.random()*0.4+0.2})`;
-                ctx.beginPath();
-                ctx.arc( (i*131)%canvas.width, (i*253+Date.now()*0.1)%canvas.height, 1.5, 0, Math.PI*2);
-                ctx.fill();
-            }
-        }
-        
-        function drawStars() {
-            for(let s of stars) {
-                ctx.fillStyle = "#FFD966";
-                ctx.shadowBlur = 10;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.radius-2, 0, Math.PI*2);
-                ctx.fill();
-                ctx.fillStyle = "gold";
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.radius-5, 0, Math.PI*2);
-                ctx.fill();
-            }
-            ctx.shadowBlur = 0;
-        }
-        
-        function drawMeteors() {
-            for(let m of meteors) {
-                ctx.save();
-                ctx.translate(m.x, m.y);
-                ctx.rotate(m.rotation);
-                ctx.fillStyle = "#8B5A2B";
-                ctx.shadowBlur = 6;
-                ctx.beginPath();
-                ctx.ellipse(0,0, m.width/2, m.height/2.5, 0, 0, Math.PI*2);
-                ctx.fill();
-                ctx.fillStyle = "#5D3A1A";
-                ctx.beginPath();
-                ctx.ellipse(-5, -4, 6, 4, 0, 0, Math.PI*2);
-                ctx.fill();
-                ctx.restore();
-            }
-        }
-        
-        function drawPlayer(p, x, y) {
-            ctx.save();
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = "#4aa3ff";
-            ctx.fillStyle = p.id === 0 ? "#4aa3ff" : "#ff66aa";
-            ctx.beginPath();
-            ctx.roundRect(x, y, p.width, p.height, 12);
-            ctx.fill();
-            ctx.fillStyle = "#ff8844";
-            ctx.beginPath();
-            ctx.moveTo(x+p.width/2, y-10);
-            ctx.lineTo(x+p.width-10, y+12);
-            ctx.lineTo(x+10, y+12);
-            ctx.fill();
-            ctx.fillStyle = "#ccddff";
-            ctx.beginPath();
-            ctx.arc(x+p.width/2, y+p.height*0.3, p.width*0.2, 0, Math.PI*2);
-            ctx.fill();
+        // رسم الأعداء واللاعب
+        function drawEnemy(e) {
+            ctx.save(); ctx.translate(e.x, e.y); ctx.rotate(e.rotation);
+            ctx.fillStyle = e.type.color; ctx.shadowBlur = 5;
+            if(e.type.shape === "bird") {
+                ctx.beginPath(); ctx.moveTo(0,-15); ctx.lineTo(-15,5); ctx.lineTo(-5,0); ctx.lineTo(0,10); ctx.lineTo(5,0); ctx.lineTo(15,5); ctx.fill();
+                ctx.fillStyle = "#ffaa00"; ctx.beginPath(); ctx.ellipse(0,-5,5,8,0,0,Math.PI*2); ctx.fill();
+            } else if(e.type.shape === "alien") {
+                ctx.fillRect(-15,-15,30,30); ctx.fillStyle="#000"; ctx.fillRect(-10,-10,5,5); ctx.fillRect(5,-10,5,5);
+            } else if(e.type.shape === "chicken") {
+                ctx.beginPath(); ctx.ellipse(0,0,15,12,0,0,Math.PI*2); ctx.fill();
+                ctx.fillStyle="#ff6600"; ctx.beginPath(); ctx.moveTo(-5,-12); ctx.lineTo(0,-20); ctx.lineTo(5,-12); ctx.fill();
+            } else if(e.type.shape === "monster") {
+                ctx.fillRect(-20,-15,40,30); ctx.fillStyle="#ff0000"; ctx.fillRect(-15,-20,10,10); ctx.fillRect(5,-20,10,10);
+            } else if(e.type.shape === "lizard") {
+                ctx.beginPath(); ctx.ellipse(0,0,18,10,0,0,Math.PI*2); ctx.fill(); ctx.fillRect(-20,-5,10,10); ctx.fillRect(10,-5,10,10);
+            } else if(e.type.shape === "drone") {
+                ctx.fillStyle="#888"; ctx.fillRect(-12,-8,24,16); ctx.fillStyle="#ff4444"; ctx.beginPath(); ctx.arc(0,-12,6,0,Math.PI*2); ctx.fill();
+            } else if(e.type.shape === "boss") {
+                ctx.fillStyle="#3a0a4a"; ctx.fillRect(-25,-25,50,50); ctx.fillStyle="gold"; ctx.fillRect(-15,-30,30,10);
+                ctx.fillStyle="#ffaa44"; ctx.beginPath(); ctx.arc(-10,-10,6,0,Math.PI*2); ctx.arc(10,-10,6,0,Math.PI*2); ctx.fill();
+            } else ctx.fillRect(-12,-12,24,24);
+            if(e.maxHp>1){ ctx.fillStyle="red"; ctx.fillRect(-20,-25,40,5); ctx.fillStyle="lime"; ctx.fillRect(-20,-25,40*(e.hp/e.maxHp),5); }
             ctx.restore();
         }
         
-        function drawParticles() {
-            for(let p of particles) {
-                ctx.globalAlpha = p.life;
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI*2);
-                ctx.fill();
-            }
-            ctx.globalAlpha = 1;
+        function drawPlayer() {
+            let ship = ships[player.shipId];
+            ctx.save(); ctx.shadowBlur=8; ctx.fillStyle=ship.color;
+            ctx.beginPath(); ctx.roundRect(player.x, player.y, player.width, player.height, 10); ctx.fill();
+            ctx.fillStyle="#ff8844"; ctx.beginPath(); ctx.moveTo(player.x+player.width/2, player.y-8); ctx.lineTo(player.x+player.width-8, player.y+12); ctx.lineTo(player.x+8, player.y+12); ctx.fill();
+            ctx.fillStyle="#ccddff"; ctx.beginPath(); ctx.arc(player.x+player.width/2, player.y+player.height*0.3, player.width*0.2, 0, Math.PI*2); ctx.fill();
+            ctx.restore();
         }
         
-        function drawGameStatus() {
-            if(!gameRunning) {
-                ctx.font = "bold 28px monospace";
-                ctx.fillStyle = "#FF5555";
-                ctx.shadowBlur = 0;
-                ctx.fillText("GAME OVER", canvas.width/2-110, canvas.height/2-40);
-            }
+        function drawStarsBG() { for(let s of stars){ ctx.fillStyle="gold"; ctx.shadowBlur=6; ctx.beginPath(); ctx.arc(s.x, s.y, s.radius-2, 0, Math.PI*2); ctx.fill(); } }
+        function drawRockets() { for(let r of rockets){ ctx.fillStyle="#ffaa44"; ctx.fillRect(r.x, r.y, r.width, r.height); ctx.fillStyle="orange"; ctx.fillRect(r.x+2, r.y-3, 4, 5); } }
+        function drawParticles() { for(let p of particles){ ctx.globalAlpha=p.life; ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill(); } ctx.globalAlpha=1; }
+        function addParticles(x,y,color){ for(let i=0;i<8;i++) particles.push({x,y, vx:(Math.random()-0.5)*4, vy:(Math.random()-0.5)*4-1, life:0.8, color, size:Math.random()*4+2}); }
+        function updateParticles(){ for(let i=0;i<particles.length;i++){ particles[i].x+=particles[i].vx; particles[i].y+=particles[i].vy; particles[i].life-=0.02; particles[i].vy+=0.1; if(particles[i].life<=0||particles[i].y>canvas.height+50){ particles.splice(i,1); i--; } } }
+        function drawBackground(){ ctx.fillStyle="#03061a"; ctx.fillRect(0,0,canvas.width,canvas.height); for(let i=0;i<200;i++){ ctx.fillStyle=`rgba(255,240,180,${Math.random()*0.3})`; ctx.beginPath(); ctx.arc((i*131)%canvas.width, (i*253+Date.now()*0.02)%canvas.height, 1.2, 0, Math.PI*2); ctx.fill(); } }
+        function playSound(freq){ try{ let audioCtx=new (window.AudioContext||window.webkitAudioContext)(); let osc=audioCtx.createOscillator(); let gain=audioCtx.createGain(); osc.connect(gain); gain.connect(audioCtx.destination); osc.frequency.value=freq; gain.gain.value=0.08; osc.start(); gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime+0.1); osc.stop(audioCtx.currentTime+0.1); }catch(e){} }
+        
+        // جوستيك
+        let joystickActive = false, joystickCenter = {x:0,y:0}, joystickVector = {x:0,y:0};
+        const jCont = document.getElementById("joystickContainer"), jThumb = document.getElementById("joystickThumb");
+        function handleStart(e){ e.preventDefault(); joystickActive=true; const rect=jCont.getBoundingClientRect(); joystickCenter.x=rect.left+rect.width/2; joystickCenter.y=rect.top+rect.height/2; handleMove(e); }
+        function handleMove(e){ if(!joystickActive) return; let cx,cy; if(e.touches){ cx=e.touches[0].clientX; cy=e.touches[0].clientY; }else{ cx=e.clientX; cy=e.clientY; } let dx=cx-joystickCenter.x, dy=cy-joystickCenter.y; let dist=Math.hypot(dx,dy), maxDist=40; if(dist>maxDist){ dx=dx/dist*maxDist; dy=dy/dist*maxDist; } jThumb.style.transform=`translate(${dx}px, ${dy}px)`; joystickVector.x=dx/maxDist; joystickVector.y=dy/maxDist; }
+        function handleEnd(){ joystickActive=false; jThumb.style.transform="translate(0px,0px)"; joystickVector.x=0; joystickVector.y=0; }
+        jCont.addEventListener("mousedown",handleStart); window.addEventListener("mousemove",handleMove); window.addEventListener("mouseup",handleEnd); jCont.addEventListener("touchstart",handleStart); window.addEventListener("touchmove",handleMove); window.addEventListener("touchend",handleEnd);
+        
+        let keyState={};
+        window.addEventListener("keydown",(e)=>{ keyState[e.code]=true; if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","KeyW","KeyA","KeyS","KeyD"].includes(e.code)) e.preventDefault(); });
+        window.addEventListener("keyup",(e)=>{ keyState[e.code]=false; });
+        function updatePlayerMovement(){
+            if(!gameRunning||!roundActive) return;
+            let mx=joystickVector.x, my=joystickVector.y;
+            if(keyState.ArrowLeft||keyState.KeyA) mx-=1; if(keyState.ArrowRight||keyState.KeyD) mx+=1;
+            if(keyState.ArrowUp||keyState.KeyW) my-=1; if(keyState.ArrowDown||keyState.KeyS) my+=1;
+            let len=Math.hypot(mx,my); if(len>0){ mx/=len; my/=len; }
+            player.x+=mx*player.speed; player.y+=my*player.speed;
+            player.x=Math.min(Math.max(player.x,10), canvas.width-player.width-10);
+            player.y=Math.min(Math.max(player.y,10), canvas.height-player.height-10);
         }
         
-        // ------------------- الحلقة الرئيسية -------------------
-        function gameLoop() {
-            if(gameRunning) {
+        // حلقة اللعبة
+        function gameLoop(){
+            if(gameRunning && roundActive){
                 frameCounter++;
-                if(frameCounter % starSpawnRate === 0) spawnStar();
-                if(frameCounter % meteorSpawnRate === 0) spawnMeteor();
-                updatePlayersMovement();
-                updateGame();
+                if(frameCounter%enemySpawnRate===0) spawnEnemy();
+                if(frameCounter%starSpawnRate===0) spawnStar();
+                updatePlayerMovement();
+                autoFire();
+                updateRockets();
+                updateStars();
+                updateEnemies();
                 updateParticles();
+                updateTimer();
             }
             drawBackground();
-            drawStars();
-            drawMeteors();
-            for(let i=0; i<playerMode; i++) {
-                let p = players[i];
-                let yPos = canvas.height - p.height - 20;
-                drawPlayer(p, p.x, yPos);
-            }
+            for(let e of enemies) drawEnemy(e);
+            drawStarsBG();
+            drawRockets();
+            drawPlayer();
             drawParticles();
-            drawGameStatus();
             requestAnimationFrame(gameLoop);
         }
         
-        // ------------------- إعدادات التحكم ووضع اللاعبين -------------------
-        function setPlayerMode(mode) {
-            playerMode = mode;
-            players[1].active = (mode === 2);
-            if(mode === 1) {
-                // إخفاء لوحة اللاعب الثاني في المركبات
-                players[1].lives = 0; // لا يستخدم
-            } else {
-                if(players[1].ownedShips.length === 0) players[1].ownedShips = ["basic"];
-                if(!players[1].shipId) players[1].shipId = "basic";
-                applyShipStats(players[1]);
-            }
-            resetRound();
-            updateUI();
-            saveGame();
-            document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
-            document.querySelector(`.mode-btn[data-mode='${mode}']`).classList.add("active");
-        }
+        // أزرار
+        document.getElementById("buyHeartBtn").onclick=()=>{ if(coins>=100){ coins-=100; player.lives=Math.min(player.lives+1,10); saveGame(); updateUI(); showMessage("❤️ اشتريت قلباً!","lightgreen"); } else showMessage("تحتاج 100 عملة","#ffaa88"); };
+        document.getElementById("upgradeRocketBtn").onclick=()=>{ if(coins>=200){ coins-=200; rocketLevel++; saveGame(); updateUI(); showMessage(`🔫 ترقية الصاروخ إلى المستوى ${rocketLevel}`,"#aaffaa"); } else showMessage("تحتاج 200 عملة","#ffaa88"); };
+        document.getElementById("resetGameBtn").onclick=()=>{ localStorage.removeItem("galacticKareem"); location.reload(); };
+        document.getElementById("skipRoundBtn").onclick=skipRound;
         
-        function initControls() {
-            // مفاتيح لوحة المفاتيح
-            window.addEventListener('keydown', (e) => {
-                // لاعب 1: أسهم
-                if(e.key === 'ArrowLeft') { players[0].leftPressed = true; e.preventDefault(); }
-                if(e.key === 'ArrowRight') { players[0].rightPressed = true; e.preventDefault(); }
-                // لاعب 2: A / D
-                if(playerMode === 2) {
-                    if(e.key === 'a' || e.key === 'A') { players[1].leftPressed = true; e.preventDefault(); }
-                    if(e.key === 'd' || e.key === 'D') { players[1].rightPressed = true; e.preventDefault(); }
-                }
-            });
-            window.addEventListener('keyup', (e) => {
-                if(e.key === 'ArrowLeft') players[0].leftPressed = false;
-                if(e.key === 'ArrowRight') players[0].rightPressed = false;
-                if(playerMode === 2) {
-                    if(e.key === 'a' || e.key === 'A') players[1].leftPressed = false;
-                    if(e.key === 'd' || e.key === 'D') players[1].rightPressed = false;
-                }
-            });
-            // أزرار اللمس
-            document.getElementById("leftTouchP1").addEventListener('touchstart', (e)=>{ players[0].leftPressed=true; e.preventDefault();});
-            document.getElementById("leftTouchP1").addEventListener('mousedown', ()=>{ players[0].leftPressed=true;});
-            document.getElementById("rightTouchP1").addEventListener('touchstart', (e)=>{ players[0].rightPressed=true; e.preventDefault();});
-            document.getElementById("rightTouchP1").addEventListener('mousedown', ()=>{ players[0].rightPressed=true;});
-            document.getElementById("leftTouchP2").addEventListener('touchstart', (e)=>{ if(playerMode===2) players[1].leftPressed=true; e.preventDefault();});
-            document.getElementById("leftTouchP2").addEventListener('mousedown', ()=>{ if(playerMode===2) players[1].leftPressed=true;});
-            document.getElementById("rightTouchP2").addEventListener('touchstart', (e)=>{ if(playerMode===2) players[1].rightPressed=true; e.preventDefault();});
-            document.getElementById("rightTouchP2").addEventListener('mousedown', ()=>{ if(playerMode===2) players[1].rightPressed=true;});
-            window.addEventListener('touchend', ()=>{ players[0].leftPressed=false; players[0].rightPressed=false; if(playerMode===2){ players[1].leftPressed=false; players[1].rightPressed=false;}});
-            window.addEventListener('mouseup', ()=>{ players[0].leftPressed=false; players[0].rightPressed=false; if(playerMode===2){ players[1].leftPressed=false; players[1].rightPressed=false;}});
-            
-            // أزرار الواجهة
-            document.getElementById("buyHeartP1").onclick = () => buyHeart(0);
-            document.getElementById("buyHeartP2").onclick = () => { if(playerMode===2) buyHeart(1); else showMessage("لا يوجد لاعب ثان"); };
-            document.getElementById("wheelBtn").onclick = spinWheel;
-            document.getElementById("resetProgressBtn").onclick = fullReset;
-            document.getElementById("resetRoundBtn").onclick = resetRound;
-            document.getElementById("soundToggle").onchange = (e) => { soundEnabled = e.target.checked; saveGame(); };
-            document.getElementById("autoDifficulty").onchange = (e) => { autoDifficulty = e.target.checked; updateDifficulty(); saveGame(); };
-            
-            document.querySelectorAll(".mode-btn").forEach(btn => {
-                btn.onclick = () => setPlayerMode(parseInt(btn.dataset.mode));
-            });
-        }
-        
-        // ------------------- بدء اللعبة -------------------
-        function init() {
-            loadGame();
-            // ضبط مواقع البداية
-            players[0].x = canvas.width * 0.3;
-            players[1].x = canvas.width * 0.7;
-            for(let p of players) applyShipStats(p);
-            setPlayerMode(playerMode);
-            initControls();
-            updateUI();
-            gameLoop();
-            // تحديث تبريد العجلة
-            setInterval(() => {
-                if(wheelCooldown > 0) {
-                    wheelCooldown--;
-                    let btn = document.getElementById("wheelBtn");
-                    if(wheelCooldown>0) btn.innerText = `🎡 عجلة (${wheelCooldown}s)`;
-                    else btn.innerText = "🎡 عجلة الحظ";
-                } else {
-                    document.getElementById("wheelBtn").innerText = "🎡 عجلة الحظ";
-                }
-            }, 1000);
-        }
-        
-        // دالة roundRect
         if(!CanvasRenderingContext2D.prototype.roundRect){
-            CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
-                if(w<2*r) r=w/2;
-                if(h<2*r) r=h/2;
-                this.moveTo(x+r,y);
-                this.lineTo(x+w-r,y);
-                this.quadraticCurveTo(x+w,y,x+w,y+r);
-                this.lineTo(x+w,y+h-r);
-                this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-                this.lineTo(x+r,y+h);
-                this.quadraticCurveTo(x,y+h,x,y+h-r);
-                this.lineTo(x,y+r);
-                this.quadraticCurveTo(x,y,x+r,y);
-                return this;
-            };
+            CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){ if(w<2*r) r=w/2; if(h<2*r) r=h/2; this.moveTo(x+r,y); this.lineTo(x+w-r,y); this.quadraticCurveTo(x+w,y,x+w,y+r); this.lineTo(x+w,y+h-r); this.quadraticCurveTo(x+w,y+h,x+w-r,y+h); this.lineTo(x+r,y+h); this.quadraticCurveTo(x,y+h,x,y+h-r); this.lineTo(x,y+r); this.quadraticCurveTo(x,y,x+r,y); return this; };
         }
         
+        function init(){ loadGame(); applyShipStats(); applyRoundDifficulty(); updateUI(); gameLoop(); setInterval(()=>{ if(roundActive && gameRunning) updateUI(); }, 1000); }
         init();
     })();
 </script>
