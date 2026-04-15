@@ -1,993 +1,683 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>صاروخ فضائي - محاكاة النظام الشمسي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>المصحف المرتل | صفحة كاملة بصوت مشاري راشد</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            margin: 0; 
-            overflow: hidden; 
-            font-family: 'Segoe UI', sans-serif; 
-            touch-action: none; 
-            background: #000;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .info-panel {
-            position: absolute; 
-            top: 20px; 
-            left: 20px; 
-            background: rgba(0,0,0,0.8); 
-            padding: 12px 20px;
-            border-radius: 15px; 
-            color: #0ff; 
-            font-family: monospace; 
-            font-size: 14px; 
+        body {
+            font-family: 'Tajawal', 'Amiri Quran', serif;
+            background: linear-gradient(145deg, #fef5e7 0%, #fff9ef 100%);
+            color: #2e241a;
+            transition: background 0.2s, color 0.2s;
+            min-height: 100vh;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(145deg, #121f24 0%, #0a1418 100%);
+            color: #ede3cf;
+        }
+
+        body.dark-mode .quran-card {
+            background: rgba(20, 32, 30, 0.92);
+            backdrop-filter: blur(3px);
+            border: 1px solid rgba(212, 175, 95, 0.3);
+            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
+        }
+
+        body.dark-mode .controls-panel,
+        body.dark-mode .surah-nav {
+            background: #1f2c26;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+        }
+
+        body.dark-mode button,
+        body.dark-mode select {
+            background: #2c3f36;
+            color: #f7e9cf;
+            border-color: #c9a45b;
+        }
+
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1rem 2rem 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.8rem;
+            padding: 1rem 0;
+            border-bottom: 2px solid #dbba87;
+        }
+        .header h1 {
+            font-size: 2.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #b37b2e, #e2b55b);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .header p {
+            font-size: 0.95rem;
+            color: #b27d3e;
+        }
+        body.dark-mode .header p { color: #e2bc7c; }
+
+        .controls-panel {
+            background: #fff9ed;
+            border-radius: 60px;
+            padding: 0.7rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.9rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+            border: 1px solid #f0e2c5;
+        }
+
+        .ctrl-btn, .ctrl-select {
+            background: #fdf5e6;
+            border: 1px solid #e7d5b5;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #3a2a1c;
+        }
+        .ctrl-btn:hover {
+            background: #ecdfcc;
+            transform: translateY(-2px);
+        }
+        .ctrl-select { min-width: 210px; }
+
+        .special-group {
+            background: #ebdfce;
+            border-radius: 50px;
+            padding: 0 0.6rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* بطاقة المصحف */
+        .quran-card {
+            background: rgba(255, 252, 242, 0.95);
+            border-radius: 48px;
+            padding: 1.8rem 2rem;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            border: 1px solid #f5e5ca;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #e0c48b;
+            padding-bottom: 1rem;
+            margin-bottom: 1.8rem;
+        }
+        .surah-title {
+            font-size: 1.8rem;
             font-weight: bold;
-            z-index: 20; 
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,200,255,0.3);
+            color: #b87c2e;
         }
-
-        .info-panel span { display: block; margin: 4px 0; }
-        .info-panel .warning { color: #ff4444; animation: blink 0.5s infinite; }
-        .info-panel .ready { color: #ffff44; }
-        .info-panel .landed { color: #44ff44; }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        .joystick-container {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            width: 150px;
-            height: 150px;
-            z-index: 20;
-        }
-
-        .joystick-base {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(30,50,80,0.9) 0%, rgba(10,20,40,0.95) 100%);
-            border: 3px solid rgba(0,200,255,0.5);
-            border-radius: 50%;
-        }
-
-        .joystick-handle {
-            position: absolute;
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #0cf 0%, #0088cc 100%);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            box-shadow: 0 0 20px rgba(0,200,255,0.8);
-            cursor: pointer;
-        }
-
-        .joystick-handle.active {
-            background: radial-gradient(circle, #ff6600 0%, #cc4400 100%);
-        }
-
-        .side-controls {
-            position: absolute;
-            bottom: 30px;
-            right: 30px;
+        .page-navi {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            z-index: 20;
-        }
-
-        .control-btn {
-            width: 70px;
-            height: 70px;
-            background: radial-gradient(circle, rgba(40,60,100,0.9) 0%, rgba(15,25,50,0.95) 100%);
-            border: 2px solid rgba(0,200,255,0.5);
-            border-radius: 50%;
-            color: white;
-            font-size: 28px;
-            display: flex;
+            gap: 0.8rem;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            user-select: none;
-            position: relative;
         }
-
-        .control-btn.boost {
-            background: radial-gradient(circle, rgba(255,150,0,0.9) 0%, rgba(200,80,0,0.95) 100%);
-            border-color: #ff8800;
-        }
-
-        .control-btn.brake {
-            background: radial-gradient(circle, rgba(255,50,50,0.9) 0%, rgba(180,30,30,0.95) 100%);
-            border-color: #ff4444;
-        }
-
-        .control-btn.landing {
-            background: radial-gradient(circle, rgba(50,255,50,0.9) 0%, rgba(30,180,30,0.95) 100%);
-            border-color: #44ff44;
-        }
-
-        .control-btn.landing.can-land {
-            animation: pulse 1s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 0 20px rgba(80,255,80,0.4); }
-            50% { box-shadow: 0 0 40px rgba(80,255,80,0.9); }
-        }
-
-        .btn-label {
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 10px;
-            color: #0cf;
-            white-space: nowrap;
-        }
-
-        .explosion-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, #ff6600 0%, #ff0000 50%, #000000 100%);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .explosion-text {
-            font-size: 48px;
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .restart-btn {
-            padding: 15px 30px;
-            font-size: 20px;
-            background: #ff4444;
-            color: white;
+        .page-btn {
+            background: #e7d9c6;
             border: none;
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.2s;
+        }
+        .page-btn:hover:not(:disabled) {
+            background: #c9a86b;
+            color: white;
+            transform: scale(1.05);
+        }
+        .page-info {
+            font-size: 1.1rem;
+            background: #f0e3d2;
+            padding: 0.3rem 1.2rem;
+            border-radius: 50px;
+        }
+
+        /* زر الاستماع للصفحة كاملة */
+        .page-audio-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .listen-page-btn {
+            background: linear-gradient(95deg, #2f6b47, #1f8a5c);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            gap: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transition: 0.2s;
+        }
+        .listen-page-btn i {
+            font-size: 1.4rem;
+        }
+        .listen-page-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(95deg, #1e5a3c, #0d6e49);
             cursor: pointer;
         }
+        .stop-page-btn {
+            background: linear-gradient(95deg, #9b4b2c, #b95c32);
+            margin-right: 12px;
+        }
+        .status-msg {
+            font-size: 0.9rem;
+            margin-top: 8px;
+            color: #d68b45;
+            font-weight: 500;
+        }
+
+        /* عرض الآيات (بدون أزرار فردية) */
+        .aya-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .aya-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: rgba(245, 240, 228, 0.4);
+            padding: 0.8rem 1.2rem;
+            border-radius: 28px;
+            border-right: 3px solid transparent;
+            transition: all 0.15s;
+        }
+        .aya-item.active-ayah {
+            background: #ffe3b5;
+            border-right-color: #c9993b;
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        body.dark-mode .aya-item.active-ayah {
+            background: #3e4d37;
+            border-right-color: #efbc6e;
+        }
+        .aya-number {
+            font-size: 1rem;
+            font-weight: bold;
+            background: #dbb879;
+            color: #2c1f10;
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .aya-text {
+            font-size: 1.55rem;
+            font-family: 'Amiri Quran', 'Tajawal', serif;
+            line-height: 2rem;
+            flex: 1;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        .loader {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.2rem;
+            color: #b8860b;
+        }
+        @media (max-width: 700px) {
+            .app-container { padding: 0.7rem; }
+            .aya-text { font-size: 1.25rem; }
+            .listen-page-btn { padding: 0.6rem 1.2rem; font-size: 1rem; }
+        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
     </style>
 </head>
 <body>
-    <div class="explosion-screen" id="explosionScreen">
-        <div class="explosion-text">💥 انفجار! 💥</div>
-        <div style="color: white; font-size: 24px; margin-bottom: 30px;">المركبة اقتربت جداً من الشمس!</div>
-        <button class="restart-btn" onclick="location.reload()">🔄 إعادة المحاولة</button>
+
+<div class="app-container">
+    <div class="header">
+        <h1><i class="fas fa-book-quran"></i> المصحف المرتل</h1>
+        <p>استمع للصفحة كاملة بصوت الشيخ مشاري راشد العفاسي | تصفح و تلاوة بصفحة واحدة</p>
     </div>
 
-    <div class="info-panel" id="infoPanel">
-        <span>🚀 السرعة: <span id="speedValue">0</span> km/s</span>
-        <span>🪐 الحالة: <span id="statusText">طيران</span></span>
-        <span id="landingHint" style="display:none;" class="ready">✋ يمكن الهبوط!</span>
-        <span id="gravityWarning" style="display:none;" class="warning">⚠️ جاذبية!</span>
-        <span id="landingStatus" style="display:none;" class="landed">✅ متوقف</span>
+    <div class="controls-panel">
+        <select id="surah-select" class="ctrl-select">
+            <option>تحميل السور...</option>
+        </select>
+        <div class="special-group">
+            <button id="font-plus" class="ctrl-btn"><i class="fas fa-plus-circle"></i> تكبير الخط</button>
+            <button id="font-minus" class="ctrl-btn"><i class="fas fa-minus-circle"></i> تصغير الخط</button>
+        </div>
+        <button id="theme-toggle" class="ctrl-btn"><i class="fas fa-moon"></i> الوضع الليلي</button>
     </div>
 
-    <div class="joystick-container" id="joystick">
-        <div class="joystick-base"></div>
-        <div class="joystick-handle" id="joystickHandle"></div>
-    </div>
+    <div class="quran-card">
+        <div class="page-header">
+            <div class="surah-title" id="surah-name">سورة الفاتحة</div>
+            <div class="page-navi">
+                <button id="prev-page-btn" class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                <span id="page-counter" class="page-info">الصفحة 1</span>
+                <button id="next-page-btn" class="page-btn"><i class="fas fa-chevron-left"></i></button>
+            </div>
+        </div>
 
-    <div class="side-controls">
-        <div class="control-btn boost" data-action="boost">
-            ⚡
-            <span class="btn-label">تسريع</span>
+        <!-- منطقة الاستماع للصفحة كاملة -->
+        <div class="page-audio-bar">
+            <button id="listenFullPageBtn" class="ctrl-btn listen-page-btn"><i class="fas fa-head-side-headphones"></i> 🎧 استماع الصفحة كاملة</button>
+            <button id="stopPageAudioBtn" class="ctrl-btn stop-page-btn" style="background:#8b5a2b;"><i class="fas fa-stop-circle"></i> إيقاف التلاوة</button>
         </div>
-        <div class="control-btn brake" data-action="brake">
-            🛑
-            <span class="btn-label">فرملة</span>
-        </div>
-        <div class="control-btn landing" data-action="landing" id="landingBtn">
-            🛬
-            <span class="btn-label">هبوط</span>
-        </div>
-        <div class="control-btn" id="viewBtn" style="background: radial-gradient(circle, rgba(100,100,255,0.9) 0%, rgba(50,50,150,0.95) 100%); border-color: #6666ff;">
-            👁️
-            <span class="btn-label">من ورا</span>
+        <div id="audioStatus" class="status-msg" style="text-align:center;"></div>
+
+        <div id="quran-content">
+            <div class="loader"><i class="fas fa-spinner fa-pulse"></i> جلب آيات الصفحة...</div>
         </div>
     </div>
+    <div class="footer-note">
+        <i class="fas fa-volume-up"></i> زر واحد لتشغيل كل آيات هذه الصفحة متسلسلة | تمتع بتلاوة خاشعة
+    </div>
+</div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
-            }
+<script>
+    // --------------------- المتغيرات ---------------------
+    let currentSurahId = 1;
+    let currentPage = 1;           // الصفحة الحالية من 1 إلى 604
+    let surahData = null;          // بيانات السورة (الآيات مع أرقام الصفحات)
+    let pagesMap = new Map();       // page -> array of ayah objects
+    let availablePages = [];        // صفحات موجودة في هذه السورة
+    let currentAudioQueue = [];     // قائمة انتظار الآيات للصفحة الحالية
+    let isPlayingPage = false;
+    let currentAudioIndex = 0;
+    let currentAudioElement = null;
+    let intervalHighlight = null;
+
+    // إعدادات الخط
+    let currentFontSize = 1.55;
+    const MIN_FONT = 1.1, MAX_FONT = 2.3;
+
+    // ذاكرة مؤقتة للسور
+    const surahCache = new Map();
+    let surahList = [];
+
+    // عناصر DOM
+    const surahSelect = document.getElementById('surah-select');
+    const surahNameSpan = document.getElementById('surah-name');
+    const quranContentDiv = document.getElementById('quran-content');
+    const prevPageBtn = document.getElementById('prev-page-btn');
+    const nextPageBtn = document.getElementById('next-page-btn');
+    const pageCounterSpan = document.getElementById('page-counter');
+    const listenFullPageBtn = document.getElementById('listenFullPageBtn');
+    const stopPageAudioBtn = document.getElementById('stopPageAudioBtn');
+    const audioStatusSpan = document.getElementById('audioStatus');
+    const themeToggle = document.getElementById('theme-toggle');
+    const fontPlus = document.getElementById('font-plus');
+    const fontMinus = document.getElementById('font-minus');
+
+    // --------------------- دوال الصوت (تشغيل الصفحة كاملة) ---------------------
+    function stopPageAudio(resetQueue = true) {
+        if (currentAudioElement) {
+            currentAudioElement.pause();
+            currentAudioElement.currentTime = 0;
+            currentAudioElement = null;
         }
-    </script>
+        if (resetQueue) {
+            isPlayingPage = false;
+            currentAudioIndex = 0;
+            currentAudioQueue = [];
+        } else {
+            isPlayingPage = false;
+        }
+        // إزالة التمييز عن الآيات
+        document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
+        if (intervalHighlight) clearInterval(intervalHighlight);
+        audioStatusSpan.innerHTML = '';
+    }
 
-    <script type="module">
-        import * as THREE from 'three';
+    // تشغيل الآية التالية في قائمة الانتظار
+    function playNextAyahInQueue() {
+        if (!isPlayingPage) return;
+        if (currentAudioIndex >= currentAudioQueue.length) {
+            // انتهت الصفحة
+            isPlayingPage = false;
+            audioStatusSpan.innerHTML = '✅ انتهت تلاوة الصفحة. جزاك الله خيراً.';
+            document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
+            currentAudioElement = null;
+            return;
+        }
 
-        // ============ إعدادات أساسية ============
-        const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x000000);
-
-        const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 5000);
-
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        document.body.appendChild(renderer.domElement);
-
-        // ============ الإضاءة ============
-        const ambient = new THREE.AmbientLight(0x222244, 0.5);
-        scene.add(ambient);
-
-        const sunLight = new THREE.PointLight(0xffaa44, 2, 500);
-        sunLight.position.set(0, 0, 0);
-        scene.add(sunLight);
-
-        // ============ الشمس ============
-        const sunGroup = new THREE.Group();
-
-        const sunGeo = new THREE.SphereGeometry(8, 128, 128);
-        const sunMat = new THREE.MeshBasicMaterial({ color: 0xffaa00 });
-        const sun = new THREE.Mesh(sunGeo, sunMat);
-        sunGroup.add(sun);
-
-        // طبقات التوهج
-        const glow1Geo = new THREE.SphereGeometry(10, 64, 64);
-        const glow1Mat = new THREE.MeshBasicMaterial({ 
-            color: 0xff6600, 
-            transparent: true, 
-            opacity: 0.3,
-            side: THREE.BackSide
+        const ayahObj = currentAudioQueue[currentAudioIndex];
+        // تمييز الآية الحالية
+        const allAyahDivs = document.querySelectorAll('.aya-item');
+        allAyahDivs.forEach((div, idx) => {
+            div.classList.remove('active-ayah');
+            if (idx === currentAudioIndex) div.classList.add('active-ayah');
         });
-        const glow1 = new THREE.Mesh(glow1Geo, glow1Mat);
-        sunGroup.add(glow1);
+        // تمرير سلس إلى الآية
+        const activeElem = document.querySelector('.aya-item.active-ayah');
+        if (activeElem) activeElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        const glow2Geo = new THREE.SphereGeometry(14, 64, 64);
-        const glow2Mat = new THREE.MeshBasicMaterial({ 
-            color: 0xff4400, 
-            transparent: true, 
-            opacity: 0.15,
-            side: THREE.BackSide
-        });
-        const glow2 = new THREE.Mesh(glow2Geo, glow2Mat);
-        sunGroup.add(glow2);
-
-        // جسيمات الشمس
-        const sunParticlesCount = 3000;
-        const sunParticlesPos = [];
-        for (let i = 0; i < sunParticlesCount; i++) {
-            const r = 9 + Math.random() * 6;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-            sunParticlesPos.push(
-                r * Math.sin(phi) * Math.cos(theta),
-                r * Math.sin(phi) * Math.sin(theta) * 0.6,
-                r * Math.cos(phi)
-            );
-        }
-        const sunPartGeo = new THREE.BufferGeometry();
-        sunPartGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(sunParticlesPos), 3));
-        const sunParticles = new THREE.Points(sunPartGeo, new THREE.PointsMaterial({ 
-            color: 0xffaa44, 
-            size: 0.15, 
-            blending: THREE.AdditiveBlending,
-            transparent: true,
-            opacity: 0.8
-        }));
-        sunGroup.add(sunParticles);
-
-        scene.add(sunGroup);
-
-        // ============ الكواكب ============
-        function createPlanetTexture(baseColor, accentColor, hasBands = false) {
-            const canvas = document.createElement('canvas');
-            canvas.width = 2048;
-            canvas.height = 2048;
-            const ctx = canvas.getContext('2d');
-
-            ctx.fillStyle = '#' + baseColor.toString(16).padStart(6, '0');
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            for (let i = 0; i < 8000; i++) {
-                const shade = Math.random();
-                const r = Math.floor(((baseColor >> 16) & 0xff) * (0.7 + shade * 0.6));
-                const g = Math.floor(((baseColor >> 8) & 0xff) * (0.7 + shade * 0.6));
-                const b = Math.floor((baseColor & 0xff) * (0.7 + shade * 0.6));
-                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${Math.random() * 0.4 + 0.2})`;
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const rad = Math.random() * 4 + 1;
-                ctx.beginPath();
-                ctx.arc(x, y, rad, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            if (hasBands) {
-                for (let i = 0; i < 200; i++) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = '#' + accentColor.toString(16).padStart(6, '0');
-                    ctx.lineWidth = Math.random() * 15 + 5;
-                    ctx.globalAlpha = 0.3;
-                    const y = Math.random() * canvas.height;
-                    ctx.moveTo(0, y);
-                    ctx.lineTo(canvas.width, y + (Math.random() - 0.5) * 100);
-                    ctx.stroke();
-                }
-                ctx.globalAlpha = 1;
-            }
-
-            const texture = new THREE.CanvasTexture(canvas);
-            texture.wrapS = THREE.RepeatWrapping;
-            texture.wrapT = THREE.RepeatWrapping;
-            return texture;
-        }
-
-        const planetsData = [
-            { name: 'عطارد', radius: 0.8, distance: 40, color: 0x8c7853, speed: 0.02, accent: 0x6c5843, bands: false },
-            { name: 'الزهرة', radius: 1.2, distance: 65, color: 0xe6c288, speed: 0.015, accent: 0xc6a268, bands: false },
-            { name: 'الأرض', radius: 1.3, distance: 95, color: 0x4a90d9, speed: 0.012, accent: 0x2a70b9, bands: false },
-            { name: 'المريخ', radius: 1.0, distance: 130, color: 0xc1440e, speed: 0.01, accent: 0xa12400, bands: false },
-            { name: 'المشتري', radius: 4.5, distance: 200, color: 0xd4a574, speed: 0.005, accent: 0xb48554, bands: true },
-            { name: 'زحل', radius: 3.8, distance: 280, color: 0xf4d298, speed: 0.004, accent: 0xd4b278, bands: true },
-            { name: 'أورانوس', radius: 2.5, distance: 360, color: 0x9ecdc9, speed: 0.003, accent: 0x7eadac, bands: false },
-            { name: 'نبتون', radius: 2.4, distance: 440, color: 0x3e54e8, speed: 0.0025, accent: 0x1e34c8, bands: false }
-        ];
-
-        const planets = [];
-        planetsData.forEach(data => {
-            const texture = createPlanetTexture(data.color, data.accent, data.bands);
-            const mat = new THREE.MeshStandardMaterial({ 
-                map: texture, 
-                metalness: 0.3, 
-                roughness: 0.7 
+        // بناء رابط الصوت من مصدر موثوق (cdn.islamic.network)
+        const surahPadded = String(ayahObj.surahId).padStart(3, '0');
+        const ayahPadded = String(ayahObj.ayahNumber).padStart(3, '0');
+        const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${surahPadded}${ayahPadded}.mp3`;
+        
+        const audio = new Audio(audioUrl);
+        currentAudioElement = audio;
+        audio.preload = 'auto';
+        audio.play().catch(err => {
+            console.warn(`خطأ في تشغيل الآية ${ayahObj.ayahNumber}:`, err);
+            // محاولة بديلة: use everyayah backup (اختياري)
+            const fallbackUrl = `https://everyayah.com/data/Alafasy/${surahPadded}${ayahPadded}.mp3`;
+            const fallbackAudio = new Audio(fallbackUrl);
+            currentAudioElement = fallbackAudio;
+            fallbackAudio.play().catch(e2 => {
+                console.error("فشل في تشغيل الصوت:", e2);
+                audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل الآية ${ayahObj.ayahNumber}، تحقق من اتصالك بالإنترنت.`;
+                // تخطي هذه الآية ومتابعة؟
+                currentAudioIndex++;
+                playNextAyahInQueue();
             });
-            const planet = new THREE.Mesh(new THREE.SphereGeometry(data.radius, 64, 64), mat);
-            planet.castShadow = true;
-            planet.receiveShadow = true;
-            planet.userData = { 
-                distance: data.distance, 
-                speed: data.speed, 
-                angle: Math.random() * Math.PI * 2,
-                name: data.name,
-                radius: data.radius
-            };
-            scene.add(planet);
-            planets.push(planet);
-
-            // حلقة زحل
-            if (data.name === 'زحل') {
-                const ringGeo = new THREE.RingGeometry(data.radius * 1.4, data.radius * 2.2, 128);
-                const ringMat = new THREE.MeshBasicMaterial({ 
-                    color: 0xcbb88e, 
-                    side: THREE.DoubleSide,
-                    transparent: true,
-                    opacity: 0.7
-                });
-                const ring = new THREE.Mesh(ringGeo, ringMat);
-                ring.rotation.x = Math.PI / 2.3;
-                planet.add(ring);
-            }
+            currentAudioElement = fallbackAudio;
         });
+        
+        audioStatusSpan.innerHTML = `🔊 جاري تلاوة الآية ${ayahObj.ayahNumber} من ${currentAudioQueue.length} ...`;
+        
+        audio.onended = () => {
+            currentAudioIndex++;
+            playNextAyahInQueue();
+        };
+        audio.onerror = () => {
+            console.warn("خطأ في تحميل الصوت، تخطي الآية");
+            currentAudioIndex++;
+            playNextAyahInQueue();
+        };
+    }
 
-        // ============ حزام الكويكبات ============
-        const asteroidCount = 3000;
-        const astPos = new Float32Array(asteroidCount * 3);
-        for (let i = 0; i < asteroidCount; i++) {
-            const r = 155 + Math.random() * 30;
-            const ang = Math.random() * Math.PI * 2;
-            const yoff = (Math.random() - 0.5) * 4;
-            astPos[i*3] = Math.cos(ang) * r;
-            astPos[i*3+1] = yoff;
-            astPos[i*3+2] = Math.sin(ang) * r;
+    // بدء تشغيل الصفحة الحالية (كل آياتها)
+    function startPagePlayback() {
+        if (!surahData || !pagesMap.has(currentPage)) {
+            audioStatusSpan.innerHTML = '❌ لا توجد آيات في هذه الصفحة لتشغيلها.';
+            return;
         }
-        const astGeo = new THREE.BufferGeometry();
-        astGeo.setAttribute('position', new THREE.BufferAttribute(astPos, 3));
-        const asteroidField = new THREE.Points(astGeo, new THREE.PointsMaterial({ 
-            color: 0x887766, 
-            size: 0.15 
+        stopPageAudio(true);
+        const ayahsOfPage = pagesMap.get(currentPage);
+        if (!ayahsOfPage.length) return;
+        // بناء قائمة انتظار الآيات لهذه الصفحة
+        currentAudioQueue = ayahsOfPage.map(ayah => ({
+            surahId: currentSurahId,
+            ayahNumber: ayah.number
         }));
-        scene.add(asteroidField);
-
-        // ============ حزام كايبر ============
-        const kuiperBeltCount = 8000;
-        const kuiperBeltGeo = new THREE.BufferGeometry();
-        const kuiperBeltPos = [];
-        const kuiperBeltColors = [];
-
-        for (let i = 0; i < kuiperBeltCount; i++) {
-            const angle = Math.random() * Math.PI * 2;
-            const distance = 480 + Math.random() * 320;
-            const height = (Math.random() - 0.5) * 30;
-
-            kuiperBeltPos.push(
-                Math.cos(angle) * distance,
-                height,
-                Math.sin(angle) * distance
-            );
-
-            const colorType = Math.random();
-            if (colorType < 0.7) {
-                kuiperBeltColors.push(0.8, 0.9, 1.0);
-            } else {
-                kuiperBeltColors.push(0.9, 0.9, 0.9);
-            }
-        }
-
-        kuiperBeltGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(kuiperBeltPos), 3));
-        kuiperBeltGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(kuiperBeltColors), 3));
-
-        const kuiperBeltMat = new THREE.PointsMaterial({ 
-            size: 0.25, 
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.6
-        });
-
-        const kuiperBelt = new THREE.Points(kuiperBeltGeo, kuiperBeltMat);
-        scene.add(kuiperBelt);
-
-        // ============ سحابة أورت ============
-        const oortCloudCount = 15000;
-        const oortCloudGeo = new THREE.BufferGeometry();
-        const oortCloudPos = [];
-
-        for (let i = 0; i < oortCloudCount; i++) {
-            const r = 2000 + Math.random() * 3000;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-
-            oortCloudPos.push(
-                r * Math.sin(phi) * Math.cos(theta),
-                r * Math.sin(phi) * Math.sin(theta),
-                r * Math.cos(phi)
-            );
-        }
-
-        oortCloudGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(oortCloudPos), 3));
-
-        const oortCloudMat = new THREE.PointsMaterial({ 
-            color: 0x666677, 
-            size: 0.15,
-            transparent: true,
-            opacity: 0.4
-        });
-
-        const oortCloud = new THREE.Points(oortCloudGeo, oortCloudMat);
-        scene.add(oortCloud);
-
-        // ============ المركبة الفضائية المحسنة ============
-        const rocket = new THREE.Group();
-
-        // الجسم الرئيسي - مخروطي أنيق
-        const bodyGeo = new THREE.ConeGeometry(0.8, 4, 32);
-        const bodyMat = new THREE.MeshStandardMaterial({ 
-            color: 0xeeeeee, 
-            metalness: 0.9, 
-            roughness: 0.1 
-        });
-        const body = new THREE.Mesh(bodyGeo, bodyMat);
-        body.rotation.x = Math.PI / 2;
-        body.position.z = 0.5;
-        body.name = 'body';
-        rocket.add(body);
-
-        // الجزء الخلفي
-        const rearGeo = new THREE.CylinderGeometry(0.8, 0.5, 1.5, 32);
-        const rearMat = new THREE.MeshStandardMaterial({ 
-            color: 0x888888, 
-            metalness: 0.8, 
-            roughness: 0.2 
-        });
-        const rear = new THREE.Mesh(rearGeo, rearMat);
-        rear.rotation.x = Math.PI / 2;
-        rear.position.z = -1.25;
-        rear.name = 'rear';
-        rocket.add(rear);
-
-        // المحرك الرئيسي
-        const engineGeo = new THREE.CylinderGeometry(0.5, 0.7, 0.8, 32);
-        const engineMat = new THREE.MeshStandardMaterial({ 
-            color: 0x444444, 
-            metalness: 0.9, 
-            roughness: 0.3 
-        });
-        const engine = new THREE.Mesh(engineGeo, engineMat);
-        engine.rotation.x = Math.PI / 2;
-        engine.position.z = -2.4;
-        engine.name = 'engine';
-        rocket.add(engine);
-
-        // الأجنحة
-        const wingShape = new THREE.Shape();
-        wingShape.moveTo(0, 0);
-        wingShape.lineTo(1.5, 0);
-        wingShape.lineTo(0.5, 2);
-        wingShape.lineTo(0, 2);
-        wingShape.lineTo(0, 0);
-
-        const wingGeo = new THREE.ExtrudeGeometry(wingShape, { depth: 0.1, bevelEnabled: false });
-        const wingMat = new THREE.MeshStandardMaterial({ 
-            color: 0xcc3333, 
-            metalness: 0.6, 
-            roughness: 0.3 
-        });
-
-        // جناح أيمن
-        const rightWing = new THREE.Mesh(wingGeo, wingMat);
-        rightWing.position.set(0.5, 0, -1);
-        rightWing.rotation.y = Math.PI / 2;
-        rightWing.rotation.z = -0.3;
-        rightWing.name = 'wing';
-        rocket.add(rightWing);
-
-        // جناح أيسر
-        const leftWing = new THREE.Mesh(wingGeo, wingMat);
-        leftWing.position.set(-0.5, 0, -1);
-        leftWing.rotation.y = -Math.PI / 2;
-        leftWing.rotation.z = 0.3;
-        leftWing.scale.x = -1;
-        leftWing.name = 'wing';
-        rocket.add(leftWing);
-
-        // جناح سفلي
-        const bottomWing = new THREE.Mesh(wingGeo, wingMat);
-        bottomWing.position.set(0, -0.5, -1);
-        bottomWing.rotation.x = Math.PI / 2;
-        bottomWing.rotation.z = -0.3;
-        bottomWing.name = 'wing';
-        rocket.add(bottomWing);
-
-        // جناح علوي
-        const topWing = new THREE.Mesh(wingGeo, wingMat);
-        topWing.position.set(0, 0.5, -1);
-        topWing.rotation.x = -Math.PI / 2;
-        topWing.rotation.z = 0.3;
-        topWing.name = 'wing';
-        rocket.add(topWing);
-
-        // نوافذ القيادة
-        const windowGeo = new THREE.SphereGeometry(0.35, 32, 32);
-        const windowMat = new THREE.MeshStandardMaterial({ 
-            color: 0x111133, 
-            metalness: 0.9, 
-            roughness: 0.05,
-            emissive: 0x222244,
-            emissiveIntensity: 0.3
-        });
-        const cockpit = new THREE.Mesh(windowGeo, windowMat);
-        cockpit.position.set(0, 0.3, 1.5);
-        cockpit.name = 'cockpit';
-        rocket.add(cockpit);
-
-        // خطوط تفصيل
-        const stripeGeo = new THREE.TorusGeometry(0.82, 0.03, 16, 64);
-        const stripeMat = new THREE.MeshStandardMaterial({ color: 0xcc3333, metalness: 0.8 });
-        const stripe1 = new THREE.Mesh(stripeGeo, stripeMat);
-        stripe1.rotation.x = Math.PI / 2;
-        stripe1.position.z = 1;
-        rocket.add(stripe1);
-
-        const stripe2 = new THREE.Mesh(stripeGeo, stripeMat);
-        stripe2.rotation.x = Math.PI / 2;
-        stripe2.position.z = -0.5;
-        rocket.add(stripe2);
-
-        // عجلات (مخفية في البداية)
-        function createWheel(x, y, z) {
-            const wheelGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.2, 16);
-            const wheelMat = new THREE.MeshStandardMaterial({ color: 0x111111, metalness: 0.5 });
-            const wheel = new THREE.Mesh(wheelGeo, wheelMat);
-            wheel.rotation.z = Math.PI / 2;
-            wheel.position.set(x, y, z);
-            wheel.visible = false;
-            return wheel;
-        }
-
-        const wheel1 = createWheel(0.6, -0.8, 0.5);
-        const wheel2 = createWheel(-0.6, -0.8, 0.5);
-        const wheel3 = createWheel(0.6, -0.8, -1.5);
-        const wheel4 = createWheel(-0.6, -0.8, -1.5);
-
-        const wheels = [wheel1, wheel2, wheel3, wheel4];
-        wheels.forEach(w => rocket.add(w));
-
-        // اللهب الأساسي
-        const flameGeo = new THREE.ConeGeometry(0.5, 2, 32);
-        const flameMat = new THREE.MeshBasicMaterial({ 
-            color: 0xff6600,
-            transparent: true,
-            opacity: 0.9
-        });
-        const flame = new THREE.Mesh(flameGeo, flameMat);
-        flame.rotation.x = -Math.PI / 2;
-        flame.position.z = -3.5;
-        flame.name = 'flame';
-        rocket.add(flame);
-
-        // طبقة توهج اللهب
-        const flameGlowGeo = new THREE.ConeGeometry(0.7, 2.5, 32);
-        const flameGlowMat = new THREE.MeshBasicMaterial({ 
-            color: 0xff4400,
-            transparent: true,
-            opacity: 0.4
-        });
-        const flameGlow = new THREE.Mesh(flameGlowGeo, flameGlowMat);
-        flameGlow.rotation.x = -Math.PI / 2;
-        flameGlow.position.z = -3.5;
-        flameGlow.name = 'flameGlow';
-        rocket.add(flameGlow);
-
-        rocket.scale.set(0.5, 0.5, 0.5);
-        scene.add(rocket);
-        rocket.position.set(50, 5, 50);
-
-        // ============ النجوم ============
-        const starCount = 15000;
-        const starPositions = new Float32Array(starCount * 3);
-        const starColors = new Float32Array(starCount * 3);
-
-        for (let i = 0; i < starCount; i++) {
-            const r = 1000 + Math.random() * 3000;
-            const theta = Math.random() * Math.PI * 2;
-            const phi = Math.acos(2 * Math.random() - 1);
-
-            starPositions[i*3] = r * Math.sin(phi) * Math.cos(theta);
-            starPositions[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-            starPositions[i*3+2] = r * Math.cos(phi);
-
-            const colorType = Math.random();
-            if (colorType < 0.7) {
-                starColors[i*3] = 1; starColors[i*3+1] = 1; starColors[i*3+2] = 1;
-            } else if (colorType < 0.85) {
-                starColors[i*3] = 1; starColors[i*3+1] = 0.8; starColors[i*3+2] = 0.6;
-            } else {
-                starColors[i*3] = 0.8; starColors[i*3+1] = 0.8; starColors[i*3+2] = 1;
-            }
-        }
-
-        const starGeo = new THREE.BufferGeometry();
-        starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
-        starGeo.setAttribute('color', new THREE.BufferAttribute(starColors, 3));
-        const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ 
-            size: 1.5, 
-            vertexColors: true,
-            transparent: true,
-            opacity: 0.9
-        }));
-        scene.add(stars);
-
-        // ============ نظام التحكم ============
-        let speed = 0;
-        const MAX_SPEED = 15;
-        const ACC = 0.4;
-
-        const keys = { boost: false, brake: false };
-        let joystickInput = { x: 0, y: 0 };
-        let isLanded = false;
-        let currentPlanet = null;
-        let viewMode = 'normal'; // 'normal' أو 'behind'
-
-        // زرار تغيير المنظور
-        document.getElementById('viewBtn').addEventListener('click', () => {
-            viewMode = viewMode === 'normal' ? 'behind' : 'normal';
-            document.getElementById('viewBtn').querySelector('.btn-label').textContent = 
-                viewMode === 'normal' ? 'من ورا' : 'عادي';
-        });
-
-        // Joystick
-        const joystick = document.getElementById('joystick');
-        const joystickHandle = document.getElementById('joystickHandle');
-        let isDragging = false;
-        let joystickCenter = { x: 0, y: 0 };
-
-        function updateJoystickCenter() {
-            const rect = joystick.getBoundingClientRect();
-            joystickCenter = {
-                x: rect.left + rect.width / 2,
-                y: rect.top + rect.height / 2
-            };
-        }
-
-        joystick.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            updateJoystickCenter();
-            joystickHandle.classList.add('active');
-        });
-
-        joystick.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            updateJoystickCenter();
-            joystickHandle.classList.add('active');
-            e.preventDefault();
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const dx = e.clientX - joystickCenter.x;
-            const dy = e.clientY - joystickCenter.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const maxDist = 45;
-
-            let finalX = dx, finalY = dy;
-            if (dist > maxDist) {
-                finalX = (dx / dist) * maxDist;
-                finalY = (dy / dist) * maxDist;
-            }
-
-            joystickHandle.style.transform = `translate(calc(-50% + ${finalX}px), calc(-50% + ${finalY}px))`;
-            joystickInput.x = finalX / maxDist;
-            joystickInput.y = finalY / maxDist;
-        });
-
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const touch = e.touches[0];
-            const dx = touch.clientX - joystickCenter.x;
-            const dy = touch.clientY - joystickCenter.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            const maxDist = 45;
-
-            let finalX = dx, finalY = dy;
-            if (dist > maxDist) {
-                finalX = (dx / dist) * maxDist;
-                finalY = (dy / dist) * maxDist;
-            }
-
-            joystickHandle.style.transform = `translate(calc(-50% + ${finalX}px), calc(-50% + ${finalY}px))`;
-            joystickInput.x = finalX / maxDist;
-            joystickInput.y = finalY / maxDist;
-        });
-
-        window.addEventListener('mouseup', () => {
-            isDragging = false;
-            joystickHandle.classList.remove('active');
-            joystickHandle.style.transform = 'translate(-50%, -50%)';
-            joystickInput = { x: 0, y: 0 };
-        });
-
-        window.addEventListener('touchend', () => {
-            isDragging = false;
-            joystickHandle.classList.remove('active');
-            joystickHandle.style.transform = 'translate(-50%, -50%)';
-            joystickInput = { x: 0, y: 0 };
-        });
-
-        // أزرار التحكم
-        document.querySelectorAll('.control-btn').forEach(btn => {
-            const action = btn.dataset.action;
-
-            const setState = (state) => {
-                keys[action] = state;
-                if (state) btn.classList.add('active');
-                else btn.classList.remove('active');
-
-                if (action === 'landing' && state) {
-                    toggleLanding();
-                }
-            };
-
-            btn.addEventListener('mousedown', () => setState(true));
-            btn.addEventListener('mouseup', () => setState(false));
-            btn.addEventListener('mouseleave', () => setState(false));
-            btn.addEventListener('touchstart', (e) => { e.preventDefault(); setState(true); });
-            btn.addEventListener('touchend', (e) => { e.preventDefault(); setState(false); });
-        });
-
-        // لوحة المفاتيح
-        window.addEventListener('keydown', (e) => {
-            if (e.code === 'ShiftLeft') keys.boost = true;
-            if (e.code === 'ControlLeft') keys.brake = true;
-            if (e.code === 'KeyL') toggleLanding();
-        });
-
-        window.addEventListener('keyup', (e) => {
-            if (e.code === 'ShiftLeft') keys.boost = false;
-            if (e.code === 'ControlLeft') keys.brake = false;
-        });
-
-        // ============ نظام الهبوط ============
-        function toggleLanding() {
-            if (isLanded) {
-                // إقلاع
-                isLanded = false;
-                currentPlanet = null;
-                wheels.forEach(w => w.visible = false);
-                document.getElementById('landingStatus').style.display = 'none';
-                document.getElementById('statusText').textContent = 'طيران';
-
-                // إظهار الأجنحة والجسم
-                rocket.children.forEach(child => {
-                    if (child.name === 'wing' || child.name === 'body') {
-                        child.visible = true;
-                    }
-                    if (child.name === 'rear') {
-                        child.rotation.x = Math.PI / 2;
-                        child.position.set(0, 0, -1.25);
-                    }
-                    if (child.name === 'engine') {
-                        child.rotation.x = Math.PI / 2;
-                        child.position.set(0, 0, -2.4);
-                    }
-                    if (child.name === 'cockpit') {
-                        child.position.set(0, 0.3, 1.5);
-                    }
-                });
-            } else {
-                // هبوط
-                const nearest = findNearestPlanet();
-                if (nearest && nearest.distance < nearest.planet.userData.radius + 10) {
-                    isLanded = true;
-                    currentPlanet = nearest.planet;
-                    wheels.forEach(w => w.visible = true);
-                    document.getElementById('landingStatus').style.display = 'block';
-                    document.getElementById('statusText').textContent = 'على ' + nearest.planet.userData.name;
-                    speed = 0;
-
-                    // إخفاء الأجنحة
-                    rocket.children.forEach(child => {
-                        if (child.name === 'wing' || child.name === 'body') {
-                            child.visible = false;
-                        }
-                        if (child.name === 'rear' || child.name === 'engine') {
-                            child.rotation.x = 0;
-                            child.position.y = 0.5;
-                        }
-                        if (child.name === 'cockpit') {
-                            child.position.y = 1;
-                        }
-                    });
-                }
-            }
-        }
-
-        function findNearestPlanet() {
-            let nearest = null;
-            let minDist = Infinity;
-
-            planets.forEach(p => {
-                const dist = rocket.position.distanceTo(p.position);
-                if (dist < minDist) {
-                    minDist = dist;
-                    nearest = { planet: p, distance: dist };
-                }
-            });
-
-            return nearest;
-        }
-
-        // ============ تحديث المركبة ============
-        function updateRocket() {
-            // التحقق من الشمس
-            const distToSun = rocket.position.distanceTo(new THREE.Vector3(0, 0, 0));
-            if (distToSun < 15) {
-                document.getElementById('explosionScreen').style.display = 'flex';
+        currentAudioIndex = 0;
+        isPlayingPage = true;
+        playNextAyahInQueue();
+    }
+
+    // --------------------- تحميل وعرض الصفحة ---------------------
+    async function loadSurahAndPage() {
+        if (!currentSurahId) return;
+        quranContentDiv.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> تحميل بيانات السورة والصفحة ${currentPage}...</div>`;
+        stopPageAudio(true);
+        
+        let surahFull = surahCache.get(currentSurahId);
+        if (!surahFull) {
+            try {
+                const response = await fetch(`https://api.alquran.cloud/v1/surah/${currentSurahId}/editions/quran-uthmani`);
+                const data = await response.json();
+                if (data.code === 200 && data.data && data.data[0]) {
+                    const edition = data.data[0];
+                    surahFull = {
+                        name: edition.name,
+                        englishName: edition.englishName,
+                        numberOfAyahs: edition.numberOfAyahs,
+                        ayahs: edition.ayahs.map(ayah => ({
+                            number: ayah.numberInSurah,
+                            text: ayah.text,
+                            page: ayah.page
+                        }))
+                    };
+                    surahCache.set(currentSurahId, surahFull);
+                } else throw new Error("فشل تحميل السورة");
+            } catch(err) {
+                console.error(err);
+                quranContentDiv.innerHTML = `<div class="loader" style="color:red;">خطأ في تحميل السورة، تأكد من اتصالك بالإنترنت.</div>`;
                 return;
             }
-
-            // التسارع
-            let accel = 0;
-            if (keys.boost) accel = ACC * 2;
-            else if (keys.brake) accel = -ACC * 1.5;
-
-            speed += accel;
-            speed = Math.max(-MAX_SPEED * 0.3, Math.min(MAX_SPEED, speed));
-            speed *= 0.98;
-
-            if (Math.abs(speed) < 0.1) speed = 0;
-
-            // الدوران
-            rocket.rotation.y -= joystickInput.x * 0.04;
-            rocket.rotation.x += joystickInput.y * 0.04;
-            rocket.rotation.x = Math.max(-0.8, Math.min(0.8, rocket.rotation.x));
-
-            if (isLanded && currentPlanet) {
-                // حركة على الكوكب
-                const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(rocket.quaternion);
-                const planetDir = new THREE.Vector3().subVectors(rocket.position, currentPlanet.position).normalize();
-                forward.projectOnPlane(planetDir);
-
-                if (keys.boost) rocket.position.add(forward.multiplyScalar(0.1));
-                if (keys.brake) rocket.position.sub(forward.multiplyScalar(0.1));
-
-                rocket.position.copy(currentPlanet.position).add(planetDir.multiplyScalar(currentPlanet.userData.radius + 0.5));
-                rocket.up.copy(planetDir);
-            } else {
-                // حركة في الفضاء
-                const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(rocket.quaternion);
-                rocket.position.add(forward.multiplyScalar(speed * 0.15));
+        }
+        surahData = surahFull;
+        surahNameSpan.innerText = `${surahData.name} (${surahData.englishName || ""})`;
+        
+        // بناء خريطة الصفحات
+        pagesMap.clear();
+        for (let ayah of surahData.ayahs) {
+            const p = ayah.page;
+            if (!pagesMap.has(p)) pagesMap.set(p, []);
+            pagesMap.get(p).push(ayah);
+        }
+        availablePages = Array.from(pagesMap.keys()).sort((a,b)=>a-b);
+        if (availablePages.length === 0) {
+            quranContentDiv.innerHTML = `<div class="loader">لا توجد آيات معروضة</div>`;
+            return;
+        }
+        // ضبط الصفحة الحالية
+        if (!availablePages.includes(currentPage)) {
+            currentPage = availablePages[0];
+        }
+        renderCurrentPage();
+    }
+    
+    function renderCurrentPage() {
+        if (!surahData || !pagesMap.has(currentPage)) return;
+        const ayahs = pagesMap.get(currentPage);
+        let html = `<div class="aya-container">`;
+        for (let ayah of ayahs) {
+            html += `
+                <div class="aya-item" data-ayah="${ayah.number}">
+                    <div class="aya-number">${ayah.number}</div>
+                    <div class="aya-text">${ayah.text}</div>
+                </div>
+            `;
+        }
+        html += `</div>`;
+        quranContentDiv.innerHTML = html;
+        pageCounterSpan.innerText = `الصفحة ${currentPage}`;
+        
+        // تحديث أزرار التنقل
+        const idx = availablePages.indexOf(currentPage);
+        prevPageBtn.disabled = (idx <= 0);
+        nextPageBtn.disabled = (idx >= availablePages.length - 1);
+        prevPageBtn.style.opacity = prevPageBtn.disabled ? "0.5" : "1";
+        nextPageBtn.style.opacity = nextPageBtn.disabled ? "0.5" : "1";
+        
+        // إعادة تطبيق حجم الخط
+        updateFontSize();
+        
+        // حفظ آخر صفحة
+        localStorage.setItem(`lastPage_surah_${currentSurahId}`, currentPage);
+    }
+    
+    // التنقل بين الصفحات
+    function goPrevPage() {
+        const idx = availablePages.indexOf(currentPage);
+        if (idx > 0) {
+            currentPage = availablePages[idx - 1];
+            loadSurahAndPage();
+        }
+    }
+    function goNextPage() {
+        const idx = availablePages.indexOf(currentPage);
+        if (idx < availablePages.length - 1) {
+            currentPage = availablePages[idx + 1];
+            loadSurahAndPage();
+        }
+    }
+    
+    // تغيير السورة
+    async function onSurahChange() {
+        stopPageAudio(true);
+        const newId = parseInt(surahSelect.value);
+        if (isNaN(newId)) return;
+        currentSurahId = newId;
+        localStorage.setItem('lastSurahId', currentSurahId);
+        // استعادة آخر صفحة تمت زيارتها لهذه السورة
+        const storedPage = localStorage.getItem(`lastPage_surah_${currentSurahId}`);
+        currentPage = (storedPage && !isNaN(parseInt(storedPage))) ? parseInt(storedPage) : 1;
+        await loadSurahAndPage();
+    }
+    
+    // تحميل قائمة السور
+    async function loadSurahList() {
+        try {
+            const resp = await fetch('https://api.alquran.cloud/v1/surah');
+            const data = await resp.json();
+            if (data.code === 200 && data.data) {
+                surahList = data.data;
+                surahSelect.innerHTML = '';
+                for (let surah of surahList) {
+                    const option = document.createElement('option');
+                    option.value = surah.number;
+                    option.textContent = `${surah.number}. ${surah.name} (${surah.englishName})`;
+                    surahSelect.appendChild(option);
+                }
+                const lastSurah = localStorage.getItem('lastSurahId');
+                let initSurah = 1;
+                if (lastSurah && !isNaN(parseInt(lastSurah))) initSurah = parseInt(lastSurah);
+                currentSurahId = initSurah;
+                surahSelect.value = currentSurahId;
+                const storedPage = localStorage.getItem(`lastPage_surah_${currentSurahId}`);
+                currentPage = (storedPage && !isNaN(parseInt(storedPage))) ? parseInt(storedPage) : 1;
+                await loadSurahAndPage();
+            } else throw new Error();
+        } catch(err) {
+            console.error(err);
+            surahSelect.innerHTML = '<option>حدث خطأ في تحميل السور</option>';
+        }
+    }
+    
+    // حجم الخط
+    function updateFontSize() {
+        const texts = document.querySelectorAll('.aya-text');
+        texts.forEach(t => t.style.fontSize = `${currentFontSize}rem`);
+    }
+    function increaseFont() {
+        if (currentFontSize + 0.1 <= MAX_FONT) {
+            currentFontSize += 0.1;
+            updateFontSize();
+            localStorage.setItem('quranFontSize', currentFontSize);
+        }
+    }
+    function decreaseFont() {
+        if (currentFontSize - 0.1 >= MIN_FONT) {
+            currentFontSize -= 0.1;
+            updateFontSize();
+            localStorage.setItem('quranFontSize', currentFontSize);
+        }
+    }
+    
+    // الوضع الليلي
+    function toggleDarkMode() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDark);
+        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i> النهار' : '<i class="fas fa-moon"></i> الليل';
+    }
+    
+    // استرجاع الإعدادات
+    function loadSettings() {
+        const savedFont = localStorage.getItem('quranFontSize');
+        if (savedFont) {
+            currentFontSize = parseFloat(savedFont);
+            if (isNaN(currentFontSize)) currentFontSize = 1.55;
+            currentFontSize = Math.min(MAX_FONT, Math.max(MIN_FONT, currentFontSize));
+        }
+        const dark = localStorage.getItem('darkMode') === 'true';
+        if (dark) {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i> النهار';
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i> الليل';
+        }
+    }
+    
+    // أحداث لوحة المفاتيح (سهم يمين ويسار للصفحات)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            goNextPage();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            goPrevPage();
+        } else if (e.key === 'Escape') {
+            stopPageAudio(true);
+            audioStatusSpan.innerHTML = '⏹️ تم إيقاف التلاوة.';
+        }
+    });
+    
+    // ربط الأزرار
+    function bindEvents() {
+        surahSelect.addEventListener('change', onSurahChange);
+        prevPageBtn.addEventListener('click', goPrevPage);
+        nextPageBtn.addEventListener('click', goNextPage);
+        listenFullPageBtn.addEventListener('click', () => {
+            if (!surahData) {
+                audioStatusSpan.innerHTML = '⚠️ انتظر تحميل الصفحة أولاً.';
+                return;
             }
-
-            // تحديث اللهب
-            const flameIntensity = Math.abs(speed) / MAX_SPEED;
-            flame.scale.setScalar(0.5 + flameIntensity * 1.5);
-            flameGlow.scale.setScalar(0.5 + flameIntensity * 1.5);
-            flame.visible = Math.abs(speed) > 0.5;
-            flameGlow.visible = Math.abs(speed) > 0.5;
-
-            document.getElementById('speedValue').textContent = Math.abs(speed).toFixed(1);
-
-            // إظهار إمكانية الهبوط
-            const nearest = findNearestPlanet();
-            if (nearest && nearest.distance < nearest.planet.userData.radius + 10 && !isLanded) {
-                document.getElementById('landingHint').style.display = 'block';
-                document.getElementById('landingBtn').classList.add('can-land');
-            } else {
-                document.getElementById('landingHint').style.display = 'none';
-                document.getElementById('landingBtn').classList.remove('can-land');
-            }
-        }
-
-        // ============ تحديث الكاميرا ============
-        function updateCamera() {
-            const rocketPos = rocket.position.clone();
-
-            // نحسب اتجاه المركبة
-            const forward = new THREE.Vector3(0, 0, -1).applyQuaternion(rocket.quaternion);
-            const up = new THREE.Vector3(0, 1, 0).applyQuaternion(rocket.quaternion);
-            const right = new THREE.Vector3(1, 0, 0).applyQuaternion(rocket.quaternion);
-
-            if (viewMode === 'behind') {
-                // منظور من ورا المركبة (نظر للأمام)
-                camera.position.x = rocketPos.x - forward.x * 8 + up.x * 3;
-                camera.position.y = rocketPos.y - forward.y * 8 + up.y * 3;
-                camera.position.z = rocketPos.z - forward.z * 8 + up.z * 3;
-                camera.lookAt(rocketPos.clone().add(forward.multiplyScalar(50)));
-            } else {
-                // المنظور العادي (ورا المركبة)
-                camera.position.x = rocketPos.x - forward.x * 8 + up.x * 3;
-                camera.position.y = rocketPos.y - forward.y * 8 + up.y * 3;
-                camera.position.z = rocketPos.z - forward.z * 8 + up.z * 3;
-                camera.lookAt(rocketPos);
-            }
-        }
-
-        // ============ تحديث الكواكب ============
-        function updatePlanets() {
-            planets.forEach(p => {
-                p.userData.angle += p.userData.speed * 0.3;
-                p.position.x = Math.cos(p.userData.angle) * p.userData.distance;
-                p.position.z = Math.sin(p.userData.angle) * p.userData.distance;
-                p.rotation.y += 0.005;
-            });
-
-            // تحديث الأحزمة
-            asteroidField.rotation.y += 0.0005;
-            kuiperBelt.rotation.y += 0.0001;
-            oortCloud.rotation.y += 0.00005;
-            sunParticles.rotation.y += 0.002;
-            stars.rotation.y += 0.0001;
-        }
-
-        // ============ حلقة الرسم ============
-        function animate() {
-            requestAnimationFrame(animate);
-
-            updateRocket();
-            updateCamera();
-            updatePlanets();
-
-            renderer.render(scene, camera);
-        }
-
-        animate();
-
-        // ============ تغيير الحجم ============
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            startPagePlayback();
         });
-    </script>
+        stopPageAudioBtn.addEventListener('click', () => {
+            stopPageAudio(true);
+            audioStatusSpan.innerHTML = '🛑 تم إيقاف التلاوة.';
+        });
+        fontPlus.addEventListener('click', increaseFont);
+        fontMinus.addEventListener('click', decreaseFont);
+        themeToggle.addEventListener('click', toggleDarkMode);
+    }
+    
+    // بدء التطبيق
+    async function init() {
+        loadSettings();
+        bindEvents();
+        await loadSurahList();
+    }
+    init();
+</script>
 </body>
 </html>
