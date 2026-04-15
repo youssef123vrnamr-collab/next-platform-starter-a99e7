@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>المصحف المرتل | صفحة كاملة بصوت مشاري راشد</title>
-    <!-- Font Awesome 6 -->
+    <title>المصحف المرتل | بصوت الشيخ مشاري راشد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -13,7 +12,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Tajawal', 'Amiri Quran', serif;
             background: linear-gradient(145deg, #fef5e7 0%, #fff9ef 100%);
@@ -21,38 +19,32 @@
             transition: background 0.2s, color 0.2s;
             min-height: 100vh;
         }
-
         body.dark-mode {
             background: linear-gradient(145deg, #121f24 0%, #0a1418 100%);
             color: #ede3cf;
         }
-
         body.dark-mode .quran-card {
             background: rgba(20, 32, 30, 0.92);
             backdrop-filter: blur(3px);
             border: 1px solid rgba(212, 175, 95, 0.3);
             box-shadow: 0 20px 35px rgba(0,0,0,0.4);
         }
-
         body.dark-mode .controls-panel,
         body.dark-mode .surah-nav {
             background: #1f2c26;
             box-shadow: 0 6px 14px rgba(0,0,0,0.3);
         }
-
         body.dark-mode button,
         body.dark-mode select {
             background: #2c3f36;
             color: #f7e9cf;
             border-color: #c9a45b;
         }
-
         .app-container {
             max-width: 1300px;
             margin: 0 auto;
             padding: 1rem 2rem 2rem;
         }
-
         .header {
             text-align: center;
             margin-bottom: 1.8rem;
@@ -72,7 +64,6 @@
             color: #b27d3e;
         }
         body.dark-mode .header p { color: #e2bc7c; }
-
         .controls-panel {
             background: #fff9ed;
             border-radius: 60px;
@@ -85,7 +76,6 @@
             box-shadow: 0 8px 18px rgba(0,0,0,0.05);
             border: 1px solid #f0e2c5;
         }
-
         .ctrl-btn, .ctrl-select {
             background: #fdf5e6;
             border: 1px solid #e7d5b5;
@@ -106,7 +96,6 @@
             transform: translateY(-2px);
         }
         .ctrl-select { min-width: 210px; }
-
         .special-group {
             background: #ebdfce;
             border-radius: 50px;
@@ -114,8 +103,6 @@
             display: flex;
             gap: 0.5rem;
         }
-
-        /* بطاقة المصحف */
         .quran-card {
             background: rgba(255, 252, 242, 0.95);
             border-radius: 48px;
@@ -124,7 +111,6 @@
             transition: all 0.2s;
             border: 1px solid #f5e5ca;
         }
-
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -166,12 +152,11 @@
             padding: 0.3rem 1.2rem;
             border-radius: 50px;
         }
-
-        /* زر الاستماع للصفحة كاملة */
         .page-audio-bar {
             display: flex;
             justify-content: center;
             margin-bottom: 2rem;
+            gap: 12px;
         }
         .listen-page-btn {
             background: linear-gradient(95deg, #2f6b47, #1f8a5c);
@@ -195,16 +180,15 @@
         }
         .stop-page-btn {
             background: linear-gradient(95deg, #9b4b2c, #b95c32);
-            margin-right: 12px;
+            margin-right: 0px;
         }
         .status-msg {
             font-size: 0.9rem;
             margin-top: 8px;
             color: #d68b45;
             font-weight: 500;
+            text-align: center;
         }
-
-        /* عرض الآيات (بدون أزرار فردية) */
         .aya-container {
             display: flex;
             flex-direction: column;
@@ -276,7 +260,7 @@
 <div class="app-container">
     <div class="header">
         <h1><i class="fas fa-book-quran"></i> المصحف المرتل</h1>
-        <p>استمع للصفحة كاملة بصوت الشيخ مشاري راشد العفاسي | تصفح و تلاوة بصفحة واحدة</p>
+        <p>استمع للصفحة كاملة بصوت الشيخ مشاري راشد العفاسي | روابط صوتية عالية الجودة</p>
     </div>
 
     <div class="controls-panel">
@@ -300,12 +284,11 @@
             </div>
         </div>
 
-        <!-- منطقة الاستماع للصفحة كاملة -->
         <div class="page-audio-bar">
             <button id="listenFullPageBtn" class="ctrl-btn listen-page-btn"><i class="fas fa-head-side-headphones"></i> 🎧 استماع الصفحة كاملة</button>
             <button id="stopPageAudioBtn" class="ctrl-btn stop-page-btn" style="background:#8b5a2b;"><i class="fas fa-stop-circle"></i> إيقاف التلاوة</button>
         </div>
-        <div id="audioStatus" class="status-msg" style="text-align:center;"></div>
+        <div id="audioStatus" class="status-msg"></div>
 
         <div id="quran-content">
             <div class="loader"><i class="fas fa-spinner fa-pulse"></i> جلب آيات الصفحة...</div>
@@ -319,25 +302,21 @@
 <script>
     // --------------------- المتغيرات ---------------------
     let currentSurahId = 1;
-    let currentPage = 1;           // الصفحة الحالية من 1 إلى 604
-    let surahData = null;          // بيانات السورة (الآيات مع أرقام الصفحات)
-    let pagesMap = new Map();       // page -> array of ayah objects
-    let availablePages = [];        // صفحات موجودة في هذه السورة
-    let currentAudioQueue = [];     // قائمة انتظار الآيات للصفحة الحالية
+    let currentPage = 1;
+    let surahData = null;
+    let pagesMap = new Map();
+    let availablePages = [];
+    let currentAudioQueue = [];
     let isPlayingPage = false;
     let currentAudioIndex = 0;
     let currentAudioElement = null;
-    let intervalHighlight = null;
 
-    // إعدادات الخط
     let currentFontSize = 1.55;
     const MIN_FONT = 1.1, MAX_FONT = 2.3;
 
-    // ذاكرة مؤقتة للسور
     const surahCache = new Map();
     let surahList = [];
 
-    // عناصر DOM
     const surahSelect = document.getElementById('surah-select');
     const surahNameSpan = document.getElementById('surah-name');
     const quranContentDiv = document.getElementById('quran-content');
@@ -365,17 +344,13 @@
         } else {
             isPlayingPage = false;
         }
-        // إزالة التمييز عن الآيات
         document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
-        if (intervalHighlight) clearInterval(intervalHighlight);
         audioStatusSpan.innerHTML = '';
     }
 
-    // تشغيل الآية التالية في قائمة الانتظار
     function playNextAyahInQueue() {
         if (!isPlayingPage) return;
         if (currentAudioIndex >= currentAudioQueue.length) {
-            // انتهت الصفحة
             isPlayingPage = false;
             audioStatusSpan.innerHTML = '✅ انتهت تلاوة الصفحة. جزاك الله خيراً.';
             document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
@@ -384,38 +359,27 @@
         }
 
         const ayahObj = currentAudioQueue[currentAudioIndex];
-        // تمييز الآية الحالية
         const allAyahDivs = document.querySelectorAll('.aya-item');
         allAyahDivs.forEach((div, idx) => {
             div.classList.remove('active-ayah');
             if (idx === currentAudioIndex) div.classList.add('active-ayah');
         });
-        // تمرير سلس إلى الآية
         const activeElem = document.querySelector('.aya-item.active-ayah');
         if (activeElem) activeElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-        // بناء رابط الصوت من مصدر موثوق (cdn.islamic.network)
         const surahPadded = String(ayahObj.surahId).padStart(3, '0');
         const ayahPadded = String(ayahObj.ayahNumber).padStart(3, '0');
-        const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${surahPadded}${ayahPadded}.mp3`;
+        // استخدام رابط موثوق من server8.mp3quran.net
+        const audioUrl = `https://server8.mp3quran.net/afs/${surahPadded}${ayahPadded}.mp3`;
         
         const audio = new Audio(audioUrl);
         currentAudioElement = audio;
         audio.preload = 'auto';
         audio.play().catch(err => {
             console.warn(`خطأ في تشغيل الآية ${ayahObj.ayahNumber}:`, err);
-            // محاولة بديلة: use everyayah backup (اختياري)
-            const fallbackUrl = `https://everyayah.com/data/Alafasy/${surahPadded}${ayahPadded}.mp3`;
-            const fallbackAudio = new Audio(fallbackUrl);
-            currentAudioElement = fallbackAudio;
-            fallbackAudio.play().catch(e2 => {
-                console.error("فشل في تشغيل الصوت:", e2);
-                audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل الآية ${ayahObj.ayahNumber}، تحقق من اتصالك بالإنترنت.`;
-                // تخطي هذه الآية ومتابعة؟
-                currentAudioIndex++;
-                playNextAyahInQueue();
-            });
-            currentAudioElement = fallbackAudio;
+            audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل الآية ${ayahObj.ayahNumber}، تحقق من اتصالك بالإنترنت.`;
+            currentAudioIndex++;
+            playNextAyahInQueue();
         });
         
         audioStatusSpan.innerHTML = `🔊 جاري تلاوة الآية ${ayahObj.ayahNumber} من ${currentAudioQueue.length} ...`;
@@ -431,7 +395,6 @@
         };
     }
 
-    // بدء تشغيل الصفحة الحالية (كل آياتها)
     function startPagePlayback() {
         if (!surahData || !pagesMap.has(currentPage)) {
             audioStatusSpan.innerHTML = '❌ لا توجد آيات في هذه الصفحة لتشغيلها.';
@@ -440,7 +403,6 @@
         stopPageAudio(true);
         const ayahsOfPage = pagesMap.get(currentPage);
         if (!ayahsOfPage.length) return;
-        // بناء قائمة انتظار الآيات لهذه الصفحة
         currentAudioQueue = ayahsOfPage.map(ayah => ({
             surahId: currentSurahId,
             ayahNumber: ayah.number
@@ -484,7 +446,6 @@
         surahData = surahFull;
         surahNameSpan.innerText = `${surahData.name} (${surahData.englishName || ""})`;
         
-        // بناء خريطة الصفحات
         pagesMap.clear();
         for (let ayah of surahData.ayahs) {
             const p = ayah.page;
@@ -496,7 +457,6 @@
             quranContentDiv.innerHTML = `<div class="loader">لا توجد آيات معروضة</div>`;
             return;
         }
-        // ضبط الصفحة الحالية
         if (!availablePages.includes(currentPage)) {
             currentPage = availablePages[0];
         }
@@ -519,21 +479,16 @@
         quranContentDiv.innerHTML = html;
         pageCounterSpan.innerText = `الصفحة ${currentPage}`;
         
-        // تحديث أزرار التنقل
         const idx = availablePages.indexOf(currentPage);
         prevPageBtn.disabled = (idx <= 0);
         nextPageBtn.disabled = (idx >= availablePages.length - 1);
         prevPageBtn.style.opacity = prevPageBtn.disabled ? "0.5" : "1";
         nextPageBtn.style.opacity = nextPageBtn.disabled ? "0.5" : "1";
         
-        // إعادة تطبيق حجم الخط
         updateFontSize();
-        
-        // حفظ آخر صفحة
         localStorage.setItem(`lastPage_surah_${currentSurahId}`, currentPage);
     }
     
-    // التنقل بين الصفحات
     function goPrevPage() {
         const idx = availablePages.indexOf(currentPage);
         if (idx > 0) {
@@ -549,20 +504,17 @@
         }
     }
     
-    // تغيير السورة
     async function onSurahChange() {
         stopPageAudio(true);
         const newId = parseInt(surahSelect.value);
         if (isNaN(newId)) return;
         currentSurahId = newId;
         localStorage.setItem('lastSurahId', currentSurahId);
-        // استعادة آخر صفحة تمت زيارتها لهذه السورة
         const storedPage = localStorage.getItem(`lastPage_surah_${currentSurahId}`);
         currentPage = (storedPage && !isNaN(parseInt(storedPage))) ? parseInt(storedPage) : 1;
         await loadSurahAndPage();
     }
     
-    // تحميل قائمة السور
     async function loadSurahList() {
         try {
             const resp = await fetch('https://api.alquran.cloud/v1/surah');
@@ -591,7 +543,6 @@
         }
     }
     
-    // حجم الخط
     function updateFontSize() {
         const texts = document.querySelectorAll('.aya-text');
         texts.forEach(t => t.style.fontSize = `${currentFontSize}rem`);
@@ -611,7 +562,6 @@
         }
     }
     
-    // الوضع الليلي
     function toggleDarkMode() {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
@@ -619,7 +569,6 @@
         themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i> النهار' : '<i class="fas fa-moon"></i> الليل';
     }
     
-    // استرجاع الإعدادات
     function loadSettings() {
         const savedFont = localStorage.getItem('quranFontSize');
         if (savedFont) {
@@ -636,7 +585,6 @@
         }
     }
     
-    // أحداث لوحة المفاتيح (سهم يمين ويسار للصفحات)
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
             e.preventDefault();
@@ -650,7 +598,6 @@
         }
     });
     
-    // ربط الأزرار
     function bindEvents() {
         surahSelect.addEventListener('change', onSurahChange);
         prevPageBtn.addEventListener('click', goPrevPage);
@@ -671,7 +618,6 @@
         themeToggle.addEventListener('click', toggleDarkMode);
     }
     
-    // بدء التطبيق
     async function init() {
         loadSettings();
         bindEvents();
