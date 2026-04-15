@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>المصحف الكامل | تلاوة الصفحة بصوت مشاري راشد</title>
+    <title>المصحف الكامل | تلاوة السورة بصوت مشاري راشد</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts -->
@@ -333,7 +333,7 @@
 <div class="app-container">
     <div class="header">
         <h1><i class="fas fa-book-quran"></i> المصحف الكامل</h1>
-        <p>تلاوة الصفحة كاملة بصوت الشيخ مشاري راشد | تحكم في سرعة التلاوة</p>
+        <p>تلاوة السورة كاملة بصوت الشيخ مشاري راشد | تحكم في سرعة التلاوة</p>
     </div>
     <div class="controls-panel">
         <select id="surah-select" class="ctrl-select"><option>تحميل السور...</option></select>
@@ -361,14 +361,14 @@
             </div>
         </div>
         <div class="page-audio-bar">
-            <button id="listenFullPageBtn" class="ctrl-btn listen-page-btn"><i class="fas fa-head-side-headphones"></i> 🎧 استماع الصفحة كاملة</button>
+            <button id="listenFullPageBtn" class="ctrl-btn listen-page-btn"><i class="fas fa-head-side-headphones"></i> 🎧 استماع السورة كاملة</button>
             <button id="stopPageAudioBtn" class="ctrl-btn stop-page-btn"><i class="fas fa-stop-circle"></i> إيقاف التلاوة</button>
         </div>
         <div id="audioStatus" class="status-msg"></div>
         <div id="quran-content"><div class="loader"><i class="fas fa-spinner fa-pulse"></i> جلب آيات الصفحة...</div></div>
     </div>
     <div class="footer-note">
-        <i class="fas fa-volume-up"></i> زر واحد لتشغيل كل آيات الصفحة متسلسلة | سرعة قابلة للتعديل
+        <i class="fas fa-volume-up"></i> زر واحد لتشغيل السورة كاملة | سرعة قابلة للتعديل
     </div>
 </div>
 
@@ -381,9 +381,6 @@
     let availablePages = [];            // صفحات هذه السورة
     
     // تشغيل الصوت
-    let currentAudioQueue = [];         // قائمة الآيات (surahId, ayahNumber)
-    let isPlayingPage = false;
-    let currentAudioIndex = 0;
     let currentAudioElement = null;
     let currentPlaybackRate = 1.0;      // سرعة التلاوة
     
@@ -407,92 +404,50 @@
     const fontPlus = document.getElementById('font-plus');
     const fontMinus = document.getElementById('font-minus');
     
-    // --------------------- دوال الصوت (تشغيل الصفحة كاملة) ---------------------
-    function stopPageAudio(resetQueue = true) {
+    // --------------------- دوال الصوت (تشغيل السورة كاملة) ---------------------
+    function stopPageAudio() {
         if (currentAudioElement) {
             currentAudioElement.pause();
             currentAudioElement.currentTime = 0;
             currentAudioElement = null;
         }
-        if (resetQueue) {
-            isPlayingPage = false;
-            currentAudioIndex = 0;
-            currentAudioQueue = [];
-        } else {
-            isPlayingPage = false;
-        }
-        document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
-        if (!resetQueue) audioStatusSpan.innerHTML = '';
+        audioStatusSpan.innerHTML = '';
     }
     
-    // بناء رابط الصوت باستخدام everyayah.com (موثوق)
-    function getAyahAudioUrl(surahId, ayahNumber) {
-        // تنسيق: سورة مكونة من 3 أرقام، آية 3 أرقام
-        const surahPadded = String(surahId).padStart(3, '0');
-        const ayahPadded = String(ayahNumber).padStart(3, '0');
-        return `https://everyayah.com/data/Alafasy/${surahPadded}${ayahPadded}.mp3`;
+    // بناء رابط الصوت لسورة كاملة
+    function getSurahAudioUrl(surahId) {
+        // استخدام رابط مباشر من موقع mp3quran.net
+        return `https://server8.mp3quran.net/afs/${String(surahId).padStart(3, '0')}.mp3`;
     }
     
-    function playNextAyahInQueue() {
-        if (!isPlayingPage) return;
-        if (currentAudioIndex >= currentAudioQueue.length) {
-            isPlayingPage = false;
-            audioStatusSpan.innerHTML = '✅ انتهت تلاوة الصفحة. جزاك الله خيراً.';
-            document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
-            currentAudioElement = null;
+    function startSurahPlayback() {
+        if (!surahData) {
+            audioStatusSpan.innerHTML = '⚠️ انتظر تحميل السورة أولاً.';
             return;
         }
+        stopPageAudio();
         
-        const ayahObj = currentAudioQueue[currentAudioIndex];
-        const allAyahDivs = document.querySelectorAll('.aya-item');
-        allAyahDivs.forEach((div, idx) => {
-            div.classList.remove('active-ayah');
-            if (idx === currentAudioIndex) div.classList.add('active-ayah');
-        });
-        const activeElem = document.querySelector('.aya-item.active-ayah');
-        if (activeElem) activeElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        const audioUrl = getAyahAudioUrl(ayahObj.surahId, ayahObj.ayahNumber);
+        const audioUrl = getSurahAudioUrl(currentSurahId);
         const audio = new Audio(audioUrl);
         currentAudioElement = audio;
         audio.playbackRate = currentPlaybackRate;
         audio.preload = 'auto';
         
         audio.play().catch(err => {
-            console.warn(`خطأ في تشغيل الآية ${ayahObj.ayahNumber}:`, err);
-            audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل الآية ${ayahObj.ayahNumber}، سيتم تخطيها.`;
-            currentAudioIndex++;
-            playNextAyahInQueue();
+            console.warn(`خطأ في تشغيل السورة ${currentSurahId}:`, err);
+            audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل السورة، تحقق من اتصالك بالإنترنت.`;
         });
         
-        audioStatusSpan.innerHTML = `🔊 جاري تلاوة الآية ${ayahObj.ayahNumber} من ${currentAudioQueue.length} (السرعة: ${currentPlaybackRate}x) ...`;
+        audioStatusSpan.innerHTML = `🔊 جاري تلاوة سورة ${surahData.name} بالكامل (السرعة: ${currentPlaybackRate}x) ...`;
         
         audio.onended = () => {
-            currentAudioIndex++;
-            playNextAyahInQueue();
+            audioStatusSpan.innerHTML = `✅ انتهت تلاوة السورة. جزاك الله خيراً.`;
+            currentAudioElement = null;
         };
         audio.onerror = () => {
-            console.warn("خطأ في تحميل الصوت، تخطي الآية");
-            currentAudioIndex++;
-            playNextAyahInQueue();
+            audioStatusSpan.innerHTML = `❌ خطأ في تحميل الصوت، تأكد من اتصالك بالإنترنت.`;
+            currentAudioElement = null;
         };
-    }
-    
-    function startPagePlayback() {
-        if (!surahData || !pagesMap.has(currentPage)) {
-            audioStatusSpan.innerHTML = '❌ لا توجد آيات في هذه الصفحة.';
-            return;
-        }
-        stopPageAudio(true);
-        const ayahsOfPage = pagesMap.get(currentPage);
-        if (!ayahsOfPage.length) return;
-        currentAudioQueue = ayahsOfPage.map(ayah => ({
-            surahId: currentSurahId,
-            ayahNumber: ayah.number
-        }));
-        currentAudioIndex = 0;
-        isPlayingPage = true;
-        playNextAyahInQueue();
     }
     
     // تغيير سرعة التلاوة
@@ -510,7 +465,7 @@
                 btn.classList.remove('active-speed');
             }
         });
-        if (isPlayingPage) {
+        if (currentAudioElement && !currentAudioElement.paused) {
             audioStatusSpan.innerHTML = `🔊 مستمر بسرعة ${rate}x`;
         }
     }
@@ -519,7 +474,7 @@
     async function loadSurahAndPage() {
         if (!currentSurahId) return;
         quranContentDiv.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> تحميل بيانات السورة والصفحة ${currentPage}...</div>`;
-        stopPageAudio(true);
+        stopPageAudio();
         
         let surahFull = surahCache.get(currentSurahId);
         if (!surahFull) {
@@ -609,7 +564,7 @@
     }
     
     async function onSurahChange() {
-        stopPageAudio(true);
+        stopPageAudio();
         const newId = parseInt(surahSelect.value);
         if (isNaN(newId)) return;
         currentSurahId = newId;
@@ -705,7 +660,7 @@
             e.preventDefault();
             goPrevPage();
         } else if (e.key === 'Escape') {
-            stopPageAudio(true);
+            stopPageAudio();
             audioStatusSpan.innerHTML = '⏹️ تم إيقاف التلاوة.';
         }
     });
@@ -716,13 +671,13 @@
         nextPageBtn.addEventListener('click', goNextPage);
         listenFullPageBtn.addEventListener('click', () => {
             if (!surahData) {
-                audioStatusSpan.innerHTML = '⚠️ انتظر تحميل الصفحة أولاً.';
+                audioStatusSpan.innerHTML = '⚠️ انتظر تحميل السورة أولاً.';
                 return;
             }
-            startPagePlayback();
+            startSurahPlayback();
         });
         stopPageAudioBtn.addEventListener('click', () => {
-            stopPageAudio(true);
+            stopPageAudio();
             audioStatusSpan.innerHTML = '🛑 تم إيقاف التلاوة.';
         });
         fontPlus.addEventListener('click', increaseFont);
@@ -751,4 +706,3 @@
 </script>
 </body>
 </html>
-
