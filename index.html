@@ -6,8 +6,8 @@
     <title>المصحف الكامل | تلاوة السورة بصوت مشاري راشد</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- أفضل خط عثماني للمصحف -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -273,12 +273,16 @@
             flex-shrink: 0;
         }
 
+        /* تحسين شكل النص القرآني */
         .aya-text {
             font-size: 1.55rem;
-            font-family: 'Amiri Quran', 'Tajawal', serif;
-            line-height: 2rem;
+            font-family: 'Amiri Quran', 'Amiri', 'Traditional Arabic', 'Tahoma', serif;
+            line-height: 2.2rem;
             flex: 1;
             font-weight: 500;
+            letter-spacing: 0.5px;
+            word-spacing: 2px;
+            text-align: right;
         }
 
         .footer-note {
@@ -301,6 +305,7 @@
             }
             .aya-text {
                 font-size: 1.2rem;
+                line-height: 1.8rem;
             }
             .listen-page-btn {
                 padding: 0.5rem 1rem;
@@ -374,17 +379,15 @@
 
 <script>
     // --------------------- المتغيرات العامة ---------------------
-    let currentSurahId = 1;          // رقم السورة الحالية
-    let currentPage = 1;              // الصفحة الحالية (1-604)
-    let surahData = null;              // بيانات السورة
-    let pagesMap = new Map();           // page -> list of ayahs
-    let availablePages = [];            // صفحات هذه السورة
+    let currentSurahId = 1;
+    let currentPage = 1;
+    let surahData = null;
+    let pagesMap = new Map();
+    let availablePages = [];
     
-    // تشغيل الصوت
     let currentAudioElement = null;
-    let currentPlaybackRate = 1.0;      // سرعة التلاوة
+    let currentPlaybackRate = 1.0;
     
-    // إعدادات الواجهة
     let currentFontSize = 1.55;
     const MIN_FONT = 1.1, MAX_FONT = 2.3;
     const surahCache = new Map();
@@ -404,7 +407,7 @@
     const fontPlus = document.getElementById('font-plus');
     const fontMinus = document.getElementById('font-minus');
     
-    // --------------------- دوال الصوت (تشغيل السورة كاملة) ---------------------
+    // --------------------- دوال الصوت ---------------------
     function stopPageAudio() {
         if (currentAudioElement) {
             currentAudioElement.pause();
@@ -414,9 +417,7 @@
         audioStatusSpan.innerHTML = '';
     }
     
-    // بناء رابط الصوت لسورة كاملة
     function getSurahAudioUrl(surahId) {
-        // استخدام رابط مباشر من موقع mp3quran.net
         return `https://server8.mp3quran.net/afs/${String(surahId).padStart(3, '0')}.mp3`;
     }
     
@@ -450,13 +451,11 @@
         };
     }
     
-    // تغيير سرعة التلاوة
     function setPlaybackRate(rate) {
         currentPlaybackRate = rate;
         if (currentAudioElement && !currentAudioElement.paused) {
             currentAudioElement.playbackRate = rate;
         }
-        // تحديث حالة الأزرار
         document.querySelectorAll('.speed-btn').forEach(btn => {
             const spd = parseFloat(btn.getAttribute('data-speed'));
             if (Math.abs(spd - rate) < 0.01) {
@@ -651,7 +650,6 @@
         }
     }
     
-    // اختصارات لوحة المفاتيح
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight') {
             e.preventDefault();
@@ -684,7 +682,6 @@
         fontMinus.addEventListener('click', decreaseFont);
         themeToggle.addEventListener('click', toggleDarkMode);
         
-        // أزرار السرعة
         document.querySelectorAll('.speed-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const rate = parseFloat(btn.getAttribute('data-speed'));
