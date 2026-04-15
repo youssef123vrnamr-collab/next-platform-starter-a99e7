@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>المصحف الذهبي | 8 قراء + تفسير</title>
+    <title>المصحف الذهبي | تلاوة الصفحة كاملة - 8 قراء</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
@@ -19,10 +19,7 @@
             background: linear-gradient(145deg, #121f24 0%, #0a1418 100%);
             color: #ede3cf;
         }
-        body.dark-mode .quran-card {
-            background: rgba(20, 32, 30, 0.95);
-            border: 1px solid rgba(212, 175, 95, 0.3);
-        }
+        body.dark-mode .quran-card { background: rgba(20, 32, 30, 0.95); border: 1px solid rgba(212, 175, 95, 0.3); }
         body.dark-mode .controls-panel { background: #1f2c26; }
         body.dark-mode button, body.dark-mode select { background: #2c3f36; color: #f7e9cf; border-color: #c9a45b; }
         body.dark-mode .aya-item { background: rgba(45, 60, 55, 0.5); }
@@ -45,21 +42,21 @@
         .ctrl-select { min-width: 210px; }
         .special-group { background: #ebdfce; border-radius: 50px; padding: 0 0.6rem; display: flex; gap: 0.5rem; }
         .speed-group { background: #ebdfce; border-radius: 50px; padding: 0 0.6rem; display: flex; gap: 0.3rem; }
-        .speed-btn { background: #fdf5e6; border: none; padding: 0.3rem 0.8rem; border-radius: 30px; font-weight: bold; font-size: 0.8rem; }
+        .speed-btn { background: #fdf5e6; border: none; padding: 0.3rem 0.8rem; border-radius: 30px; font-weight: bold; font-size: 0.8rem; cursor: pointer; }
         .speed-btn.active-speed { background: #c9a86b; color: white; }
         .quran-card { background: rgba(255, 252, 242, 0.95); border-radius: 48px; padding: 1.8rem 2rem; box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1); border: 1px solid #f5e5ca; }
         .page-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; border-bottom: 2px solid #e0c48b; padding-bottom: 1rem; margin-bottom: 1.5rem; }
         .surah-title { font-size: 1.8rem; font-weight: bold; color: #b87c2e; }
         .page-navi { display: flex; gap: 0.8rem; align-items: center; }
-        .page-btn { background: #e7d9c6; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+        .page-btn { background: #e7d9c6; border: none; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
         .page-btn:hover:not(:disabled) { background: #c9a86b; color: white; transform: scale(1.05); }
         .page-info { background: #f0e3d2; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 1.1rem; }
         .page-audio-bar { display: flex; justify-content: center; margin-bottom: 1rem; gap: 12px; flex-wrap: wrap; }
-        .listen-page-btn { background: linear-gradient(95deg, #2f6b47, #1f8a5c); border: none; padding: 0.8rem 1.8rem; border-radius: 60px; font-size: 1.1rem; font-weight: bold; color: white; gap: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+        .listen-page-btn { background: linear-gradient(95deg, #2f6b47, #1f8a5c); border: none; padding: 0.8rem 1.8rem; border-radius: 60px; font-size: 1.1rem; font-weight: bold; color: white; gap: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); cursor: pointer; }
         .stop-page-btn { background: linear-gradient(95deg, #9b4b2c, #b95c32); }
         .status-msg { font-size: 0.9rem; margin-top: 8px; margin-bottom: 1rem; color: #d68b45; font-weight: 500; text-align: center; }
         .aya-container { display: flex; flex-direction: column; gap: 1rem; max-height: 550px; overflow-y: auto; padding-left: 8px; }
-        .aya-item { display: flex; align-items: flex-start; gap: 1rem; background: rgba(245, 240, 228, 0.4); padding: 0.8rem 1.2rem; border-radius: 28px; border-right: 3px solid transparent; transition: all 0.15s; position: relative; }
+        .aya-item { display: flex; align-items: flex-start; gap: 1rem; background: rgba(245, 240, 228, 0.4); padding: 0.8rem 1.2rem; border-radius: 28px; border-right: 3px solid transparent; transition: all 0.15s; }
         .aya-item.active-ayah { background: #ffe3b5; border-right-color: #c9993b; transform: scale(1.01); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
         .aya-number { font-size: 1rem; font-weight: bold; background: #dbb879; color: #2c1f10; width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; flex-shrink: 0; }
         .aya-text { font-size: 1.55rem; font-family: 'Amiri Quran', 'Tajawal', serif; line-height: 2rem; flex: 1; font-weight: 500; letter-spacing: 0.3px; }
@@ -76,7 +73,7 @@
             .listen-page-btn { padding: 0.5rem 1rem; font-size: 0.9rem; }
             .tafsir-popup { left: 10px; right: 10px; bottom: 10px; max-width: none; }
         }
-        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
         .aya-container::-webkit-scrollbar { width: 6px; }
         .aya-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .aya-container::-webkit-scrollbar-thumb { background: #dbba87; border-radius: 10px; }
@@ -86,19 +83,19 @@
 <div class="app-container">
     <div class="header">
         <h1><i class="fas fa-book-quran"></i> المصحف الذهبي</h1>
-        <p>8 قراء مشهورين + تفسير الآيات | اختر قارئك المفضل</p>
+        <p>تلاوة الصفحة كاملة بصوت من تختار | روابط مباشرة من EveryAyah</p>
     </div>
     <div class="controls-panel">
         <select id="surah-select" class="ctrl-select"><option>تحميل السور...</option></select>
         <select id="reciter-select" class="ctrl-select">
-            <option value="Alafasy">🎙️ مشاري راشد العفاسي</option>
-            <option value="AbdulBasit">🎙️ عبد الباسط عبد الصمد</option>
-            <option value="Husary">🎙️ محمود خليل الحصري</option>
-            <option value="MaherAlMuaiqly">🎙️ ماهر المعيقلي</option>
-            <option value="Shuraym">🎙️ سعود الشريم</option>
-            <option value="Sudais">🎙️ عبد الرحمن السديس</option>
-            <option value="Ajamy">🎙️ أحمد العجمي</option>
-            <option value="YasserAlDosari">🎙️ ياسر الدوسري</option>
+            <option value="Alafasy_128kbps">🎙️ مشاري راشد العفاسي</option>
+            <option value="Abdul_Basit_Mujawwad_128kbps">🎙️ عبد الباسط عبد الصمد</option>
+            <option value="Husary_128kbps">🎙️ محمود خليل الحصري</option>
+            <option value="Maher_AlMuaiqly_128kbps">🎙️ ماهر المعيقلي</option>
+            <option value="Shuraym_128kbps">🎙️ سعود الشريم</option>
+            <option value="Sudais_128kbps">🎙️ عبد الرحمن السديس</option>
+            <option value="Ahmed_ibn_Ali_al-Ajamy_128kbps">🎙️ أحمد العجمي</option>
+            <option value="Yasser_Ad-Dussary_128kbps">🎙️ ياسر الدوسري</option>
         </select>
         <div class="special-group">
             <button id="font-plus" class="ctrl-btn"><i class="fas fa-plus-circle"></i> تكبير</button>
@@ -124,14 +121,14 @@
             </div>
         </div>
         <div class="page-audio-bar">
-            <button id="listenFullPageBtn" class="ctrl-btn listen-page-btn"><i class="fas fa-head-side-headphones"></i> 🎧 تشغيل السورة</button>
-            <button id="stopPageAudioBtn" class="ctrl-btn stop-page-btn"><i class="fas fa-stop-circle"></i> إيقاف</button>
+            <button id="listenFullPageBtn" class="ctrl-btn listen-page-btn"><i class="fas fa-head-side-headphones"></i> 🎧 استماع هذه الصفحة كاملة</button>
+            <button id="stopPageAudioBtn" class="ctrl-btn stop-page-btn"><i class="fas fa-stop-circle"></i> إيقاف التلاوة</button>
         </div>
         <div id="audioStatus" class="status-msg"></div>
         <div id="quran-content"><div class="loader"><i class="fas fa-spinner fa-pulse"></i> جلب آيات الصفحة...</div></div>
     </div>
     <div class="footer-note">
-        <i class="fas fa-volume-up"></i> اختر قارئاً ثم اضغط تشغيل السورة | اضغط 📖 على أي آية للتفسير
+        <i class="fas fa-volume-up"></i> اختر القارئ ثم اضغط "استماع هذه الصفحة كاملة" | اضغط 📖 على أي آية للتفسير
     </div>
 </div>
 
@@ -144,9 +141,12 @@
     let availablePages = [];
     
     // الصوت
+    let currentAudioQueue = [];
+    let isPlayingPage = false;
+    let currentAudioIndex = 0;
     let currentAudioElement = null;
     let currentPlaybackRate = 1.0;
-    let currentReciter = "Alafasy";  // القارئ الافتراضي
+    let currentReciter = "Alafasy_128kbps";
     
     // إعدادات الواجهة
     let currentFontSize = 1.55;
@@ -172,71 +172,91 @@
     const fontPlus = document.getElementById('font-plus');
     const fontMinus = document.getElementById('font-minus');
     
-    // --------------------- روابط موثوقة لكل القراء من everyayah.com ---------------------
-    // كل قارئ له رمز خاص في everyayah
-    const reciterCodes = {
-        'Alafasy': 'Alafasy',
-        'AbdulBasit': 'AbdulBasit_Mujawwad',
-        'Husary': 'Husary_Mujawwad',
-        'MaherAlMuaiqly': 'MaherAlMuaiqly',
-        'Shuraym': 'Shuraym',
-        'Sudais': 'Sudais',
-        'Ajamy': 'Ajamy',
-        'YasserAlDosari': 'YasserAlDosari'
-    };
-    
-    function getSurahAudioUrl(surahId, reciterName) {
-        const code = reciterCodes[reciterName];
-        if (!code) return null;
-        // everyayah.com تنسيق: https://everyayah.com/data/ReciterName/SurahNumber.mp3
-        // مع ملاحظة أن بعض الأسماء تحتوي على مسافات، نستخدمها كما هي
-        return `https://everyayah.com/data/${code}/${String(surahId).padStart(3, '0')}.mp3`;
+    // --------------------- روابط مباشرة من everyayah.com ---------------------
+    function getAyahAudioUrl(reciterCode, surahId, ayahNumber) {
+        const surahPadded = String(surahId).padStart(3, '0');
+        const ayahPadded = String(ayahNumber).padStart(3, '0');
+        return `https://everyayah.com/data/${reciterCode}/${surahPadded}${ayahPadded}.mp3`;
     }
     
-    // --------------------- دوال الصوت ---------------------
-    function stopPageAudio() {
+    // --------------------- دوال الصوت (تشغيل الصفحة كاملة) ---------------------
+    function stopPageAudio(resetQueue = true) {
         if (currentAudioElement) {
             currentAudioElement.pause();
             currentAudioElement.currentTime = 0;
             currentAudioElement = null;
         }
-        audioStatusSpan.innerHTML = '';
+        if (resetQueue) {
+            isPlayingPage = false;
+            currentAudioIndex = 0;
+            currentAudioQueue = [];
+        } else {
+            isPlayingPage = false;
+        }
+        document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
+        if (!resetQueue) audioStatusSpan.innerHTML = '';
     }
     
-    function startSurahPlayback() {
-        if (!surahData) {
-            audioStatusSpan.innerHTML = '⚠️ انتظر تحميل السورة أولاً.';
-            return;
-        }
-        stopPageAudio();
-        
-        const audioUrl = getSurahAudioUrl(currentSurahId, currentReciter);
-        if (!audioUrl) {
-            audioStatusSpan.innerHTML = '⚠️ هذا القارئ غير متوفر حالياً، جرب قارئاً آخر.';
+    function playNextAyahInQueue() {
+        if (!isPlayingPage) return;
+        if (currentAudioIndex >= currentAudioQueue.length) {
+            isPlayingPage = false;
+            audioStatusSpan.innerHTML = '✅ انتهت تلاوة هذه الصفحة. جزاك الله خيراً.';
+            document.querySelectorAll('.aya-item').forEach(el => el.classList.remove('active-ayah'));
+            currentAudioElement = null;
             return;
         }
         
+        const ayahObj = currentAudioQueue[currentAudioIndex];
+        const allAyahDivs = document.querySelectorAll('.aya-item');
+        allAyahDivs.forEach((div, idx) => {
+            div.classList.remove('active-ayah');
+            if (idx === currentAudioIndex) div.classList.add('active-ayah');
+        });
+        const activeElem = document.querySelector('.aya-item.active-ayah');
+        if (activeElem) activeElem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        const audioUrl = getAyahAudioUrl(currentReciter, ayahObj.surahId, ayahObj.ayahNumber);
         const audio = new Audio(audioUrl);
         currentAudioElement = audio;
         audio.playbackRate = currentPlaybackRate;
         audio.preload = 'auto';
         
         audio.play().catch(err => {
-            console.warn(`خطأ في تشغيل السورة:`, err);
-            audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل السورة لهذا القارئ، قد لا تكون التلاوة متوفرة. جرب قارئاً آخر.`;
+            console.warn(`خطأ في تشغيل الآية ${ayahObj.ayahNumber}:`, err);
+            audioStatusSpan.innerHTML = `⚠️ تعذر تشغيل الآية ${ayahObj.ayahNumber}، سيتم تخطيها.`;
+            currentAudioIndex++;
+            playNextAyahInQueue();
         });
         
-        const reciterName = reciterSelect.options[reciterSelect.selectedIndex]?.text || 'القارئ';
-        audioStatusSpan.innerHTML = `🔊 جاري تلاوة سورة ${surahData.name} - ${reciterName} (السرعة: ${currentPlaybackRate}x) ...`;
+        audioStatusSpan.innerHTML = `🔊 جاري تلاوة الآية ${ayahObj.ayahNumber} من ${currentAudioQueue.length} (السرعة: ${currentPlaybackRate}x) ...`;
         
         audio.onended = () => {
-            audioStatusSpan.innerHTML = `✅ انتهت تلاوة السورة. جزاك الله خيراً.`;
-            currentAudioElement = null;
+            currentAudioIndex++;
+            playNextAyahInQueue();
         };
         audio.onerror = () => {
-            audioStatusSpan.innerHTML = `❌ خطأ في تحميل الصوت، تأكد من اتصالك بالإنترنت أو جرب قارئاً آخر.`;
-            currentAudioElement = null;
+            console.warn("خطأ في تحميل الصوت، تخطي الآية");
+            currentAudioIndex++;
+            playNextAyahInQueue();
         };
+    }
+    
+    function startPagePlayback() {
+        if (!surahData || !pagesMap.has(currentPage)) {
+            audioStatusSpan.innerHTML = '❌ لا توجد آيات في هذه الصفحة.';
+            return;
+        }
+        stopPageAudio(true);
+        const ayahsOfPage = pagesMap.get(currentPage);
+        if (!ayahsOfPage.length) return;
+        currentAudioQueue = ayahsOfPage.map(ayah => ({
+            surahId: currentSurahId,
+            ayahNumber: ayah.number
+        }));
+        currentAudioIndex = 0;
+        isPlayingPage = true;
+        playNextAyahInQueue();
     }
     
     function setPlaybackRate(rate) {
@@ -252,12 +272,12 @@
                 btn.classList.remove('active-speed');
             }
         });
-        if (currentAudioElement && !currentAudioElement.paused) {
+        if (isPlayingPage) {
             audioStatusSpan.innerHTML = `🔊 مستمر بسرعة ${rate}x`;
         }
     }
     
-    // --------------------- التفسير ---------------------
+    // --------------------- التفسير (ترجمة المعاني) ---------------------
     async function showTafsir(ayahNumber) {
         if (currentTafsirPopup) {
             currentTafsirPopup.remove();
@@ -314,7 +334,7 @@
     async function loadSurahAndPage() {
         if (!currentSurahId) return;
         quranContentDiv.innerHTML = `<div class="loader"><i class="fas fa-spinner fa-pulse"></i> تحميل بيانات السورة والصفحة ${currentPage}...</div>`;
-        stopPageAudio();
+        stopPageAudio(true);
         
         let surahFull = surahCache.get(currentSurahId);
         if (!surahFull) {
@@ -413,7 +433,7 @@
     }
     
     async function onSurahChange() {
-        stopPageAudio();
+        stopPageAudio(true);
         const newId = parseInt(surahSelect.value);
         if (isNaN(newId)) return;
         currentSurahId = newId;
@@ -509,7 +529,7 @@
         if (e.key === 'ArrowRight') { e.preventDefault(); goNextPage(); }
         else if (e.key === 'ArrowLeft') { e.preventDefault(); goPrevPage(); }
         else if (e.key === 'Escape') {
-            stopPageAudio();
+            stopPageAudio(true);
             audioStatusSpan.innerHTML = '⏹️ تم إيقاف التلاوة.';
             if (currentTafsirPopup) { currentTafsirPopup.remove(); currentTafsirPopup = null; }
         }
@@ -520,19 +540,19 @@
         reciterSelect.addEventListener('change', (e) => {
             currentReciter = e.target.value;
             localStorage.setItem('selectedReciter', currentReciter);
-            if (currentAudioElement && !currentAudioElement.paused) {
-                stopPageAudio();
-                audioStatusSpan.innerHTML = `🔄 تم تغيير القارئ إلى ${reciterSelect.options[reciterSelect.selectedIndex]?.text}. اضغط "تشغيل السورة" مرة أخرى.`;
+            if (isPlayingPage) {
+                stopPageAudio(true);
+                audioStatusSpan.innerHTML = `🔄 تم تغيير القارئ إلى ${reciterSelect.options[reciterSelect.selectedIndex]?.text}. اضغط "استماع الصفحة" مرة أخرى.`;
             }
         });
         prevPageBtn.addEventListener('click', goPrevPage);
         nextPageBtn.addEventListener('click', goNextPage);
         listenFullPageBtn.addEventListener('click', () => {
-            if (!surahData) { audioStatusSpan.innerHTML = '⚠️ انتظر تحميل السورة أولاً.'; return; }
-            startSurahPlayback();
+            if (!surahData) { audioStatusSpan.innerHTML = '⚠️ انتظر تحميل الصفحة أولاً.'; return; }
+            startPagePlayback();
         });
         stopPageAudioBtn.addEventListener('click', () => {
-            stopPageAudio();
+            stopPageAudio(true);
             audioStatusSpan.innerHTML = '🛑 تم إيقاف التلاوة.';
         });
         fontPlus.addEventListener('click', increaseFont);
