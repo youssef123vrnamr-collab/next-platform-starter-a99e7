@@ -2,8 +2,8 @@
 <html dir="rtl" lang="ar">
 <head>
   <meta charset="UTF-8"> 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-  <title>منصة الفلك المتكاملة | تعلم علم الفلك والفضاء بالعربي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Astronomy and space</title>
 
   <!-- SEO أساسي -->
   <meta name="description" content="منصة الفلك المتكاملة — تعلم علم الفلك وعلوم الفضاء بمحتوى عربي احترافي. كورسات فيديو، دروس تفاعلية، وشهادات إتمام معتمدة.">
@@ -50,6 +50,9 @@
   <\/script>
 
   <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
   <meta name="theme-color" content="#0f0a1a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -67,7 +70,8 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     html, body { width: 100%; min-height: 100%; background: #0f0a1a; background-attachment: fixed; }
-    body { font-family: 'Cairo', sans-serif; background: #03030a; color: #fff; min-height: 100vh; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+    html { height: 100%; height: -webkit-fill-available; }
+    body { font-family: 'Cairo', sans-serif; background: #03030a; color: #fff; min-height: 100vh; min-height: -webkit-fill-available; min-height: 100dvh; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
     .app-wrapper { min-height: 100vh; display: flex; flex-direction: column; position: relative; z-index: 1; width: 100%; max-width: 100%; background: transparent; overflow-x: hidden; margin: 0; padding: 0; }
     .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; background: linear-gradient(135deg, #050308 0, #0f0a1a 50%, #1a1a3e 100%); }
     :root { --primary: #6366f1; --secondary: #8b5cf6; --accent: #ec4899; --success: #10b981; --danger: #ef4444; --dark: #0f0a1a; --card: #1a1025; --ai-color: #06b6d4; }
@@ -2428,34 +2432,11 @@ body {
         </div>
         <div class="settings-dropdown" id="settingsDropdown">
           <button class="settings-icon-btn" id="settingsDropdownBtn"><i class="fas fa-cog"></i></button>
-          <div class="settings-menu" id="settingsMenu">
-            <div class="settings-menu-item" id="installAppMenuItem" style="display: none;"><i class="fas fa-download"></i> تثبيت التطبيق</div>
-            <div class="settings-menu-item" id="feedbackMenuItem" style="display: none;"><i class="fas fa-star"></i> تقييم المنصة</div>
-            <div class="settings-menu-item" id="howToUseMenuItem" style="display: none;"><i class="fas fa-circle-question"></i> كيفية استخدام المنصة</div>
-            <div class="settings-menu-item" id="googleLoginMenuItem" style="display: none;"><i class="fab fa-google"></i> تسجيل الدخول بجوجل</div>
-            <div class="settings-menu-item" id="googleLogoutMenuItem" style="display: none;"><i class="fab fa-google"></i> تسجيل الخروج من جوجل</div>
-            <div class="settings-menu-item" id="adminLoginMenuItem" style="display: none;"><i class="fas fa-lock"></i> دخول المشرف</div>
-            <div class="settings-menu-item" id="setAdminsMenuItem" style="display: none;"><i class="fas fa-users-cog"></i> تحديد المشرفين</div>
-            <div class="settings-menu-item" id="aiKeyMenuItem" style="display: none;" onclick="openAiKeyModal()"><i class="fas fa-key"></i> مفتاح الذكاء الاصطناعي</div>
-            <div class="settings-menu-item" id="teachAIMenuItem" style="display: none;"><i class="fas fa-robot"></i> تعليم الذكاء الاصطناعي</div>
-            <div class="settings-menu-item" id="manageAppsMenuItem" style="display: none;"><i class="fas fa-th-large"></i> إدارة التطبيقات</div>
-            <div class="settings-menu-item" id="viewFeedbacksMenuItem" style="display: none;"><i class="fas fa-chart-simple"></i> معرفة رأي الجمهور</div>
-            <div class="settings-menu-item" id="emailSettingsMenuItem" style="display: none;"><i class="fas fa-envelope"></i> إعدادات البريد الإلكتروني</div>
-            <div class="settings-menu-item" id="zoomLinkMenuItem" style="display: none;" onclick="openZoomLinkSettings();document.getElementById('settingsMenu').classList.remove('active')"><i class="fas fa-video" style="color:#2d8cff"></i> رابط Zoom للمحاضرات</div>
-            <div class="settings-menu-item" id="supervisorPayoutMenuItem" style="display: none;"><i class="fas fa-credit-card"></i> ربط استلام المدفوعات (مشرف)</div>
-            <div class="settings-menu-item" id="logoutMenuItem" style="display: none;"><i class="fas fa-sign-out-alt"></i> خروج المشرف</div>
-            <div class="settings-menu-item" id="maintenanceMenuItem" style="display: none;"><i class="fas fa-tools"></i> تحديث المحتوى</div>
-            <div class="settings-menu-item" id="groupAdminMenuItem" style="display: none;" onclick="openGroupChatAdminPanel();document.getElementById('settingsMenu').classList.remove('active')"><i class="fas fa-users-cog"></i> إدارة المحادثة الجماعية</div>
-            <div class="settings-menu-item" id="pdfFilesMenuItem" style="display: none;" onclick="openPdfManagerModal();document.getElementById('settingsMenu').classList.remove('active')"><i class="fas fa-file-pdf" style="color:#ef4444"></i> إدارة ملفات PDF</div>
-            <div class="settings-menu-item" id="manageCoursesMenuItem" style="display: none;" onclick="showCoursesList();document.getElementById('settingsMenu').classList.remove('active')"><i class="fas fa-graduation-cap" style="color:#f59e0b"></i> إدارة الكورسات</div>
-            <div class="settings-menu-item" id="manageCertificatesMenuItem" style="display: none;" onclick="openCertificatesManager();document.getElementById('settingsMenu').classList.remove('active')"><i class="fas fa-certificate" style="color:#f59e0b"></i> إدارة شهادات الكورسات</div>
-            <div class="settings-menu-item" id="localLogoutMenuItem" style="display: none;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج من الحساب المحلي</div>
-            <div class="settings-menu-item" id="appsMenuItem" style="display: none;"><i class="fas fa-th-large"></i> تطبيقات المنصة</div>
-          </div>
+          <div class="settings-menu" id="settingsMenu"></div>
         </div>
       </div>
     </div>
-    <div class="center-action"><button class="btn btn-ghost refresh-btn" onclick="refreshPage()"><i class="fas fa-sync-alt"></i> تحديث</button></div>
+    <div class="center-action"></div>
     <div class="nav-actions" style="display: none;"></div>
   </nav>
 
@@ -3475,92 +3456,76 @@ async function isAdminUser(userId) {
   document.addEventListener("input", function(e) { if (e.target.id === "rateRange") document.getElementById("rateValue").textContent = e.target.value; else if (e.target.id === "pitchRange") document.getElementById("pitchValue").textContent = e.target.value; });
 
   // ========== Admin & UI ==========
-// ========== Admin & UI ==========
 async function updateAdminUI() {
-    // ✅ أول حاجة: لو في مستخدم جوجل مسجل، أجب token جديد عشان نعرف صلاحياته
     if (googleUser && googleUser.getIdTokenResult) {
         try {
             const tokenResult = await googleUser.getIdTokenResult();
             window.isAdminClaim = tokenResult.claims.admin === true;
         } catch(e) { console.warn("token error", e); }
     }
+    if (window.isAdminClaim === true) isAdmin = true;
 
-    const adminOnlyItems = document.querySelectorAll('.admin-only');
-    const userOnlyItems = document.querySelectorAll('.user-only');
-    const localOnlyItem = document.getElementById('localLogoutMenuItem');
+    const isGoogleUser = !!googleUser;
     const uploadZone = document.getElementById("uploadZone");
     const storageBar = document.getElementById("storageBar");
-    const manageAppsMenuItem = document.getElementById("manageAppsMenuItem");
-    const viewFeedbacksMenuItem = document.getElementById("viewFeedbacksMenuItem");
-    const emailSettingsMenuItem = document.getElementById("emailSettingsMenuItem");
-    const setAdminsMenuItem = document.getElementById("setAdminsMenuItem");
-    const teachAIMenuItem = document.getElementById("teachAIMenuItem");
 
-    const isUserLoggedIn = (currentUser && currentUserPhone) || googleUser;
-    const isLocalOnly = (currentUser && currentUserPhone) && !googleUser;
-    const isGoogleUser = !!googleUser;
+    // ===== بناء الـ menu من الصفر حسب نوع المستخدم =====
+    const menu = document.getElementById("settingsMenu");
+    if (menu) {
+        menu.innerHTML = "";
 
-    // ✅ صلاحية المشرف: تُحدَّد فقط من Firestore (admin_accounts) بناءً على بريد جوجل المسجَّل
-    // window.isAdminClaim مازالت محترمة لمن لديه custom claim من Firebase Admin SDK
-    if (window.isAdminClaim === true) isAdmin = true;
-    // ملحوظة: localStorage لم يعد موثوقاً وحده — الرجوع لـ Firestore يتم في refreshAdminStatusFromFirestore()
+        function addItem(id, icon, label, onclick) {
+            const d = document.createElement("div");
+            d.className = "settings-menu-item";
+            d.id = id;
+            d.innerHTML = `<i class="${icon}"></i> ${label}`;
+            if (onclick) d.addEventListener("click", onclick);
+            menu.appendChild(d);
+        }
 
-    // قائمة زراير المستخدم العادي فقط (بدون appsMenuItem عشان يظهر للاتنين بشكل منفصل)
-    const userItems = ["feedbackMenuItem","howToUseMenuItem","adminLoginMenuItem"];
-    // installApp يتحكم فيه PWA لوحده، googleLogin/googleLogout يتحكم فيهم حالة جوجل
+        if (isAdmin) {
+            // ===== أيتمز المشرف فقط =====
+            if (!isPWAInstalled()) {
+                addItem("installAppMenuItem","fas fa-download","تثبيت التطبيق", () => { menu.classList.remove("active"); installApp(); });
+            }
+            if (isGoogleUser) addItem("googleLogoutMenuItem","fab fa-google","تسجيل الخروج من جوجل", () => { menu.classList.remove("active"); googleLogout(); });
+            addItem("setAdminsMenuItem","fas fa-users-cog","تحديد المشرفين", () => { menu.classList.remove("active"); openSetAdminsModal(); });
+            addItem("aiKeyMenuItem","fas fa-key","مفتاح الذكاء الاصطناعي", () => { menu.classList.remove("active"); openAiKeyModal(); });
+            addItem("teachAIMenuItem","fas fa-robot","تعليم الذكاء الاصطناعي", () => { menu.classList.remove("active"); openTeachAICircleModal(); });
+            addItem("manageAppsMenuItem","fas fa-th-large","إدارة التطبيقات", () => { menu.classList.remove("active"); openManageAppsModal(); });
+            addItem("viewFeedbacksMenuItem","fas fa-chart-simple","معرفة رأي الجمهور", () => { menu.classList.remove("active"); openViewFeedbacksModal(); });
+            addItem("emailSettingsMenuItem","fas fa-envelope","إعدادات البريد الإلكتروني", () => { menu.classList.remove("active"); openEmailSettingsModal(); });
+            addItem("zoomLinkMenuItem","fas fa-video","رابط Zoom للمحاضرات", () => { menu.classList.remove("active"); openZoomLinkSettings(); });
+            addItem("supervisorPayoutMenuItem","fas fa-credit-card","ربط استلام المدفوعات (مشرف)", () => { menu.classList.remove("active"); openSupervisorPayoutModal(); });
+            addItem("logoutMenuItem","fas fa-sign-out-alt","خروج المشرف", () => { menu.classList.remove("active"); logout(); });
+            addItem("maintenanceMenuItem","fas fa-tools","تحديث المحتوى", () => { menu.classList.remove("active"); openMaintenanceModal(); });
+            if (isSuperAdmin) addItem("groupAdminMenuItem","fas fa-users-cog","إدارة المحادثة الجماعية", () => { menu.classList.remove("active"); openGroupChatAdminPanel(); });
+            addItem("pdfFilesMenuItem","fas fa-file-pdf","إدارة ملفات PDF", () => { menu.classList.remove("active"); openPdfManagerModal(); });
+            addItem("manageCoursesMenuItem","fas fa-graduation-cap","إدارة الكورسات", () => { menu.classList.remove("active"); showCoursesList(); });
+            addItem("manageCertificatesMenuItem","fas fa-certificate","إدارة شهادات الكورسات", () => { menu.classList.remove("active"); openCertificatesManager(); });
+            addItem("appsMenuItem","fas fa-th-large","تطبيقات المنصة", () => { menu.classList.remove("active"); openAppsModal(); });
 
-    // قائمة زراير المشرف فقط (بدون appsMenuItem عشان يظهر للاتنين بشكل منفصل)
-    const adminItems = [
-        "setAdminsMenuItem","aiKeyMenuItem","teachAIMenuItem","manageAppsMenuItem",
-        "viewFeedbacksMenuItem","emailSettingsMenuItem","zoomLinkMenuItem",
-        "supervisorPayoutMenuItem","logoutMenuItem","maintenanceMenuItem",
-        "pdfFilesMenuItem","manageCoursesMenuItem","manageCertificatesMenuItem"
-    ];
+            if (uploadZone) uploadZone.classList.add("active");
+            if (storageBar) storageBar.style.display = "block";
+            updateStorageBar();
+            loadAIKnowledgeFromFirebase();
+            const cancelBtn = document.getElementById("cancelMaintenanceBtn");
+            if (cancelBtn && document.getElementById("maintenanceOverlay")?.classList.contains("active")) cancelBtn.classList.add("active");
+        } else {
+            // ===== أيتمز المستخدم العادي فقط =====
+            if (!isPWAInstalled()) {
+                addItem("installAppMenuItem","fas fa-download","تثبيت التطبيق", () => { menu.classList.remove("active"); installApp(); });
+            }
+            addItem("feedbackMenuItem","fas fa-star","تقييم المنصة", () => { menu.classList.remove("active"); openFeedbackModal(); });
+            addItem("howToUseMenuItem","fas fa-circle-question","كيفية استخدام المنصة", () => { menu.classList.remove("active"); openHowToUseModal(); });
+            if (isGoogleUser) addItem("googleLogoutMenuItem","fab fa-google","تسجيل الخروج من جوجل", () => { menu.classList.remove("active"); googleLogout(); });
+            addItem("adminLoginMenuItem","fas fa-lock","دخول المشرف", () => { menu.classList.remove("active"); showLogin(); });
 
-    if (isAdmin) {
-        // إخفاء كل زراير المستخدم العادي
-        userItems.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = "none"; });
-        document.getElementById("installAppMenuItem") && (document.getElementById("installAppMenuItem").style.display = "none");
-        document.getElementById("googleLoginMenuItem") && (document.getElementById("googleLoginMenuItem").style.display = "none");
-        document.getElementById("googleLogoutMenuItem") && (document.getElementById("googleLogoutMenuItem").style.display = "none");
-        document.getElementById("localLogoutMenuItem") && (document.getElementById("localLogoutMenuItem").style.display = "none");
-        // إظهار زراير المشرف
-        adminItems.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = "flex"; });
-        // appsMenuItem يظهر للمشرف كمان
-        const appsItemEl = document.getElementById("appsMenuItem");
-        if (appsItemEl) appsItemEl.style.display = "flex";
-        // إدارة المحادثة الجماعية للسوبر أدمن فقط
-        const groupAdminEl = document.getElementById('groupAdminMenuItem');
-        if (groupAdminEl) groupAdminEl.style.display = isSuperAdmin ? 'flex' : 'none';
-        if (uploadZone) uploadZone.classList.add("active");
-        if (storageBar) storageBar.style.display = "block";
-        updateStorageBar();
-        loadAIKnowledgeFromFirebase();
-        const cancelBtn = document.getElementById("cancelMaintenanceBtn");
-        if (cancelBtn && document.getElementById("maintenanceOverlay")?.classList.contains("active")) cancelBtn.classList.add("active");
-    } else {
-        // إخفاء كل زراير المشرف
-        adminItems.forEach(id => { const el = document.getElementById(id); if(el) el.style.display = "none"; });
-        document.getElementById("groupAdminMenuItem") && (document.getElementById("groupAdminMenuItem").style.display = "none");
-        // إظهار زراير المستخدم العادي فقط
-        const feedbackItem = document.getElementById("feedbackMenuItem");
-        const howToUseItem = document.getElementById("howToUseMenuItem");
-        const adminLoginItem = document.getElementById("adminLoginMenuItem");
-        const appsItemEl = document.getElementById("appsMenuItem");
-        if (feedbackItem) feedbackItem.style.display = "flex";
-        if (howToUseItem) howToUseItem.style.display = "flex";
-        if (adminLoginItem) adminLoginItem.style.display = "flex";
-        if (appsItemEl) appsItemEl.style.display = "flex";
-        // تسجيل الدخول/الخروج جوجل
-        const googleLoginItem = document.getElementById("googleLoginMenuItem");
-        const googleLogoutItem = document.getElementById("googleLogoutMenuItem");
-        if (googleLoginItem) googleLoginItem.style.display = isGoogleUser ? "none" : "flex";
-        if (googleLogoutItem) googleLogoutItem.style.display = isGoogleUser ? "flex" : "none";
-        // تسجيل خروج الحساب المحلي
-        if(localOnlyItem) localOnlyItem.style.display = isLocalOnly ? "flex" : "none";
-        if (uploadZone) uploadZone.classList.remove("active");
-        if (storageBar) storageBar.style.display = "none";
+            if (uploadZone) uploadZone.classList.remove("active");
+            if (storageBar) storageBar.style.display = "none";
+        }
     }
+
     updateGoogleLogoutButtonsVisibility();
     const createCourseBtn = document.getElementById("createCourseBtn");
     if (createCourseBtn) createCourseBtn.style.display = isAdmin ? "inline-flex" : "none";
@@ -5059,13 +5024,8 @@ async function updateAdminUI() {
            pwaInstalled;
   }
   function updateInstallMenuVisibility() {
-    const installMenuItem = document.getElementById("installAppMenuItem");
-    if (!installMenuItem) return;
-    if (isPWAInstalled()) {
-      installMenuItem.style.display = "none";
-    } else if (deferredPrompt || isIOSSafari()) {
-      installMenuItem.style.display = "flex";
-    }
+    // نعيد بناء الـ menu عشان يظهر/يختفي زر التثبيت حسب حالة PWA
+    updateAdminUI();
   }
   function isIOSSafari() {
     const ua = navigator.userAgent;
@@ -5085,35 +5045,26 @@ async function updateAdminUI() {
   function installApp() {
     if (isPWAInstalled()) {
       showToast("✅ التطبيق مثبَّت بالفعل على جهازك!");
-      updateInstallMenuVisibility();
+      updateAdminUI();
       return;
     }
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === "accepted") {
-          pwaInstalled = true;
-          showToast("✅ تم تثبيت التطبيق بنجاح!");
-        }
-        deferredPrompt = null;
-        updateInstallMenuVisibility();
-      });
-    } else if (isIOSSafari()) {
-      showToast("📱 لتثبيت التطبيق على iOS: اضغط زرار المشاركة ثم 'إضافة إلى الشاشة الرئيسية'");
-    } else {
-      showToast("⚠️ التثبيت غير متاح حالياً. تأكد من أنك تفتح الموقع من متصفح يدعم PWA مثل Chrome أو Edge.");
-    }
+    // افتح الـ modal دايماً — بيعرض الصورة + الخطوات + زرار التثبيت المباشر لو متاح
+    openPwaModal();
   }
   // تحقق من الحالة عند التحميل
   window.addEventListener("load", function() { setTimeout(updateInstallMenuVisibility, 1000); });
 
-  function initAuthState() { auth.onAuthStateChanged(async user => { if (user && !isAdmin) { googleUser = user; currentUserId = user.uid; let name = user.displayName; let email = user.email; let phone = user.phoneNumber || ""; currentUser = name; currentUserPhone = phone || ""; await loadUserDataFromFirebase(currentUserId); if (!currentUser) { currentUser = name; currentUserPhone = phone || ""; await saveUserDataToFirebase(currentUserId); } if (currentUser) localStorage.setItem("falak_username", currentUser); if (currentUserPhone) localStorage.setItem("falak_userphone", currentUserPhone); document.getElementById("landingPage").style.display = "none"; document.getElementById("appWrapper").style.display = "flex"; document.getElementById("googleUserInfo").style.display = "flex"; document.getElementById("googleUserInfo").innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(user.displayName)}`; document.getElementById("googleLogoutBtn").style.display = "block"; updateGoogleLogoutButtonsVisibility(); try { await refreshAdminStatusFromFirestore(); } catch(_){} loadAdminPreference(); listenToVideosWithRetry(); listenToCoursesAccess(); listenToUserEnrollmentsAccess(); listenToMaintenance(); loadAIKnowledgeFromFirebase(); loadExamsFromFirebase(); loadExamResultsFromFirebase(); loadAppsFromFirebase(); initCloudinaryWidget(); checkUrlForShare(); loadEmailSettingsFromFirestore(); updateAdminUI();
+  function initAuthState() { auth.onAuthStateChanged(async user => { if (user && !isAdmin) { googleUser = user; currentUserId = user.uid; let name = user.displayName; let email = user.email; let phone = user.phoneNumber || ""; currentUser = name; currentUserPhone = phone || ""; await loadUserDataFromFirebase(currentUserId); if (!currentUser) { currentUser = name; currentUserPhone = phone || ""; await saveUserDataToFirebase(currentUserId); } if (currentUser) localStorage.setItem("falak_username", currentUser); if (currentUserPhone) localStorage.setItem("falak_userphone", currentUserPhone); document.getElementById("landingPage").style.display = "none"; document.getElementById("appWrapper").style.display = "flex"; document.getElementById("googleUserInfo").style.display = "flex"; document.getElementById("googleUserInfo").innerHTML = `<i class="fas fa-user-circle"></i> ${escapeHtml(user.displayName)}`; document.getElementById("googleLogoutBtn").style.display = "block"; updateGoogleLogoutButtonsVisibility(); try { await refreshAdminStatusFromFirestore(); } catch(_){ updateAdminUI(); } loadAdminPreference(); listenToVideosWithRetry(); listenToCoursesAccess(); listenToUserEnrollmentsAccess(); listenToMaintenance(); loadAIKnowledgeFromFirebase(); loadExamsFromFirebase(); loadExamResultsFromFirebase(); loadAppsFromFirebase(); initCloudinaryWidget(); checkUrlForShare(); loadEmailSettingsFromFirestore();
 
-        } else if (!user && !isAdmin) { let hasLocal = loadUserDataFromStorage(); if (hasLocal && !currentUserId) { currentUserId = "local_" + (currentUserPhone || currentUser || "guest").replace(/[^a-zA-Z0-9]/g, "_"); document.getElementById("landingPage").style.display = "none"; document.getElementById("appWrapper").style.display = "flex"; document.getElementById("googleUserInfo").style.display = "none"; document.getElementById("googleLogoutBtn").style.display = "none"; loadAdminPreference(); listenToVideosWithRetry(); listenToCoursesAccess(); listenToMaintenance(); loadAIKnowledgeFromFirebase(); loadExamsFromFirebase(); loadExamResultsFromFirebase(); loadAppsFromFirebase(); initCloudinaryWidget(); checkUrlForShare(); loadEmailSettingsFromFirestore(); updateAdminUI(); } else { document.getElementById("landingPage").style.display = "flex"; document.getElementById("appWrapper").style.display = "none"; googleUser = null; currentUserId = null; currentUser = null; currentUserPhone = null; localStorage.removeItem("falak_username"); localStorage.removeItem("falak_userphone"); updateGoogleLogoutButtonsVisibility(); updateAdminUI(); } } }); }
+        } else if (!user && !isAdmin) { document.getElementById("landingPage").style.display = "flex"; document.getElementById("appWrapper").style.display = "none"; googleUser = null; currentUserId = null; currentUser = null; currentUserPhone = null; localStorage.removeItem("falak_username"); localStorage.removeItem("falak_userphone"); updateGoogleLogoutButtonsVisibility(); updateAdminUI(); } }); }
 
   function refreshPage() { SoundEffects.success(); const refreshBtn = document.querySelector('.refresh-btn i'); if (refreshBtn) { refreshBtn.style.transform = 'rotate(360deg)'; setTimeout(() => { if(refreshBtn) refreshBtn.style.transform = ''; }, 500); } location.reload(); }
   function hideLoader() { document.getElementById("loader")?.classList.add("hidden"); }
   function requestFullscreenAutomatically() { const elem = document.documentElement; const requestFullscreen = elem.requestFullscreen || elem.webkitRequestFullscreen || elem.msRequestFullscreen; if (requestFullscreen) { requestFullscreen.call(elem).catch(err => { console.warn("تعذر الدخول إلى وضع ملء الشاشة تلقائياً: ", err); }); } }
+  // إخفاء شريط العنوان (URL bar) بمجرد التمرير
+  function hideAddressBar() { if (window.scrollY === 0) { window.scrollTo(0, 1); } }
+  document.addEventListener("touchstart", function() { hideAddressBar(); }, { passive: true });
+  document.addEventListener("touchend", function() { setTimeout(hideAddressBar, 100); }, { passive: true });
 
   function toggleSettingsMenu(e) { e.stopPropagation(); const menu = document.getElementById("settingsMenu"); if (menu) menu.classList.toggle("active"); }
   function closeSettingsMenuOnClickOutside(e) { const dropdown = document.getElementById("settingsDropdown"); const menu = document.getElementById("settingsMenu"); if (dropdown && menu && !dropdown.contains(e.target)) { menu.classList.remove("active"); } }
@@ -5123,24 +5074,6 @@ async function updateAdminUI() {
   document.addEventListener("DOMContentLoaded", function() {
     const dropdownBtn = document.getElementById("settingsDropdownBtn"); if (dropdownBtn) dropdownBtn.addEventListener("click", toggleSettingsMenu);
     document.addEventListener("click", closeSettingsMenuOnClickOutside);
-    document.getElementById("googleLoginMenuItem")?.addEventListener("click", function() { document.getElementById("settingsMenu")?.classList.remove("active"); googleLogin(); });
-    document.getElementById("googleLogoutMenuItem")?.addEventListener("click", googleLogout);
-    document.getElementById("adminLoginMenuItem")?.addEventListener("click", showLogin);
-    document.getElementById("logoutMenuItem")?.addEventListener("click", logout);
-    document.getElementById("maintenanceMenuItem")?.addEventListener("click", openMaintenanceModal);
-    document.getElementById("appsMenuItem")?.addEventListener("click", openAppsModal);
-    document.getElementById("manageAppsMenuItem")?.addEventListener("click", openManageAppsModal);
-    document.getElementById("installAppMenuItem")?.addEventListener("click", installApp);
-    document.getElementById("localLogoutMenuItem")?.addEventListener("click", localLogout);
-    document.getElementById("feedbackMenuItem")?.addEventListener("click", openFeedbackModal);
-    document.getElementById("howToUseMenuItem")?.addEventListener("click", openHowToUseModal);
-    document.getElementById("viewFeedbacksMenuItem")?.addEventListener("click", openViewFeedbacksModal);
-    document.getElementById("emailSettingsMenuItem")?.addEventListener("click", openEmailSettingsModal);
-    document.getElementById("supervisorPayoutMenuItem")?.addEventListener("click", openSupervisorPayoutModal);
-    const setAdminsMenuItem = document.getElementById("setAdminsMenuItem");
-    if (setAdminsMenuItem) setAdminsMenuItem.addEventListener("click", openSetAdminsModal);
-    const teachAIMenuItem = document.getElementById("teachAIMenuItem");
-    if (teachAIMenuItem) teachAIMenuItem.addEventListener("click", openTeachAICircleModal);
   });
 
   window.addEventListener("load", function() { loadUserDataFromStorage(); hideLoader(); requestFullscreenAutomatically(); setTimeout(requestFullscreenAutomatically, 1000); initAuthState(); loadEmailSettingsFromFirestore(); try { loadAiKeyOnce(); listenAiKey(); } catch(_){} document.getElementById("googleSignInBtn").onclick = googleLogin; document.getElementById("googleLogoutBtn").onclick = googleLogout; setTimeout(() => updateAdminUI(), 500); setInterval(cleanupOldSessions, 60 * 60 * 1000); });
@@ -10120,6 +10053,189 @@ function showCertificateModal(courseTitle, certUrl) {
   requestAnimationFrame(draw);
 })();
 // ===== END DEEP TECH BACKGROUND =====
+</script>
+
+<!-- ===== PWA INSTALL GUIDE MODAL ===== -->
+<div id="pwaInstallModal" style="
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+  background:rgba(0,0,0,0.85); z-index:99999; align-items:center;
+  justify-content:center; padding:1rem; backdrop-filter:blur(8px);
+" onclick="if(event.target===this)closePwaModal()">
+  <div style="
+    background:linear-gradient(145deg,#1a1025,#0f0a1a);
+    border:1px solid rgba(99,102,241,0.5); border-radius:24px;
+    max-width:420px; width:100%; overflow:hidden;
+    box-shadow:0 25px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(236,72,153,0.2);
+    animation:fadeInUp 0.3s ease;
+  ">
+    <!-- Header -->
+    <div style="
+      background:linear-gradient(135deg,rgba(99,102,241,0.3),rgba(236,72,153,0.2));
+      padding:1.25rem 1.5rem; display:flex; align-items:center;
+      justify-content:space-between; border-bottom:1px solid rgba(99,102,241,0.3);
+    ">
+      <div style="display:flex;align-items:center;gap:0.75rem;">
+        <div style="
+          width:42px;height:42px;border-radius:12px;
+          background:linear-gradient(135deg,#6366f1,#ec4899);
+          display:flex;align-items:center;justify-content:center;font-size:1.3rem;
+        ">📲</div>
+        <div>
+          <div style="font-size:1.1rem;font-weight:700;color:#fff;">تثبيت التطبيق</div>
+          <div style="font-size:0.78rem;color:#aaa;">أضف المنصة لشاشتك الرئيسية</div>
+        </div>
+      </div>
+      <button onclick="closePwaModal()" style="
+        background:rgba(239,68,68,0.2);border:none;color:#ef4444;
+        width:36px;height:36px;border-radius:10px;cursor:pointer;
+        font-size:1.1rem;display:flex;align-items:center;justify-content:center;
+      ">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div style="padding:1.5rem;">
+      <!-- صورة معاينة الشاشة الرئيسية -->
+      <div style="
+        text-align:center;margin-bottom:1.25rem;
+        background:rgba(99,102,241,0.08);border-radius:16px;
+        padding:1rem;border:1px solid rgba(99,102,241,0.2);
+      ">
+        <div style="font-size:0.82rem;color:#aaa;margin-bottom:0.75rem;">
+          📱 هكذا يظهر التطبيق على شاشتك الرئيسية
+        </div>
+        <img
+          src="1000093591.jpg"
+          alt="صورة الشاشة الرئيسية"
+          style="
+            width:130px;height:130px;object-fit:cover;
+            border-radius:22px;
+            box-shadow:0 8px 24px rgba(99,102,241,0.4),0 0 0 3px rgba(99,102,241,0.3);
+          "
+          onerror="this.style.display='none'"
+        />
+        <div style="margin-top:0.6rem;font-size:0.85rem;font-weight:600;color:#c4b5fd;">
+          Astronomy and space
+        </div>
+      </div>
+
+      <!-- خطوات التثبيت -->
+      <div id="pwaInstallSteps">
+        <!-- Android Chrome -->
+        <div id="pwaAndroidSteps">
+          <div style="font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+            <span style="font-size:1.1rem;">🤖</span> خطوات التثبيت على Android
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,255,255,0.04);border-radius:10px;padding:0.7rem;">
+              <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">1</span>
+              <span style="font-size:0.85rem;color:#e5e7eb;line-height:1.6;">اضغط على <strong style="color:#c4b5fd;">⋮</strong> (القائمة) في الزاوية العلوية من المتصفح</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,255,255,0.04);border-radius:10px;padding:0.7rem;">
+              <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">2</span>
+              <span style="font-size:0.85rem;color:#e5e7eb;line-height:1.6;">اختر <strong style="color:#10b981;">"إضافة إلى الشاشة الرئيسية"</strong> أو <strong style="color:#10b981;">"تثبيت التطبيق"</strong></span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,255,255,0.04);border-radius:10px;padding:0.7rem;">
+              <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">3</span>
+              <span style="font-size:0.85rem;color:#e5e7eb;line-height:1.6;">اضغط <strong style="color:#10b981;">"إضافة"</strong> وستجد الأيقونة على شاشتك مباشرة! 🎉</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- iOS Safari -->
+        <div id="pwaIOSSteps" style="display:none;">
+          <div style="font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.5rem;">
+            <span style="font-size:1.1rem;">🍎</span> خطوات التثبيت على iPhone/iPad
+          </div>
+          <div style="display:flex;flex-direction:column;gap:0.6rem;">
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,255,255,0.04);border-radius:10px;padding:0.7rem;">
+              <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">1</span>
+              <span style="font-size:0.85rem;color:#e5e7eb;line-height:1.6;">افتح الصفحة في <strong style="color:#c4b5fd;">Safari</strong> واضغط زر <strong style="color:#10b981;">المشاركة 📤</strong> في الأسفل</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,255,255,0.04);border-radius:10px;padding:0.7rem;">
+              <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">2</span>
+              <span style="font-size:0.85rem;color:#e5e7eb;line-height:1.6;">اختر <strong style="color:#10b981;">"إضافة إلى الشاشة الرئيسية"</strong></span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:0.75rem;background:rgba(255,255,255,0.04);border-radius:10px;padding:0.7rem;">
+              <span style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.78rem;font-weight:700;flex-shrink:0;">3</span>
+              <span style="font-size:0.85rem;color:#e5e7eb;line-height:1.6;">اضغط <strong style="color:#10b981;">"إضافة"</strong> وستظهر الأيقونة على شاشتك! 🎉</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- زرار التثبيت المباشر (يظهر لو Chrome Android) -->
+      <!-- زرار تنزيل APK لـ Android -->
+      <a id="pwaApkDownloadBtn" href="https://drive.google.com/uc?export=download&id=1kyIMZRVwk0hwdZuHf4QbfriBcnQDUig6" style="display:none; width:100%; margin-top:1rem; background:linear-gradient(135deg,#10b981,#059669); color:#fff; border:none; padding:0.85rem; border-radius:14px; font-family:'Cairo',sans-serif; font-size:1rem; font-weight:700; cursor:pointer; box-shadow:0 8px 20px rgba(16,185,129,0.4); text-align:center; text-decoration:none; align-items:center; justify-content:center; gap:0.5rem;">
+        <i class="fas fa-download" style="margin-left:0.5rem;"></i> تنزيل تطبيق Android APK 🤖
+      </a>
+
+      <button id="pwaDirectInstallBtn" onclick="triggerDirectInstall()" style="
+        display:none; width:100%; margin-top:1rem;
+        background:linear-gradient(135deg,#6366f1,#8b5cf6);
+        color:#fff; border:none; padding:0.85rem;
+        border-radius:14px; font-family:'Cairo',sans-serif;
+        font-size:1rem; font-weight:700; cursor:pointer;
+        box-shadow:0 8px 20px rgba(99,102,241,0.4);
+        transition:all 0.3s;
+      " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+        <i class="fas fa-download" style="margin-left:0.5rem;"></i> تثبيت الآن مباشرة
+      </button>
+
+      <button onclick="closePwaModal()" style="
+        width:100%; margin-top:0.75rem;
+        background:rgba(255,255,255,0.07); color:#ccc;
+        border:1px solid rgba(255,255,255,0.15); padding:0.7rem;
+        border-radius:14px; font-family:'Cairo',sans-serif;
+        font-size:0.9rem; cursor:pointer;
+      ">إغلاق</button>
+    </div>
+  </div>
+</div>
+<!-- ===== END PWA INSTALL GUIDE MODAL ===== -->
+
+<script>
+  function openPwaModal() {
+    const modal = document.getElementById('pwaInstallModal');
+    if (!modal) return;
+    // تحديد نوع الجهاز
+    const isIOS = /iP(hone|ad|od)/.test(navigator.userAgent) && /WebKit/.test(navigator.userAgent) && !/CriOS|FxiOS/.test(navigator.userAgent);
+    document.getElementById('pwaAndroidSteps').style.display = isIOS ? 'none' : 'block';
+    document.getElementById('pwaIOSSteps').style.display = isIOS ? 'block' : 'none';
+    // لو في deferredPrompt (Chrome Android) اعرض زر التثبيت المباشر
+    const directBtn = document.getElementById('pwaDirectInstallBtn');
+    if (directBtn) directBtn.style.display = (deferredPrompt && !isIOS) ? 'flex' : 'none';
+    // زرار APK — يظهر لو Android وملوش deferredPrompt
+    const apkBtn = document.getElementById('pwaApkDownloadBtn');
+    if (apkBtn) apkBtn.style.display = (!isIOS) ? 'flex' : 'none';
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+  function closePwaModal() {
+    const modal = document.getElementById('pwaInstallModal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  function triggerDirectInstall() {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          pwaInstalled = true;
+          showToast('✅ تم تثبيت التطبيق بنجاح!');
+          closePwaModal();
+        }
+        deferredPrompt = null;
+        updateAdminUI();
+      });
+    }
+  }
+</script>
+<script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/sw.js")
+      .then(reg => console.log("SW registered", reg))
+      .catch(err => console.log("SW error", err));
+  }
 </script>
 </body>
 </html>
