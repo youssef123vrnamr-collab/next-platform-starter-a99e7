@@ -6,7 +6,7 @@ const multer = require('multer');
 const { MindModel } = require('./mind');
 
 // -------------------- تحميل مفتاح Firebase --------------------
-const serviceAccount = require('./firebase-key.json');
+const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
