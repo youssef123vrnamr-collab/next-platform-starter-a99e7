@@ -64,48 +64,128 @@
             flex-direction: column;
             padding: 20px;
             text-align: center;
+            overflow: hidden;
+        }
+        .login-bg-grid {
+            position: absolute;
+            inset: 0;
+            opacity: .55;
+            background-image: linear-gradient(rgba(192, 38, 211, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(192, 38, 211, 0.06) 1px, transparent 1px);
+            background-size: 46px 46px;
+            mask-image: radial-gradient(ellipse 75% 65% at 50% 40%, black 0%, transparent 75%);
+            pointer-events: none;
+        }
+        .login-glow {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(2px);
+            animation: glow-pulse 5s ease-in-out infinite;
+        }
+        .login-glow-1 { width: 520px; height: 520px; background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, transparent 65%); top: -200px; left: -120px; }
+        .login-glow-2 { width: 460px; height: 460px; background: radial-gradient(circle, rgba(255, 45, 135, 0.15) 0%, transparent 65%); bottom: -170px; right: -90px; animation-delay: 2.3s; }
+        .login-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 420px;
+            background: linear-gradient(160deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+            border: 1px solid rgba(192,38,211,0.18);
+            border-radius: 24px;
+            padding: 44px 32px 36px;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 60px rgba(192,38,211,0.08);
+        }
+        .login-badge {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            background: var(--grad);
+            clip-path: polygon(28% 0, 100% 0, 100% 72%, 72% 100%, 0 100%, 0 28%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #0a0814;
+            box-shadow: 0 0 36px rgba(192, 38, 211, 0.45);
         }
         #login-screen .logo {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 64px;
+            font-size: 46px;
             font-weight: 900;
             background: var(--grad);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 30px;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+        .login-tagline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 10.5px;
+            letter-spacing: 2.5px;
+            font-weight: 700;
+            color: var(--bright);
+            margin-bottom: 18px;
+            padding: 6px 16px;
+            border: 1px solid rgba(192, 38, 211, 0.35);
+            border-radius: 30px;
+            background: rgba(192, 38, 211, 0.08);
+        }
+        .login-tagline .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--magenta);
+            box-shadow: 0 0 8px var(--magenta);
+            animation: blink 1.6s ease-in-out infinite;
         }
         #login-screen .sub {
             color: var(--text);
-            font-size: 18px;
-            margin-bottom: 30px;
-            max-width: 400px;
-            line-height: 1.6;
+            font-size: 14.5px;
+            margin-bottom: 28px;
+            max-width: 360px;
+            line-height: 1.8;
+            margin-inline: auto;
         }
         .btn-google-large {
-            padding: 16px 40px;
+            width: 100%;
+            padding: 16px 24px;
             background: var(--grad);
             border: none;
             border-radius: 14px;
             color: #0a0814;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 900;
             cursor: pointer;
             box-shadow: 0 0 40px rgba(192, 38, 211, 0.3);
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 14px;
             transition: transform .2s, box-shadow .2s;
             -webkit-tap-highlight-color: transparent;
         }
-        .btn-google-large:hover { transform: scale(1.03); box-shadow: 0 0 60px rgba(192, 38, 211, 0.5); }
+        .btn-google-large:hover { transform: scale(1.02); box-shadow: 0 0 60px rgba(192, 38, 211, 0.5); }
         .btn-google-large:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-        .btn-google-large svg { width: 24px; height: 24px; }
+        .btn-google-large svg { width: 22px; height: 22px; flex-shrink: 0; background: #fff; border-radius: 50%; padding: 2px; }
         #login-screen .error-msg {
             color: #ff7a7a;
             margin-top: 16px;
             font-size: 14px;
             display: none;
+        }
+        .login-trust {
+            margin-top: 22px;
+            font-size: 11.5px;
+            color: var(--text-dim);
+            letter-spacing: .3px;
         }
 
         /* ===== MAIN APP ===== */
@@ -227,37 +307,6 @@
             border: 1px solid rgba(255, 176, 32, 0.2);
             margin-right: 4px;
         }
-        #gear-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 11px;
-            width: 42px;
-            height: 42px;
-            flex-shrink: 0;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all .25s;
-            position: relative;
-            -webkit-tap-highlight-color: transparent;
-        }
-        #gear-btn.visible { display: flex; }
-        #gear-btn:hover { background: var(--surface-2); border-color: rgba(255,255,255,0.18); }
-        #gear-btn.active { background: rgba(255, 176, 32, 0.12); border-color: rgba(255, 176, 32, 0.4); }
-        #gear-dot {
-            position: absolute;
-            top: 7px;
-            right: 7px;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: var(--magenta);
-            box-shadow: 0 0 7px var(--magenta);
-            display: none;
-        }
-        #gear-btn.active #gear-dot { display: block; }
-
         /* ===== HAMBURGER ===== */
         #hamburger-btn {
             display: none;
@@ -771,16 +820,30 @@
             white-space: nowrap;
         }
         .comment-send-btn:active { opacity: .8; }
-        .comment-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.04); }
-        .comment-item:last-child { border-bottom: none; }
-        .comment-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); flex-shrink: 0; overflow: hidden; }
+        .comment-item { display: flex; gap: 10px; padding: 10px; border-radius: 12px; margin-bottom: 8px; background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.05); transition: background .2s, transform .15s; animation: commentFadeIn .25s ease; }
+        .comment-item:hover { background: rgba(255,255,255,0.06); }
+        .comment-item.own { background: rgba(192,38,211,0.06); border-color: rgba(192,38,211,0.12); }
+        @keyframes commentFadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .comment-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--surface); border: 1px solid var(--border); flex-shrink: 0; overflow: hidden; }
         .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .comment-body { flex: 1; }
+        .comment-body { flex: 1; min-width: 0; }
         .comment-name { font-size: 12px; font-weight: 700; color: var(--bright); }
-        .comment-text { font-size: 13px; color: var(--text); margin-top: 2px; word-break: break-word; }
-        .comment-time { font-size: 10px; color: var(--text-dim); margin-top: 2px; }
-        .comment-delete-btn { background: none; border: none; color: #ff7a7a; font-size: 12px; cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: background .2s; margin-top: 2px; display: inline-block; }
-        .comment-delete-btn:hover { background: rgba(255,70,70,0.1); }
+        .comment-text { font-size: 15px; color: var(--text); margin-top: 4px; word-break: break-word; line-height: 1.55; }
+        .comment-time { font-size: 10.5px; color: var(--text-dim); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+        .comment-edited-tag { font-style: italic; opacity: .8; }
+        .comment-actions-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+        .comment-delete-btn, .comment-edit-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 4px 10px; font-size: 11.5px; cursor: pointer; opacity: .85; transition: all .2s; }
+        .comment-delete-btn { color: #ff8f8f; }
+        .comment-delete-btn:hover { opacity: 1; background: rgba(255,70,70,0.15); border-color: rgba(255,70,70,0.3); }
+        .comment-edit-btn { color: var(--violet); }
+        .comment-edit-btn:hover { opacity: 1; background: rgba(192,38,211,0.14); border-color: rgba(192,38,211,0.3); }
+        .comment-reply-preview { display: flex; align-items: center; gap: 8px; padding: 7px 10px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 8px; animation: waReplySlideIn .15s ease; }
+        .comment-reply-preview-bar { width: 3px; align-self: stretch; background: var(--violet); border-radius: 2px; flex-shrink: 0; }
+        .comment-reply-preview-text { flex: 1; font-size: 12px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .comment-reply-preview-close { background: none; border: none; color: var(--text-dim); font-size: 14px; cursor: pointer; opacity: .7; }
+        .comment-reply-preview-close:hover { opacity: 1; color: #ff7a7a; }
+        #comment-input-wrap.editing input { border-color: #ffc862; }
+        #comment-input-wrap.editing .comment-send-btn { background: linear-gradient(120deg,#ffc862,#ffb020); }
 
         /* ===== ADMIN ACTIONS ===== */
         .admin-actions { padding-top: 11px; border-top: 1px solid var(--border); display: none; gap: 7px; flex-wrap: wrap; margin-top: 11px; }
@@ -1018,6 +1081,83 @@
         .admin-list-item .remove-admin { background: none; border: none; color: #ff7a7a; cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background .2s; }
         .admin-list-item .remove-admin:hover { background: rgba(255, 70, 70, 0.1); }
 
+        /* ===== ACCOUNTS / ADMIN DIRECTORY ===== */
+        .directory-search {
+            width: 100%; padding: 9px 12px; margin-bottom: 8px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            border-radius: 8px; color: #fff; font-size: 13px; outline: none;
+            font-family: inherit;
+        }
+        .directory-search:focus { border-color: rgba(192,38,211,0.4); }
+        .directory-hint { color: var(--text-dim); font-size: 11.5px; line-height: 1.7; margin: 0 0 10px; }
+        .directory-list { max-height: 340px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; margin-bottom: 4px; }
+        .directory-item {
+            display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+        }
+        .directory-item.is-suspended { border-color: rgba(255,70,70,0.35); background: rgba(255,70,70,0.05); }
+        .directory-avatar {
+            width: 32px; height: 32px; min-width: 32px; border-radius: 50%; object-fit: cover;
+            background: var(--grad); display: flex; align-items: center; justify-content: center;
+            color: #0a0814; font-weight: 900; font-size: 13px; border: 1.5px solid rgba(192,38,211,0.3);
+        }
+        .directory-info { flex: 1; min-width: 0; }
+        .directory-name { color: var(--bright); font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .directory-email { color: var(--text-dim); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .directory-actions { display: flex; align-items: center; gap: 5px; flex-shrink: 0; flex-wrap: wrap; justify-content: flex-end; }
+        .dir-btn {
+            padding: 5px 10px; border-radius: 7px; font-size: 11px; font-weight: 700;
+            cursor: pointer; white-space: nowrap; border: 1px solid transparent; transition: all .15s;
+            font-family: inherit;
+        }
+        .dir-btn.role-main { background: rgba(255,176,32,0.12); border-color: rgba(255,176,32,0.3); color: #ffc862; }
+        .dir-btn.role-main.active { background: rgba(255,176,32,0.85); color: #0a0814; }
+        .dir-btn.role-normal { background: rgba(168,85,247,0.12); border-color: rgba(168,85,247,0.3); color: #d8a8ff; }
+        .dir-btn.role-normal.active { background: rgba(168,85,247,0.85); color: #0a0814; }
+        .dir-btn.role-none { background: rgba(255,255,255,0.06); border-color: var(--border); color: var(--text-dim); }
+        .dir-btn.role-none.active { background: rgba(255,255,255,0.7); color: #0a0814; }
+        .dir-btn:hover { filter: brightness(1.15); }
+        .dir-btn.ban { background: rgba(255,70,70,0.12); border-color: rgba(255,70,70,0.35); color: #ff7a7a; }
+        .dir-btn.unban { background: rgba(80,220,140,0.12); border-color: rgba(80,220,140,0.35); color: #6bf0a6; }
+        .directory-empty { color: var(--text-dim); font-size: 13px; text-align: center; padding: 16px 0; }
+
+        /* ===== FOLLOW SYSTEM ===== */
+        .follow-stats-row { display: flex; justify-content: center; gap: 28px; margin-top: 14px; }
+        .follow-stat-box { text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+        .follow-stat-num { color: var(--bright); font-size: 18px; font-weight: 900; font-family: 'Rajdhani', sans-serif; }
+        .follow-stat-label { color: var(--text-dim); font-size: 11px; margin-top: 2px; }
+        .follow-stat-box:hover .follow-stat-num { color: var(--magenta); }
+        .dir-btn.follow-btn { background: var(--grad); border-color: transparent; color: #0a0814; }
+        .dir-btn.follow-btn.following { background: rgba(255,255,255,0.06); border-color: var(--border); color: var(--text); }
+        .dir-btn.follow-btn:hover { filter: brightness(1.1); }
+        .dir-btn.chat-btn { background: rgba(79,195,247,0.12); border-color: rgba(79,195,247,0.3); color: #4fc3f7; padding: 5px 9px; font-size: 13px; }
+        .dir-btn.chat-btn:hover { background: rgba(79,195,247,0.22); }
+
+        #members-modal,
+        #conversations-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--void);
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+        .members-fs-body { padding: 18px 18px 30px; max-width: 560px; margin: 0 auto; width: 100%; flex: 1; }
+        .members-fs-list { max-height: none; }
+
+        #friend-chat-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            background: var(--void);
+        }
+        #friend-chat-modal.open { display: flex; }
+
         .ratings-list .rating-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 13px; }
         .ratings-list .rating-item .likes { color: #4fc3f7; }
         .ratings-list .rating-item .dislikes { color: #ff7a7a; }
@@ -1205,10 +1345,10 @@
         .player-actions .rating-group { display: flex; align-items: center; gap: 14px; }
         .player-actions .rating-btn { font-size: 18px; }
         .player-actions .rating-btn .count { font-size: 14px; }
-        .player-comments { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px; }
+        .player-comments { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-direction: column; }
         .player-comments .comments-title { color: var(--bright); font-size: 14px; font-weight: 700; margin-bottom: 10px; }
-        .player-comments .comment-input-wrap { margin-bottom: 12px; }
-        .player-comments .comment-item { padding: 6px 0; }
+        .player-comments .comment-input-wrap { margin-bottom: 0; margin-top: 2px; }
+        #player-comments-list { max-height: 340px; overflow-y: auto; display: flex; flex-direction: column; padding-left: 2px; scroll-behavior: smooth; }
 
         /* ===== PROFILE MODAL ===== */
         #profile-modal {
@@ -1447,7 +1587,7 @@
         }
         .wabubble {
             display: flex;
-            align-items: flex-end;
+            align-items: flex-start;
             gap: 8px;
             max-width: 82%;
             animation: wabubble-in .22s ease both;
@@ -1490,14 +1630,32 @@
         .wabubble-admin-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; color: #ffc862; font-weight: 700; margin-bottom: 3px; }
         .wabubble-sender { font-size: 11.5px; font-weight: 700; color: var(--violet); margin-bottom: 3px; display: block; letter-spacing: .2px; }
         .wabubble.mine .wabubble-sender { color: #c4a8ff; }
-        .wabubble-text { font-size: 14.5px; color: var(--bright); word-break: break-word; line-height: 1.5; }
-        .wabubble-meta { display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-top: 4px; }
-        .wabubble-time { font-size: 10px; color: var(--text-dim); }
+        .wabubble-text { font-size: 16px; color: var(--bright); word-break: break-word; line-height: 1.55; }
+        .wabubble-meta { display: flex; align-items: center; justify-content: flex-end; gap: 4px; margin-top: 6px; }
+        .wabubble-time { font-size: 10.5px; color: var(--text-dim); }
         .wabubble-tick { font-size: 12px; color: #4fc3f7; letter-spacing: -2px; }
-        .wabubble-status { font-size: 10px; color: var(--text-dim); }
+        .wabubble-status { font-size: 10.5px; color: var(--text-dim); }
         .wabubble-status.failed { color: #ff7a7a; font-weight: 700; }
-        .wabubble-delete-btn { background: none; border: none; color: #ff7a7a; font-size: 11px; cursor: pointer; padding: 0; opacity: .55; transition: opacity .15s; margin-left: 2px; }
-        .wabubble-delete-btn:hover { opacity: 1; }
+        .wabubble-delete-btn, .wabubble-action-btn { display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); width: 23px; height: 23px; border-radius: 50%; font-size: 11.5px; cursor: pointer; padding: 0; opacity: .85; transition: all .15s; margin-left: 2px; color: var(--text-dim); }
+        .wabubble-delete-btn { color: #ff8f8f; }
+        .wabubble-delete-btn:hover { opacity: 1; background: rgba(255,70,70,0.15); border-color: rgba(255,70,70,0.3); transform: scale(1.08); }
+        .wabubble-action-btn:hover { opacity: 1; color: var(--violet); background: rgba(192,38,211,0.14); border-color: rgba(192,38,211,0.3); transform: scale(1.08); }
+        .wabubble-quote { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,0.06); border-right: 3px solid var(--violet); border-radius: 6px; padding: 5px 8px; margin-bottom: 6px; cursor: pointer; }
+        .wabubble.mine .wabubble-quote { border-right: none; border-left: 3px solid #c4a8ff; }
+        .wabubble-quote-name { font-size: 10.5px; font-weight: 700; color: var(--violet); }
+        .wabubble.mine .wabubble-quote-name { color: #c4a8ff; }
+        .wabubble-quote-text { font-size: 12px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 220px; }
+        .wabubble-edited-tag { font-size: 9.5px; color: var(--text-dim); font-style: italic; }
+        .wachat-reply-preview { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: rgba(255,255,255,0.04); border-top: 1px solid var(--border); animation: waReplySlideIn .15s ease; }
+        @keyframes waReplySlideIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .wachat-reply-preview-bar { width: 3px; align-self: stretch; background: var(--violet); border-radius: 2px; flex-shrink: 0; }
+        .wachat-reply-preview-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+        .wachat-reply-preview-label { font-size: 11px; font-weight: 700; color: var(--violet); }
+        .wachat-reply-preview-text { font-size: 12px; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
+        .wachat-reply-preview-close { background: none; border: none; color: var(--text-dim); font-size: 15px; cursor: pointer; opacity: .7; flex-shrink: 0; }
+        .wachat-reply-preview-close:hover { opacity: 1; color: #ff7a7a; }
+        .wachat-input-bar.editing .wachat-input { border-color: #ffc862; }
+        .wachat-input-bar.editing .wachat-send-btn { background: linear-gradient(120deg,#ffc862,#ffb020); }
         .wachat-input-bar {
             display: flex;
             align-items: center;
@@ -1614,7 +1772,9 @@
             .panel-tabs { gap: 4px; }
             .panel-tab { font-size: 11px; padding: 4px 10px; }
             .chat-container { height: 300px; }
-            #login-screen .logo { font-size: 48px; }
+            #login-screen .logo { font-size: 38px; }
+            .login-card { padding: 36px 24px 28px; }
+            .login-badge { width: 54px; height: 54px; font-size: 24px; }
         }
         @media(max-width:400px) {
             .hero-stats { flex-wrap: wrap; row-gap: 14px; }
@@ -1677,13 +1837,21 @@
 
     <!-- ===== LOGIN SCREEN ===== -->
     <div id="login-screen">
-        <div class="logo">GAMEVERSE</div>
-        <div class="sub">منصة الجيمنج الاحترافية<br>سجل دخولك للاستمتاع بالمحتوى</div>
-        <button class="btn-google-large" id="login-main-btn" onclick="handleMainLogin()">
-            <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-            تسجيل الدخول بحساب Google
-        </button>
-        <div id="login-error" class="error-msg"></div>
+        <div class="login-bg-grid"></div>
+        <div class="login-glow login-glow-1"></div>
+        <div class="login-glow login-glow-2"></div>
+        <div class="login-card">
+            <div class="login-badge">G</div>
+            <div class="logo">GAMEVERSE</div>
+            <div class="login-tagline"><span class="dot"></span> منصة الجيمنج الاحترافية الأولى</div>
+            <div class="sub">سجّل دخولك بحساب Google عشان توصل لمكتبة فيديوهات حصرية، ومجتمع لاعبين شغوفين زيك</div>
+            <button class="btn-google-large" id="login-main-btn" onclick="handleMainLogin()">
+                <svg viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                تسجيل الدخول بحساب Google
+            </button>
+            <div id="login-error" class="error-msg"></div>
+            <div class="login-trust">🔒 دخول آمن وسريع عبر Google — بياناتك محمية</div>
+        </div>
     </div>
 
     <!-- ===== MAIN APP ===== -->
@@ -1711,12 +1879,6 @@
                     <span></span>
                     <span></span>
                     <span></span>
-                </button>
-                <button id="gear-btn" onclick="handleGearClick()" aria-label="لوحة التحكم">
-                    <svg width="18" height="18" viewBox="0 0 24 24" id="gear-icon" fill="rgba(255,255,255,0.4)">
-                        <path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.49.49 0 0 0-.59-.22l-2.39.96a7.02 7.02 0 0 0-1.62-.94l-.36-2.54A.484.484 0 0 0 14 2h-4a.484.484 0 0 0-.48.41l-.36 2.54a7.02 7.02 0 0 0-1.62.94l-2.39-.96a.48.48 0 0 0-.59.22L2.74 8.47a.47.47 0 0 0 .12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58a.47.47 0 0 0-.12.61l1.92 3.32c.12.22.37.3.59.22l2.39-.96c.5.36 1.04.67 1.62.94l.36 2.54c.05.28.3.48.48.48h4c.28 0 .47-.2.48-.48l.36-2.54a7.02 7.02 0 0 0 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.47.47 0 0 0-.12-.61l-2.03-1.58zM12 15.6A3.6 3.6 0 1 1 12 8.4a3.6 3.6 0 0 1 0 7.2z"/>
-                    </svg>
-                    <div id="gear-dot"></div>
                 </button>
             </div>
         </nav>
@@ -1760,27 +1922,30 @@
                 <div class="menu-nav-divider"></div>
                 <div class="menu-section-title">التواصل</div>
 
-                <div class="menu-nav-item" onclick="openWaChat('admin')">
-                    <span class="menu-nav-icon">💬</span> تواصل مع المشرفين
+                <div class="menu-nav-item" onclick="openMembersModal()">
+                    <span class="menu-nav-icon">👥</span> الأعضاء ومتابعتهم
                 </div>
-                <div class="menu-nav-item" onclick="openWaChat('friends')">
-                    <span class="menu-nav-icon">👥</span> تواصل مع أصدقائك
+                <div class="menu-nav-item" onclick="openConversationsModal()">
+                    <span class="menu-nav-icon">📩</span> محادثاتي مع الأعضاء
                 </div>
 
                 <!-- Admin only section -->
                 <div id="menu-admin-section" style="display:none">
                     <div class="menu-nav-divider"></div>
                     <div class="menu-section-title">إدارة المنصة</div>
-                    <div class="menu-nav-item" onclick="closeMenuPanel();handleGearClick()">
-                        <span class="menu-nav-icon">⚙️</span> لوحة التحكم
+                    <div class="menu-nav-item" id="menu-add-admin-btn" onclick="openAdminPanel('admin-admins')">
+                        <span class="menu-nav-icon">➕</span> إضافة / إدارة المشرفين
                     </div>
-                    <div class="menu-nav-item" id="menu-add-admin-btn" onclick="closeMenuPanel();setTimeout(()=>{handleGearClick();setTimeout(()=>switchPanelTab('admin-admins'),300)},100)">
-                        <span class="menu-nav-icon">➕</span> إضافة مشرف
+                    <div class="menu-nav-item" id="menu-accounts-btn" onclick="openAdminPanel('admin-users')">
+                        <span class="menu-nav-icon">🚫</span> إدارة الحسابات
                     </div>
-                    <div class="menu-nav-item" onclick="closeMenuPanel();setTimeout(()=>{handleGearClick();setTimeout(()=>switchPanelTab('admin-comments'),300)},100)">
-                        <span class="menu-nav-icon">💬</span> تعليقات كل الفيديوهات
+                    <div class="menu-nav-item" onclick="openAdminPanel('admin-ratings')">
+                        <span class="menu-nav-icon">⭐</span> التقييمات
                     </div>
-                    <div class="menu-nav-item" onclick="closeMenuPanel();openWaChat('admin')">
+                    <div class="menu-nav-item" onclick="openAdminPanel('admin-comments')">
+                        <span class="menu-nav-icon">💬</span> التعليقات
+                    </div>
+                    <div class="menu-nav-item" onclick="closeMenuPanel();openWaChat()">
                         <span class="menu-nav-icon">📨</span> صندوق رسائل المستخدمين
                     </div>
                 </div>
@@ -1851,43 +2016,33 @@
 
                     <!-- Admin Tabs -->
                     <div class="panel-tabs">
-                        <button class="panel-tab active" data-tab="admin-upload" onclick="switchPanelTab('admin-upload')">📤 رفع</button>
-                        <button class="panel-tab" data-tab="admin-videos" onclick="switchPanelTab('admin-videos')">🎬 فيديوهات</button>
                         <button class="panel-tab" data-tab="admin-admins" onclick="switchPanelTab('admin-admins')">👥 مشرفين</button>
-                        <button class="panel-tab" data-tab="admin-ratings" onclick="switchPanelTab('admin-ratings')">⭐ تقييمات</button>
+                        <button class="panel-tab active" data-tab="admin-ratings" onclick="switchPanelTab('admin-ratings')">⭐ تقييمات</button>
                         <button class="panel-tab" data-tab="admin-comments" onclick="switchPanelTab('admin-comments')">💬 تعليقات</button>
                         <button class="panel-tab" data-tab="admin-chat" onclick="switchPanelTab('admin-chat')">📨 رسائل</button>
                         <button class="panel-tab" data-tab="admin-users" onclick="switchPanelTab('admin-users')">🚫 المستخدمين</button>
                     </div>
 
-                    <!-- Upload -->
-                    <div class="panel-tab-content active" id="tab-admin-upload">
-                        <button class="btn-upload" onclick="openAddModal('youtube');closePanel()">🎬 رفع فيديو يوتيوب</button>
-                        <button class="btn-upload secondary" onclick="openAddModal('drive');closePanel()">📁 رفع فيديو Google Drive</button>
-                        <div class="tool-info" style="margin-top:12px">
-                            <div class="tool-item"><span>🔒</span><span>قفل / فتح الفيديو</span></div>
-                            <div class="tool-item"><span>✏️</span><span>تعديل العنوان والوصف</span></div>
-                            <div class="tool-item"><span>🗑️</span><span>حذف الفيديو</span></div>
-                        </div>
-                    </div>
-
-                    <!-- Videos -->
-                    <div class="panel-tab-content" id="tab-admin-videos">
-                        <div id="admin-video-list" style="max-height:300px;overflow-y:auto"></div>
-                    </div>
-
                     <!-- Admins -->
                     <div class="panel-tab-content" id="tab-admin-admins">
+                        <p class="panel-section-title" style="margin-top:0">المشرفون الحاليون</p>
+                        <div id="admin-list" style="margin-bottom:16px"></div>
+
+                        <p class="panel-section-title">تحديد مشرف من الحسابات</p>
+                        <input type="text" id="directory-admins-search" class="directory-search" placeholder="🔍 دوّر بالاسم أو الإيميل..." oninput="renderUsersDirectory()" />
+                        <p class="directory-hint">اضغط على الرتبة اللي عايزها لأي حساب عشان تخليه مشرف عادي أو رئيسي فورًا</p>
+                        <div id="admin-directory-list" class="directory-list"></div>
+
+                        <p class="panel-section-title">إضافة يدوية (بالإيميل)</p>
                         <div class="admin-mgmt-card">
                             <div class="mgmt-row">
-                                <input id="admin-email-input" type="text" placeholder="البريد الإلكتروني أو UID" />
+                                <input id="admin-email-input" type="text" placeholder="البريد الإلكتروني" />
                                 <select id="admin-role-select">
                                     <option value="main">رئيسي</option>
                                     <option value="normal" selected>عادي</option>
                                 </select>
                             </div>
                             <button class="mgmt-btn" onclick="handleAddAdmin()">➕ إضافة مشرف</button>
-                            <div id="admin-list" style="margin-top:12px"></div>
                         </div>
                     </div>
 
@@ -1904,7 +2059,7 @@
                     <!-- Chat -->
                     <div class="panel-tab-content" id="tab-admin-chat">
                         <p class="panel-section-title">قناة الدعم الجماعية</p>
-                        <div class="chat-cta-card" onclick="closePanel();openWaChat('admin')">
+                        <div class="chat-cta-card" onclick="closePanel();openWaChat()">
                             <div class="chat-cta-icon">💬</div>
                             <div class="chat-cta-body">
                                 <div class="chat-cta-title">فتح صندوق رسائل المستخدمين</div>
@@ -1916,7 +2071,12 @@
 
                     <!-- Users Management -->
                     <div class="panel-tab-content" id="tab-admin-users">
-                        <p class="panel-section-title">إدارة حسابات المستخدمين</p>
+                        <p class="panel-section-title" style="margin-top:0">إدارة كل الحسابات</p>
+                        <p class="directory-hint">قائمة بكل الحسابات اللي دخلت المنصة — اضغط "توقيف" عشان توقف أي حساب فورًا (كراش)، أو "رفع التوقيف" لإرجاعه</p>
+                        <input type="text" id="directory-users-search" class="directory-search" placeholder="🔍 دوّر بالاسم أو الإيميل..." oninput="renderUsersDirectory()" />
+                        <div id="accounts-list" class="directory-list"></div>
+
+                        <p class="panel-section-title">توقيف يدوي (بالـ UID)</p>
                         <div style="display:flex;gap:8px;margin-bottom:10px">
                             <input type="text" id="suspend-uid-input" placeholder="UID المستخدم..." style="flex:1;padding:8px 12px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;color:#fff;font-size:13px;outline:none"/>
                         </div>
@@ -1924,7 +2084,6 @@
                             <button class="btn-suspend" onclick="suspendUser()">🚫 توقيف الحساب</button>
                             <button class="btn-unsuspend" onclick="unsuspendUser()">✅ رفع التوقيف</button>
                         </div>
-                        <div id="suspended-users-list"></div>
                     </div>
 
                     <button class="btn-signout" onclick="handleSignOut()">🚪 تسجيل الخروج</button>
@@ -1941,32 +2100,7 @@
                         </div>
                     </div>
 
-                    <div class="panel-tabs">
-                        <button class="panel-tab active" data-tab="user-chat" onclick="switchPanelTab('user-chat')">💬 مشرفين</button>
-                        <button class="panel-tab" data-tab="user-friends" onclick="switchPanelTab('user-friends')">👥 أصدقاء</button>
-                    </div>
-
-                    <div class="panel-tab-content active" id="tab-user-chat">
-                        <div class="chat-cta-card" onclick="closePanel();openWaChat('admin')">
-                            <div class="chat-cta-icon">🛡️</div>
-                            <div class="chat-cta-body">
-                                <div class="chat-cta-title">تواصل مع المشرفين</div>
-                                <div class="chat-cta-sub">اسأل أو ابعت مشكلتك وهيردوا عليك فورًا</div>
-                            </div>
-                            <div class="chat-cta-arrow">‹</div>
-                        </div>
-                    </div>
-
-                    <div class="panel-tab-content" id="tab-user-friends">
-                        <div class="chat-cta-card" onclick="closePanel();openWaChat('friends')">
-                            <div class="chat-cta-icon">👥</div>
-                            <div class="chat-cta-body">
-                                <div class="chat-cta-title">تواصل مع أصدقائك</div>
-                                <div class="chat-cta-sub">ادخل المجتمع وكلم باقي اللاعبين لحظيًا</div>
-                            </div>
-                            <div class="chat-cta-arrow">‹</div>
-                        </div>
-                    </div>
+                    <div class="panel-tab-content active" id="tab-user-chat" style="display:block"></div>
 
                     <button class="btn-signout" onclick="handleSignOut()">🚪 تسجيل الخروج</button>
                 </div>
@@ -2084,6 +2218,7 @@
             <div class="profile-fs-userinfo">
                 <div class="profile-fs-username" id="profile-display-name">—</div>
                 <div class="profile-fs-userrole" id="profile-display-role">👤 مستخدم</div>
+                <div class="follow-stats-row" id="profile-follow-stats"></div>
             </div>
             <div class="profile-fs-card">
                 <div class="profile-fs-card-title">صورة البروفايل</div>
@@ -2120,6 +2255,57 @@
         </div>
     </div>
 
+    <!-- ===== MEMBERS MODAL (Follow system) ===== -->
+    <div id="members-modal">
+        <div class="profile-fs-header">
+            <button class="profile-fs-back" onclick="closeMembersModal()">✕</button>
+            <span class="profile-fs-title">👥 الأعضاء</span>
+        </div>
+        <div class="members-fs-body">
+            <input type="text" id="members-search" class="directory-search" placeholder="🔍 دوّر عن عضو بالاسم..." oninput="renderMembersList()" />
+            <p class="directory-hint">تابع أعضاء المنصة عشان تفضل قريب من أنشطتهم — يقدر أي عضو يشوف عدد متابعينه في ملفه الشخصي</p>
+            <div id="members-list" class="directory-list members-fs-list"></div>
+        </div>
+    </div>
+
+    <!-- ===== CONVERSATIONS LIST MODAL ===== -->
+    <div id="conversations-modal">
+        <div class="profile-fs-header">
+            <button class="profile-fs-back" onclick="closeConversationsModal()">✕</button>
+            <span class="profile-fs-title">📩 محادثاتي</span>
+        </div>
+        <div class="members-fs-body">
+            <p class="directory-hint">كل المحادثات اللي بدأتها مع الأعضاء — دوس على أي حد عشان تكمل الكلام. عايز تبدأ محادثة جديدة؟ روح لصفحة "الأعضاء"</p>
+            <div id="conversations-list" class="directory-list members-fs-list"></div>
+        </div>
+    </div>
+
+    <!-- ===== FRIEND-TO-FRIEND CHAT MODAL ===== -->
+    <div id="friend-chat-modal">
+        <div class="wachat-header">
+            <button class="wachat-back-btn" onclick="closeFriendChat()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <div class="wachat-header-avatar" id="friend-chat-avatar">💬</div>
+            <div class="wachat-header-info">
+                <span class="wachat-header-name" id="friend-chat-name">عضو</span>
+                <span class="wachat-header-status" id="friend-chat-status">محادثة خاصة</span>
+            </div>
+        </div>
+        <div class="wachat-messages" id="friend-chat-messages-area">
+            <div class="wachat-empty" style="display:flex">
+                <div class="wachat-empty-icon">💬</div>
+                <p>لا توجد رسائل بعد<br/>ابدأ المحادثة!</p>
+            </div>
+        </div>
+        <div class="wachat-input-bar">
+            <input type="text" class="wachat-input" id="friend-chat-input" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendFriendMsg()" />
+            <button class="wachat-send-btn" id="friend-chat-send-btn" onclick="sendFriendMsg()">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+
     <!-- ===== WHATSAPP CHAT MODAL ===== -->
     <div id="wachat-modal">
         <div class="wachat-header">
@@ -2138,9 +2324,17 @@
                 <p>لا توجد رسائل بعد<br/>كن أول من يرسل!</p>
             </div>
         </div>
+        <div class="wachat-reply-preview" id="wachat-reply-preview" style="display:none">
+            <div class="wachat-reply-preview-bar"></div>
+            <div class="wachat-reply-preview-body">
+                <span class="wachat-reply-preview-label" id="wachat-reply-preview-label">رد على</span>
+                <span class="wachat-reply-preview-text" id="wachat-reply-preview-text"></span>
+            </div>
+            <button class="wachat-reply-preview-close" onclick="wachatCancelReply()">✕</button>
+        </div>
         <div class="wachat-input-bar">
             <input type="text" class="wachat-input" id="wachat-input" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendWaChat()" />
-            <button class="wachat-send-btn" onclick="sendWaChat()">
+            <button class="wachat-send-btn" id="wachat-send-btn" onclick="sendWaChat()">
                 <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
             </button>
         </div>
@@ -2232,11 +2426,16 @@
                 </div>
                 <div class="player-comments" id="player-comments">
                     <div class="comments-title">💬 تعليقات</div>
-                    <div class="comment-input-wrap">
-                        <input id="player-comment-input" type="text" placeholder="اكتب تعليقاً..." onkeydown="if(event.key==='Enter')submitPlayerComment()" />
-                        <button class="comment-send-btn" onclick="submitPlayerComment()">إرسال</button>
-                    </div>
                     <div id="player-comments-list"></div>
+                    <div class="comment-reply-preview" id="comment-reply-preview" style="display:none">
+                        <div class="comment-reply-preview-bar"></div>
+                        <span class="comment-reply-preview-text" id="comment-reply-preview-text"></span>
+                        <button class="comment-reply-preview-close" onclick="cancelPlayerCommentEdit()">✕</button>
+                    </div>
+                    <div class="comment-input-wrap" id="comment-input-wrap">
+                        <input id="player-comment-input" type="text" placeholder="اكتب تعليقاً..." onkeydown="if(event.key==='Enter')submitPlayerComment()" />
+                        <button class="comment-send-btn" id="comment-send-btn" onclick="submitPlayerComment()">إرسال</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -2311,14 +2510,13 @@
             activeTab: 'youtube',
             playerVideoId: null,
             currentUserRating: null,
-            chatUnsubscribe: null,
-            adminChatUnsubscribe: null,
             adminsList: [],
-            chatMessages: [],
-            userChatMessages: [],
             userProfile: null,
-            friendsChatUnsubscribe: null,
-            friendsChatPanelUnsub: null,
+            usersDirectory: [],
+            followingSet: new Set(),
+            followersCount: 0,
+            followingCount: 0,
+            membersDirectory: [],
         };
 
         // ===== HELPERS =====
@@ -2752,6 +2950,8 @@
         };
 
         // ===== COMMENTS =====
+        let _playerCommentEditIdx = null; // index of comment currently being edited (chat-style, under the video)
+
         window.submitPlayerComment = async function() {
             if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
             const input = document.getElementById('player-comment-input');
@@ -2759,6 +2959,25 @@
             if (!text) return;
             const videoId = S.playerVideoId;
             if (!videoId) return;
+            const v = S.videos.find(v => v.id === videoId);
+            if (!v) return;
+
+            // ===== EDIT MODE =====
+            if (_playerCommentEditIdx !== null) {
+                const idx = _playerCommentEditIdx;
+                const comments = (v.comments || []).slice();
+                if (!comments[idx]) { cancelPlayerCommentEdit(); return; }
+                comments[idx] = { ...comments[idx], text, editedAt: new Date() };
+                try {
+                    await updateDoc(doc(db, 'videos', videoId), { comments });
+                    v.comments = comments;
+                    cancelPlayerCommentEdit();
+                    renderPlayerComments(v);
+                    showToast('✅ تم تعديل التعليق');
+                } catch (e) { console.error('Comment edit error:', e); showToast('❌ حدث خطأ', '#ff7a7a'); }
+                return;
+            }
+
             try {
                 const comment = {
                     uid: S.user.uid,
@@ -2769,37 +2988,64 @@
                 };
                 await updateDoc(doc(db, 'videos', videoId), { comments: arrayUnion(comment) });
                 input.value = '';
-                const v = S.videos.find(v => v.id === videoId);
-                if (v) { const comments = v.comments || []; comments.push(comment); v.comments = comments; }
-                renderPlayerComments(S.videos.find(v => v.id === videoId));
+                const comments = v.comments || []; comments.push(comment); v.comments = comments;
+                renderPlayerComments(v);
                 renderVideos();
                 showToast('✅ تم إضافة التعليق');
             } catch (e) { console.error('Comment error:', e); showToast('❌ حدث خطأ', '#ff7a7a'); }
         };
 
+        window.editPlayerComment = function(idx) {
+            const v = S.videos.find(v => v.id === S.playerVideoId);
+            if (!v || !v.comments || !v.comments[idx]) return;
+            _playerCommentEditIdx = idx;
+            document.getElementById('comment-reply-preview-text').textContent = 'بتعدّل تعليقك';
+            document.getElementById('comment-reply-preview').style.display = 'flex';
+            const input = document.getElementById('player-comment-input');
+            input.value = v.comments[idx].text || '';
+            input.focus();
+            document.getElementById('comment-input-wrap').classList.add('editing');
+        };
+
+        window.cancelPlayerCommentEdit = function() {
+            _playerCommentEditIdx = null;
+            document.getElementById('comment-reply-preview').style.display = 'none';
+            document.getElementById('comment-input-wrap').classList.remove('editing');
+            document.getElementById('player-comment-input').value = '';
+        };
+
+        // Renders comments in chronological order (oldest → newest, top → bottom), like a
+        // normal chat, since the input box lives at the bottom — not reversed like YouTube.
         function renderPlayerComments(v) {
             const list = document.getElementById('player-comments-list');
             if (!v || !v.comments || v.comments.length === 0) {
-                list.innerHTML = `<p style="color:var(--text-dim);font-size:13px;padding:8px 0">لا توجد تعليقات</p>`;
+                list.innerHTML = `<p style="color:var(--text-dim);font-size:13px;padding:8px 0">لا توجد تعليقات بعد — كن أول من يعلّق!</p>`;
                 return;
             }
-            list.innerHTML = v.comments.slice().reverse().map((c, idx) => {
-                const origIdx = v.comments.length - 1 - idx;
-                const canDelete = S.isAdmin || (S.user && c.uid === S.user.uid);
+            list.innerHTML = v.comments.map((c, idx) => {
+                const isMine = S.user && c.uid === S.user.uid;
+                const canDelete = S.isAdmin || isMine;
+                const editedTag = c.editedAt ? '<span class="comment-edited-tag">· معدّل</span>' : '';
                 return `
-                <div class="comment-item">
+                <div class="comment-item ${isMine ? 'own' : ''}">
                     <div class="comment-avatar">
                         ${avatarImgHtml(c.photo, '')}
                     </div>
                     <div class="comment-body">
                         <div class="comment-name">${c.name||'مستخدم'}</div>
                         <div class="comment-text">${c.text||''}</div>
-                        <div class="comment-time">${getTimeAgo(c.timestamp)}</div>
-                        ${canDelete ? `<button class="comment-delete-btn" onclick="deletePlayerComment('${v.id}',${origIdx})">🗑 حذف</button>` : ''}
+                        <div class="comment-time">
+                            ${getTimeAgo(c.timestamp)}${editedTag}
+                        </div>
+                        <div class="comment-actions-row">
+                            ${isMine ? `<button class="comment-edit-btn" onclick="editPlayerComment(${idx})">✏️ تعديل</button>` : ''}
+                            ${canDelete ? `<button class="comment-delete-btn" onclick="deletePlayerComment('${v.id}',${idx})">🗑 حذف</button>` : ''}
+                        </div>
                     </div>
                 </div>
                 `;
             }).join('');
+            list.scrollTop = list.scrollHeight;
         }
 
         window.deleteCardComment = async function(videoId, commentIdx) {
@@ -2940,6 +3186,7 @@
         // ===== ADMIN VIDEO LIST =====
         function renderAdminVideoList() {
             const container = document.getElementById('admin-video-list');
+            if (!container) return;
             if (S.videos.length === 0) {
                 container.innerHTML = `<p style="color:var(--text-dim);font-size:13px">لا توجد فيديوهات</p>`;
                 return;
@@ -3042,7 +3289,7 @@
         }
 
         window.suspendUser = async function() {
-            if (!S.isAdmin) return;
+            if (!S.isAdmin || !S.isMainAdmin) { showToast('❌ فقط المشرف الرئيسي يقدر يوقف حسابات', '#ff7a7a'); return; }
             const uid = document.getElementById('suspend-uid-input').value.trim();
             if (!uid) { showToast('❌ أدخل UID المستخدم', '#ff7a7a'); return; }
             if (!confirm(`تأكيد توقيف الحساب: ${uid}؟`)) return;
@@ -3050,12 +3297,12 @@
                 await setDoc(doc(db, 'suspendedUsers', uid), { uid, suspendedAt: new Date(), suspendedBy: S.user?.uid || 'admin' });
                 document.getElementById('suspend-uid-input').value = '';
                 showToast('🚫 تم توقيف الحساب');
-                renderSuspendedList();
+                renderUsersDirectory();
             } catch (e) { showToast('❌ خطأ: ' + e.message, '#ff7a7a'); }
         };
 
         window.unsuspendUser = async function() {
-            if (!S.isAdmin) return;
+            if (!S.isAdmin || !S.isMainAdmin) { showToast('❌ فقط المشرف الرئيسي يقدر يرفع التوقيف', '#ff7a7a'); return; }
             const uid = document.getElementById('suspend-uid-input').value.trim();
             if (!uid) { showToast('❌ أدخل UID المستخدم', '#ff7a7a'); return; }
             if (!confirm(`رفع توقيف الحساب: ${uid}؟`)) return;
@@ -3063,104 +3310,297 @@
                 await deleteDoc(doc(db, 'suspendedUsers', uid));
                 document.getElementById('suspend-uid-input').value = '';
                 showToast('✅ تم رفع التوقيف');
-                renderSuspendedList();
+                renderUsersDirectory();
             } catch (e) { showToast('❌ خطأ: ' + e.message, '#ff7a7a'); }
         };
 
-        window.quickUnsuspend = async function(uid) {
+        // Toggle ban ("crash") on/off for a specific account, straight from the accounts list.
+        window.toggleAccountSuspension = async function(uid, name, isCurrentlySuspended) {
+            if (!S.isAdmin || !S.isMainAdmin) { showToast('❌ فقط المشرف الرئيسي يقدر يوقف حسابات', '#ff7a7a'); return; }
+            if (uid === S.user?.uid) { showToast('❌ ما تقدرش توقف حسابك الشخصي', '#ff7a7a'); return; }
+            const verb = isCurrentlySuspended ? 'رفع التوقيف عن' : 'توقيف';
+            if (!confirm(`تأكيد ${verb} حساب ${name}؟`)) return;
             try {
-                await deleteDoc(doc(db, 'suspendedUsers', uid));
-                showToast('✅ تم رفع التوقيف');
-                renderSuspendedList();
-            } catch (e) { showToast('❌ خطأ', '#ff7a7a'); }
+                if (isCurrentlySuspended) {
+                    await deleteDoc(doc(db, 'suspendedUsers', uid));
+                    showToast('✅ تم رفع التوقيف عن ' + name);
+                } else {
+                    await setDoc(doc(db, 'suspendedUsers', uid), { uid, suspendedAt: new Date(), suspendedBy: S.user?.uid || 'admin' });
+                    showToast('🚫 تم توقيف ' + name);
+                }
+                renderUsersDirectory();
+            } catch (e) { showToast('❌ خطأ: ' + e.message, '#ff7a7a'); }
         };
 
-        async function renderSuspendedList() {
-            const container = document.getElementById('suspended-users-list');
-            if (!container) return;
+        // Set (or remove) a user's admin role directly from the accounts list —
+        // only the main admin can promote/demote, and only the main admin can grant
+        // the "main" role itself.
+        window.setUserAdminRole = async function(email, displayName, photoURL, role) {
+            if (!S.isAdmin || !S.isMainAdmin) { showToast('❌ فقط المشرف الرئيسي يقدر يحدد المشرفين', '#ff7a7a'); return; }
+            if (!email) { showToast('❌ لا يوجد بريد إلكتروني لهذا الحساب', '#ff7a7a'); return; }
             try {
-                const snap = await getDocs(collection(db, 'suspendedUsers'));
-                if (snap.empty) {
-                    container.innerHTML = `<p style="color:var(--text-dim);font-size:13px">لا توجد حسابات موقوفة</p>`;
-                    return;
+                if (role === 'none') {
+                    if (email === S.user?.email) { showToast('❌ ما تقدرش تشيل صلاحياتك من نفسك', '#ff7a7a'); return; }
+                    if (!confirm(`إزالة صلاحيات الإشراف عن ${displayName || email}؟`)) return;
+                    await deleteDoc(doc(db, 'admins', email.toLowerCase()));
+                    showToast('✅ تم إزالة صلاحيات الإشراف');
+                } else {
+                    await setDoc(doc(db, 'admins', email.toLowerCase()), {
+                        email: email.toLowerCase(),
+                        displayName: displayName || email.split('@')[0],
+                        photoURL: photoURL || '',
+                        role,
+                        createdAt: new Date(),
+                        addedBy: S.user?.uid || 'unknown'
+                    }, { merge: true });
+                    showToast('✅ تم تحديث الصلاحية: ' + (role === 'main' ? 'مشرف رئيسي' : 'مشرف عادي'));
                 }
-                container.innerHTML = `<p class="panel-section-title" style="margin-top:0">الحسابات الموقوفة</p>` + snap.docs.map(d => {
-                    const data = d.data();
-                    return `
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:12px">
-                        <span style="color:#ff7a7a;font-family:monospace">${data.uid}</span>
-                        <button class="btn-unsuspend" onclick="quickUnsuspend('${data.uid}')">رفع</button>
-                    </div>`;
-                }).join('');
+                renderAdminList();
+                renderUsersDirectory();
+            } catch (e) { showToast('❌ خطأ: ' + e.message, '#ff7a7a'); }
+        };
+
+        // Builds one combined view of: everyone who's ever logged in (`users`) +
+        // who's currently an admin (`admins`) + who's currently suspended (`suspendedUsers`).
+        // Feeds both the "admins" tab (role picker) and the "accounts" tab (ban toggle).
+        window.renderUsersDirectory = async function() {
+            if (!S.isMainAdmin) return;
+            const adminsList = document.getElementById('admin-directory-list');
+            const accountsList = document.getElementById('accounts-list');
+            if (!adminsList && !accountsList) return;
+            try {
+                const [usersSnap, adminsSnap, suspendedSnap] = await Promise.all([
+                    getDocs(collection(db, 'users')),
+                    getDocs(collection(db, 'admins')),
+                    getDocs(collection(db, 'suspendedUsers'))
+                ]);
+                const adminsByEmail = {};
+                adminsSnap.forEach(d => { adminsByEmail[(d.data().email || d.id || '').toLowerCase()] = d.data(); });
+                const suspendedByUid = {};
+                suspendedSnap.forEach(d => { suspendedByUid[d.id] = true; });
+                const directory = usersSnap.docs.map(d => {
+                    const u = d.data();
+                    const email = (u.email || '').toLowerCase();
+                    return {
+                        uid: d.id,
+                        email,
+                        displayName: u.displayName || email.split('@')[0] || 'مستخدم',
+                        photoURL: u.photoURL || '',
+                        adminRole: adminsByEmail[email]?.role || null,
+                        suspended: !!suspendedByUid[d.id]
+                    };
+                }).sort((a, b) => (a.displayName || '').localeCompare(b.displayName || '', 'ar'));
+                S.usersDirectory = directory;
+                if (adminsList) _renderAdminDirectory(directory);
+                if (accountsList) _renderAccountsDirectory(directory);
             } catch (e) {
-                container.innerHTML = `<p style="color:var(--text-dim);font-size:13px">خطأ في التحميل</p>`;
+                console.error('renderUsersDirectory error:', e);
+                const errHtml = `<p class="directory-empty">⚠️ تعذر تحميل قائمة الحسابات — تأكد من صلاحيات Firestore</p>`;
+                if (adminsList) adminsList.innerHTML = errHtml;
+                if (accountsList) accountsList.innerHTML = errHtml;
             }
+        };
+
+        function _matchesSearch(entry, term) {
+            if (!term) return true;
+            term = term.toLowerCase();
+            return (entry.displayName || '').toLowerCase().includes(term) || (entry.email || '').toLowerCase().includes(term);
         }
 
-        // ===== WHATSAPP CHAT ENGINE =====
+        function _renderAdminDirectory(directory) {
+            const container = document.getElementById('admin-directory-list');
+            if (!container) return;
+            const term = (document.getElementById('directory-admins-search')?.value || '').trim();
+            const rows = directory.filter(e => _matchesSearch(e, term));
+            if (rows.length === 0) {
+                container.innerHTML = `<p class="directory-empty">لا يوجد حسابات مطابقة</p>`;
+                return;
+            }
+            container.innerHTML = rows.map(e => {
+                const initial = (e.displayName || '?').charAt(0).toUpperCase();
+                const avatar = avatarImgHtml(e.photoURL, 'directory-avatar', initial) || `<div class="directory-avatar">${_escapeHtml(initial)}</div>`;
+                const role = e.adminRole || 'none';
+                const isSelf = e.email === S.user?.email;
+                return `
+                <div class="directory-item">
+                    ${avatar}
+                    <div class="directory-info">
+                        <div class="directory-name">${_escapeHtml(e.displayName)}${isSelf ? ' (أنت)' : ''}</div>
+                        <div class="directory-email">${_escapeHtml(e.email)}</div>
+                    </div>
+                    <div class="directory-actions">
+                        <button class="dir-btn role-none ${role==='none'?'active':''}" ${isSelf?'disabled':''} onclick="setUserAdminRole('${e.email}','${_escapeHtml(e.displayName).replace(/'/g,"\\'")}','${e.photoURL}','none')">مستخدم</button>
+                        <button class="dir-btn role-normal ${role==='normal'?'active':''}" onclick="setUserAdminRole('${e.email}','${_escapeHtml(e.displayName).replace(/'/g,"\\'")}','${e.photoURL}','normal')">مشرف عادي</button>
+                        <button class="dir-btn role-main ${role==='main'?'active':''}" onclick="setUserAdminRole('${e.email}','${_escapeHtml(e.displayName).replace(/'/g,"\\'")}','${e.photoURL}','main')">مشرف رئيسي</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function _renderAccountsDirectory(directory) {
+            const container = document.getElementById('accounts-list');
+            if (!container) return;
+            const term = (document.getElementById('directory-users-search')?.value || '').trim();
+            const rows = directory.filter(e => _matchesSearch(e, term));
+            if (rows.length === 0) {
+                container.innerHTML = `<p class="directory-empty">لا يوجد حسابات مطابقة</p>`;
+                return;
+            }
+            container.innerHTML = rows.map(e => {
+                const initial = (e.displayName || '?').charAt(0).toUpperCase();
+                const avatar = avatarImgHtml(e.photoURL, 'directory-avatar', initial) || `<div class="directory-avatar">${_escapeHtml(initial)}</div>`;
+                const isSelf = e.uid === S.user?.uid;
+                const roleLabel = e.adminRole === 'main' ? '👑 مشرف رئيسي' : e.adminRole === 'normal' ? '🔑 مشرف عادي' : 'مستخدم';
+                return `
+                <div class="directory-item ${e.suspended ? 'is-suspended' : ''}">
+                    ${avatar}
+                    <div class="directory-info">
+                        <div class="directory-name">${_escapeHtml(e.displayName)}${isSelf ? ' (أنت)' : ''} ${e.suspended ? ' — 🚫 موقوف' : ''}</div>
+                        <div class="directory-email">${_escapeHtml(e.email)} · ${roleLabel}</div>
+                    </div>
+                    <div class="directory-actions">
+                        ${isSelf ? '' : `<button class="dir-btn ${e.suspended ? 'unban' : 'ban'}" onclick="toggleAccountSuspension('${e.uid}','${_escapeHtml(e.displayName).replace(/'/g,"\\'")}',${e.suspended})">${e.suspended ? '✅ رفع التوقيف' : '🚫 توقيف'}</button>`}
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // ===== WHATSAPP-STYLE ADMIN CHAT ENGINE =====
+        // The listener lives for the whole logged-in session (started once, right after
+        // login) instead of being tied to whether the chat modal is open or closed.
+        // This is what fixes messages "disappearing": navigating around the platform
+        // and coming back no longer wipes the local message cache or the subscription —
+        // the data stays live and in memory the entire time you're signed in.
         let _wachatUnsub = null;
-        let _wachatMode = null;
         let _wachatPending = [];   // messages sent but not yet confirmed by Firestore snapshot
         let _wachatLastMsgs = [];  // last known confirmed messages from the server
+        let _wachatListenerRetry = 0;
+        let _wachatReplyTo = null;  // { id, senderName, text } of the message being replied to
+        let _wachatEditingId = null; // id of the message currently being edited (in place of sending new)
+        let _wachatPollInterval = null; // safety-net poll while the chat modal is open
 
-        window.openWaChat = function(mode) {
+        function _ensureWaChatListener() {
+            if (_wachatUnsub || !S.user) return; // already running, or not logged in
+            try {
+                const q = query(collection(db, 'chatMessages'), orderBy('timestamp', 'asc'));
+                _wachatUnsub = onSnapshot(q, snap => {
+                    _wachatListenerRetry = 0;
+                    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                    _wachatLastMsgs = msgs;
+                    // Drop any pending messages that now exist in the confirmed list
+                    // (same sender + same text, sent within the last 2 minutes)
+                    _wachatPending = _wachatPending.filter(p => {
+                        const stillPending = !msgs.some(m => m.sender === p.sender && m.text === p.text);
+                        return stillPending && (Date.now() - new Date(p.timestamp).getTime() < 120000);
+                    });
+                    if (document.getElementById('wachat-modal').classList.contains('open')) {
+                        _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending));
+                    }
+                    _updateWaParticipantCount();
+                }, err => {
+                    console.error('WaChat snapshot error:', err);
+                    _wachatUnsub = null;
+                    const area = document.getElementById('wachat-messages-area');
+                    if (document.getElementById('wachat-modal').classList.contains('open') && area) {
+                        area.innerHTML = `<div style="margin:auto;text-align:center;padding:30px;color:#ff7a7a;font-size:13px;line-height:1.8">
+                            ⚠️ تعذر تحميل الرسائل<br/>
+                            <span style="color:var(--text-dim);font-size:12px">${err.code === 'permission-denied' ? 'صلاحيات Firestore تمنع القراءة — راجع Security Rules في Firebase Console' : (err.message || 'تحقق من اتصال الإنترنت')}</span>
+                        </div>`;
+                    }
+                    // Auto-retry indefinitely with a capped backoff, so the chat recovers on
+                    // its own instead of staying dead until the whole page gets reloaded.
+                    if (S.user) {
+                        _wachatListenerRetry++;
+                        const delay = Math.min(2000 * _wachatListenerRetry, 20000);
+                        setTimeout(_ensureWaChatListener, delay);
+                    }
+                });
+            } catch (e) { console.error('WaChat subscribe error:', e); }
+        }
+
+        // One-off hard sync straight from the server, bypassing the live listener entirely.
+        // Firestore's realtime WebChannel occasionally goes "zombie" — it stays technically
+        // subscribed (so onSnapshot never fires an error) but stops delivering new events,
+        // especially after the tab is backgrounded or the network blips. That's what caused
+        // messages to send fine but not appear until a full page reload. This hard-refresh
+        // runs every time the chat is opened and whenever the tab/network comes back, so the
+        // view is always correct even if the live connection is silently stuck.
+        async function _wachatHardRefresh() {
+            if (!S.user) return;
+            try {
+                const q = query(collection(db, 'chatMessages'), orderBy('timestamp', 'asc'));
+                const snap = await getDocs(q);
+                const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _wachatLastMsgs = msgs;
+                _wachatPending = _wachatPending.filter(p => {
+                    const stillPending = !msgs.some(m => m.sender === p.sender && m.text === p.text);
+                    return stillPending && (Date.now() - new Date(p.timestamp).getTime() < 120000);
+                });
+                if (document.getElementById('wachat-modal').classList.contains('open')) {
+                    _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending));
+                }
+                _updateWaParticipantCount();
+            } catch (e) { console.error('WaChat hard refresh error:', e); }
+        }
+
+        // If the realtime connection is stuck (zombie subscription), force it to reconnect.
+        function _wachatForceReconnect() {
+            if (_wachatUnsub) { _wachatUnsub(); _wachatUnsub = null; }
+            _ensureWaChatListener();
+            _wachatHardRefresh();
+        }
+
+        window.addEventListener('online', _wachatForceReconnect);
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && S.user) _wachatForceReconnect();
+        });
+
+        function _updateWaParticipantCount() {
+            const el = document.getElementById('wachat-header-status');
+            if (!el) return;
+            const senders = new Set(_wachatLastMsgs.map(m => m.sender).filter(Boolean));
+            const count = senders.size;
+            el.textContent = count > 0 ? `👥 ${count} ${count === 1 ? 'شخص شارك في المحادثة' : 'أشخاص شاركوا في المحادثة'}` : 'قناة الدعم الرسمية';
+        }
+
+        function _teardownWaChat() {
+            if (_wachatUnsub) { _wachatUnsub(); _wachatUnsub = null; }
+            if (_wachatPollInterval) { clearInterval(_wachatPollInterval); _wachatPollInterval = null; }
+            _wachatPending = [];
+            _wachatLastMsgs = [];
+            _wachatListenerRetry = 0;
+        }
+
+        window.openWaChat = function() {
             if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
-            _wachatMode = mode;
             closeMenuPanel();
             const modal = document.getElementById('wachat-modal');
             modal.classList.add('open');
             document.body.style.overflow = 'hidden';
-            if (mode === 'admin') {
-                document.getElementById('wachat-header-avatar').textContent = '🛡️';
-                document.getElementById('wachat-header-name').textContent = 'المشرفون';
-                document.getElementById('wachat-header-status').textContent = 'قناة الدعم الرسمية';
-                _subscribeWaChat('chatMessages', 'admin');
-            } else {
-                document.getElementById('wachat-header-avatar').textContent = '👥';
-                document.getElementById('wachat-header-name').textContent = 'تواصل مع الأصدقاء';
-                document.getElementById('wachat-header-status').textContent = 'مجتمع GAMEVERSE';
-                _subscribeWaChat('friendsChat', 'friends');
-            }
+            document.getElementById('wachat-header-avatar').textContent = '🛡️';
+            document.getElementById('wachat-header-name').textContent = 'المشرفون';
+            _updateWaParticipantCount();
+            _ensureWaChatListener();
+            // Render instantly from whatever we already have cached — no reset to a
+            // blank/loading state, so previously-loaded messages are always still there.
+            _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending));
+            // Then immediately hard-sync with the server in case the live listener had
+            // silently gone stale while the chat was closed.
+            _wachatHardRefresh();
+            // Safety-net poll: every 12s while the chat is open, hard-sync with the server.
+            // This catches a "zombie" realtime connection that doesn't error but also stops
+            // delivering new messages, so a reply never just sits there unseen.
+            if (_wachatPollInterval) clearInterval(_wachatPollInterval);
+            _wachatPollInterval = setInterval(_wachatHardRefresh, 12000);
         };
 
         window.closeWaChat = function() {
             document.getElementById('wachat-modal').classList.remove('open');
             document.body.style.overflow = '';
-            if (_wachatUnsub) { _wachatUnsub(); _wachatUnsub = null; }
-            _wachatMode = null;
-            _wachatPending = [];
-            _wachatLastMsgs = [];
+            if (_wachatPollInterval) { clearInterval(_wachatPollInterval); _wachatPollInterval = null; }
+            // NOTE: intentionally does NOT unsubscribe — the listener keeps running in the
+            // background for the whole session so reopening the chat is instant.
         };
-
-        function _subscribeWaChat(collectionName, mode) {
-            if (_wachatUnsub) { _wachatUnsub(); _wachatUnsub = null; }
-            _wachatPending = [];
-            _wachatLastMsgs = [];
-            const area = document.getElementById('wachat-messages-area');
-            const empty = document.getElementById('wachat-empty-state');
-            area.innerHTML = '';
-            area.appendChild(empty);
-            empty.style.display = 'flex';
-            try {
-                const q = query(collection(db, collectionName), orderBy('timestamp', 'asc'));
-                _wachatUnsub = onSnapshot(q, snap => {
-                    const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-                    _wachatLastMsgs = msgs;
-                    // Drop any pending messages that now exist in the confirmed list
-                    // (same sender + same text, sent within the last 2 minutes)
-                    const myUid = S.user?.uid;
-                    _wachatPending = _wachatPending.filter(p => {
-                        const pUid = mode === 'admin' ? p.sender : p.uid;
-                        const stillPending = !msgs.some(m => {
-                            const mUid = mode === 'admin' ? m.sender : m.uid;
-                            return mUid === pUid && m.text === p.text;
-                        });
-                        return stillPending && (Date.now() - new Date(p.timestamp).getTime() < 120000);
-                    });
-                    _renderWaMsgs(msgs.concat(_wachatPending), mode);
-                }, err => { console.error('WaChat snapshot error:', err); });
-            } catch (e) { console.error('WaChat subscribe error:', e); }
-        }
 
         function _escapeHtml(str) {
             const div = document.createElement('div');
@@ -3168,9 +3608,10 @@
             return div.innerHTML;
         }
 
-        function _renderWaMsgs(msgs, mode) {
+        function _renderWaMsgs(msgs) {
             const area = document.getElementById('wachat-messages-area');
             const empty = document.getElementById('wachat-empty-state');
+            if (!area) return;
             if (msgs.length === 0) {
                 area.innerHTML = '';
                 area.appendChild(empty);
@@ -3182,10 +3623,9 @@
             let html = '';
             let lastDate = '';
             msgs.forEach(msg => {
-                const uid = mode === 'admin' ? msg.sender : msg.uid;
-                const isMine = uid === S.user?.uid;
+                const isMine = msg.sender === S.user?.uid;
                 const name = msg.senderName || 'مستخدم';
-                const isAdmin = mode === 'admin' && msg.isAdmin;
+                const isAdmin = !!msg.isAdmin;
                 const ts = msg.timestamp;
                 const d = ts ? (ts.toDate ? ts.toDate() : new Date(ts)) : new Date();
                 const dateStr = d.toLocaleDateString('ar-EG', { day:'numeric', month:'long' });
@@ -3198,7 +3638,10 @@
                 }
                 const avatarHtml = avatarImgHtml(photo, 'wabubble-avatar', initial) || `<div class="wabubble-avatar">${_escapeHtml(initial)}</div>`;
                 const canDelete = !msg._pending && (S.isAdmin || isMine);
-                const deleteBtn = canDelete ? `<button class="wabubble-delete-btn" onclick="deleteWaMsg('${msg.id}','${mode}')" title="حذف الرسالة">🗑</button>` : '';
+                const canEdit = !msg._pending && isMine;
+                const deleteBtn = canDelete ? `<button class="wabubble-delete-btn" onclick="deleteWaMsg('${msg.id}')" title="حذف الرسالة">🗑</button>` : '';
+                const editBtn = canEdit ? `<button class="wabubble-action-btn" onclick='wachatEditMsg(${JSON.stringify(msg.id)})' title="تعديل الرسالة">✏️</button>` : '';
+                const replyBtn = (!msg._pending && S.isAdmin) ? `<button class="wabubble-action-btn" onclick='wachatReplyTo(${JSON.stringify(msg.id)},${JSON.stringify(name)},${JSON.stringify(msg.text)})' title="رد على الرسالة">↩️</button>` : '';
                 const safeText = _escapeHtml(msg.text).replace(/\n/g, '<br>');
                 let statusHtml = '';
                 if (msg._failed) {
@@ -3208,15 +3651,27 @@
                 } else if (isMine) {
                     statusHtml = '<span class="wabubble-tick">✓✓</span>';
                 }
+                let quoteHtml = '';
+                if (msg.replyTo && msg.replyTo.text) {
+                    quoteHtml = `<div class="wabubble-quote" onclick="wachatScrollToMsg('${msg.replyTo.id || ''}')">
+                        <span class="wabubble-quote-name">${_escapeHtml(msg.replyTo.senderName || 'مستخدم')}</span>
+                        <span class="wabubble-quote-text">${_escapeHtml(msg.replyTo.text)}</span>
+                    </div>`;
+                }
+                const editedTag = msg.editedAt ? '<span class="wabubble-edited-tag">· معدّلة</span>' : '';
                 html += `
-                <div class="wabubble ${isMine ? 'mine' : 'theirs'}${msg._pending ? ' pending' : ''}${msg._failed ? ' failed' : ''}">
+                <div class="wabubble ${isMine ? 'mine' : 'theirs'}${msg._pending ? ' pending' : ''}${msg._failed ? ' failed' : ''}" id="wamsg-${msg.id}">
                     ${!isMine ? avatarHtml : ''}
                     <div class="wabubble-content">
                         ${!isMine ? `<span class="wabubble-sender">${isAdmin ? '👑 ' : ''}${_escapeHtml(name)}</span>` : ''}
+                        ${quoteHtml}
                         <div class="wabubble-text">${safeText}</div>
                         <div class="wabubble-meta">
+                            ${replyBtn}
+                            ${editBtn}
                             ${deleteBtn}
                             <span class="wabubble-time">${timeStr}</span>
+                            ${editedTag}
                             ${statusHtml}
                         </div>
                     </div>
@@ -3227,22 +3682,62 @@
             if (wasAtBottom) area.scrollTop = area.scrollHeight;
         }
 
-        window.deleteWaMsg = async function(msgId, mode) {
+        window.wachatScrollToMsg = function(id) {
+            if (!id) return;
+            const el = document.getElementById('wamsg-' + id);
+            if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.outline = '2px solid var(--violet)'; setTimeout(() => el.style.outline = '', 900); }
+        };
+
+        window.wachatReplyTo = function(id, senderName, text) {
+            _wachatEditingId = null;
+            _wachatReplyTo = { id, senderName, text };
+            const bar = document.getElementById('wachat-input-bar') || document.querySelector('.wachat-input-bar');
+            if (bar) bar.classList.remove('editing');
+            document.getElementById('wachat-reply-preview-label').textContent = 'رد على ' + senderName;
+            document.getElementById('wachat-reply-preview-text').textContent = text;
+            document.getElementById('wachat-reply-preview').style.display = 'flex';
+            document.getElementById('wachat-input').focus();
+        };
+
+        window.wachatCancelReply = function() {
+            _wachatReplyTo = null;
+            document.getElementById('wachat-reply-preview').style.display = 'none';
+        };
+
+        window.wachatEditMsg = function(id) {
+            const msg = _wachatLastMsgs.find(m => m.id === id);
+            if (!msg) return;
+            _wachatReplyTo = null;
+            _wachatEditingId = id;
+            document.getElementById('wachat-reply-preview').style.display = 'none';
+            const input = document.getElementById('wachat-input');
+            input.value = msg.text;
+            input.focus();
+            const bar = document.querySelector('.wachat-input-bar');
+            if (bar) bar.classList.add('editing');
+        };
+
+        window.wachatCancelEdit = function() {
+            _wachatEditingId = null;
+            document.getElementById('wachat-input').value = '';
+            const bar = document.querySelector('.wachat-input-bar');
+            if (bar) bar.classList.remove('editing');
+        };
+
+        window.deleteWaMsg = async function(msgId) {
             if (!S.user) return;
-            const collectionName = mode === 'admin' ? 'chatMessages' : 'friendsChat';
             try {
                 if (!S.isAdmin) {
-                    const snap = await getDoc(doc(db, collectionName, msgId));
+                    const snap = await getDoc(doc(db, 'chatMessages', msgId));
                     if (!snap.exists()) return;
                     const data = snap.data();
-                    const ownerUid = mode === 'admin' ? data.sender : data.uid;
-                    if (ownerUid !== S.user.uid) {
+                    if (data.sender !== S.user.uid) {
                         showToast('❌ لا يمكنك حذف رسائل الآخرين', '#ff7a7a');
                         return;
                     }
                 }
                 if (!confirm('حذف الرسالة؟')) return;
-                await deleteDoc(doc(db, collectionName, msgId));
+                await deleteDoc(doc(db, 'chatMessages', msgId));
                 showToast('🗑 تم حذف الرسالة');
             } catch (e) {
                 console.error('Delete WA message error:', e);
@@ -3251,51 +3746,63 @@
         };
 
         window.sendWaChat = async function() {
-            if (!S.user || !_wachatMode) return;
+            if (!S.user) return;
             const input = document.getElementById('wachat-input');
             const text = (input.value || '').trim();
             if (!text) return;
+
+            // ===== EDIT MODE: saving changes to an existing message =====
+            if (_wachatEditingId) {
+                const msgId = _wachatEditingId;
+                input.value = '';
+                _wachatEditingId = null;
+                const bar = document.querySelector('.wachat-input-bar');
+                if (bar) bar.classList.remove('editing');
+                const cached = _wachatLastMsgs.find(m => m.id === msgId);
+                if (cached) cached.text = text, cached.editedAt = new Date();
+                _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending));
+                try {
+                    await updateDoc(doc(db, 'chatMessages', msgId), { text, editedAt: serverTimestamp() });
+                    showToast('✅ تم تعديل الرسالة');
+                } catch (e) {
+                    console.error('WaChat edit error:', e);
+                    showToast('❌ فشل التعديل: ' + e.message, '#ff7a7a');
+                }
+                return;
+            }
+
             input.value = '';
             const name = S.userProfile?.displayName || S.user.displayName || 'مستخدم';
             const photo = S.userProfile?.photoURL || S.user.photoURL || '';
-            const mode = _wachatMode;
+            const replyTo = _wachatReplyTo ? { id: _wachatReplyTo.id, senderName: _wachatReplyTo.senderName, text: _wachatReplyTo.text } : null;
+            wachatCancelReply();
 
             // ===== OPTIMISTIC RENDER: show the message instantly, don't wait for the server =====
             const localId = 'local_' + Date.now() + '_' + Math.random().toString(36).slice(2);
-            const pendingMsg = mode === 'admin'
-                ? { id: localId, sender: S.user.uid, senderName: name, senderPhoto: photo, text, timestamp: new Date(), isAdmin: S.isAdmin, _pending: true }
-                : { id: localId, uid: S.user.uid, senderName: name, senderPhoto: photo, text, timestamp: new Date(), _pending: true };
+            const pendingMsg = { id: localId, sender: S.user.uid, senderName: name, senderPhoto: photo, text, timestamp: new Date(), isAdmin: S.isAdmin, replyTo, _pending: true };
             _wachatPending.push(pendingMsg);
-            _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending), mode);
+            _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending));
 
             try {
-                if (mode === 'admin') {
-                    await addDoc(collection(db, 'chatMessages'), {
-                        sender: S.user.uid,
-                        senderName: name,
-                        senderPhoto: photo,
-                        text,
-                        timestamp: serverTimestamp(),
-                        isAdmin: S.isAdmin
-                    });
-                } else {
-                    await addDoc(collection(db, 'friendsChat'), {
-                        uid: S.user.uid,
-                        senderName: name,
-                        senderPhoto: photo,
-                        text,
-                        timestamp: serverTimestamp()
-                    });
-                }
+                const payload = {
+                    sender: S.user.uid,
+                    senderName: name,
+                    senderPhoto: photo,
+                    text,
+                    timestamp: serverTimestamp(),
+                    isAdmin: S.isAdmin
+                };
+                if (replyTo) payload.replyTo = replyTo;
+                await addDoc(collection(db, 'chatMessages'), payload);
                 // Real snapshot will arrive via onSnapshot and replace the pending bubble.
             } catch (e) {
                 console.error('WaChat send error:', e);
-                showToast('❌ فشل الإرسال', '#ff7a7a');
+                showToast('❌ فشل الإرسال: ' + (e.message || ''), '#ff7a7a');
                 // Mark the pending message as failed instead of silently dropping it
                 const idx = _wachatPending.findIndex(m => m.id === localId);
                 if (idx !== -1) {
                     _wachatPending[idx]._failed = true;
-                    _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending), mode);
+                    _renderWaMsgs(_wachatLastMsgs.concat(_wachatPending));
                 }
             }
         };
@@ -3307,6 +3814,341 @@
                 if (snap.exists()) S.userProfile = snap.data();
                 else S.userProfile = {};
             } catch (e) { S.userProfile = {}; }
+        }
+
+        // ===== FOLLOW SYSTEM =====
+        // 'follows' collection: doc id = `${followerUid}_${followingUid}`, fields { followerUid, followingUid, createdAt }
+        // 'users' collection docs get denormalized followersCount / followingCount counters for fast display.
+        async function loadFollowState(uid) {
+            try {
+                const q = query(collection(db, 'follows'), where('followerUid', '==', uid));
+                const snap = await getDocs(q);
+                S.followingSet = new Set(snap.docs.map(d => d.data().followingUid));
+            } catch (e) { console.error('loadFollowState error:', e); S.followingSet = new Set(); }
+            try {
+                const usnap = await getDoc(doc(db, 'users', uid));
+                const ud = usnap.exists() ? usnap.data() : {};
+                S.followersCount = ud.followersCount || 0;
+                S.followingCount = ud.followingCount || 0;
+            } catch (e) { S.followersCount = 0; S.followingCount = 0; }
+        }
+
+        function renderProfileFollowStats() {
+            const el = document.getElementById('profile-follow-stats');
+            if (!el || !S.user) return;
+            el.innerHTML = `
+                <div class="follow-stat-box" onclick="openMembersModal()">
+                    <div class="follow-stat-num">${S.followersCount || 0}</div>
+                    <div class="follow-stat-label">متابِعين</div>
+                </div>
+                <div class="follow-stat-box" onclick="openMembersModal()">
+                    <div class="follow-stat-num">${S.followingCount || 0}</div>
+                    <div class="follow-stat-label">متابَعين</div>
+                </div>`;
+        }
+
+        window.toggleFollow = async function(targetUid, targetName) {
+            if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
+            if (targetUid === S.user.uid) { showToast('❌ ما تقدرش تتابع نفسك', '#ff7a7a'); return; }
+            const followId = `${S.user.uid}_${targetUid}`;
+            const isFollowing = S.followingSet.has(targetUid);
+            try {
+                if (isFollowing) {
+                    S.followingSet.delete(targetUid);
+                    S.followingCount = Math.max(0, (S.followingCount || 0) - 1);
+                    renderMembersList();
+                    renderProfileFollowStats();
+                    await deleteDoc(doc(db, 'follows', followId));
+                    updateDoc(doc(db, 'users', S.user.uid), { followingCount: increment(-1) }).catch(() => {});
+                    updateDoc(doc(db, 'users', targetUid), { followersCount: increment(-1) }).catch(() => {});
+                    showToast(`تم إلغاء متابعة ${targetName || 'المستخدم'}`);
+                } else {
+                    S.followingSet.add(targetUid);
+                    S.followingCount = (S.followingCount || 0) + 1;
+                    renderMembersList();
+                    renderProfileFollowStats();
+                    await setDoc(doc(db, 'follows', followId), {
+                        followerUid: S.user.uid,
+                        followingUid: targetUid,
+                        createdAt: new Date()
+                    });
+                    updateDoc(doc(db, 'users', S.user.uid), { followingCount: increment(1) }).catch(() => {});
+                    updateDoc(doc(db, 'users', targetUid), { followersCount: increment(1) }).catch(() => {});
+                    showToast(`✅ بقيت تتابع ${targetName || 'المستخدم'}`);
+                }
+            } catch (e) {
+                console.error('toggleFollow error:', e);
+                showToast('❌ حصل خطأ، حاول تاني', '#ff7a7a');
+                await loadFollowState(S.user.uid);
+                renderMembersList();
+                renderProfileFollowStats();
+            }
+        };
+
+        window.openMembersModal = function() {
+            if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
+            closeMenuPanel();
+            closeProfileModal();
+            document.getElementById('members-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            loadMembersList();
+        };
+
+        window.closeMembersModal = function() {
+            document.getElementById('members-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        };
+
+        async function loadMembersList() {
+            const listEl = document.getElementById('members-list');
+            if (!listEl) return;
+            listEl.innerHTML = `<p class="directory-empty">⏳ جاري تحميل الأعضاء...</p>`;
+            try {
+                const snap = await getDocs(collection(db, 'users'));
+                S.membersDirectory = snap.docs
+                    .map(d => {
+                        const u = d.data();
+                        const email = (u.email || '').toLowerCase();
+                        return {
+                            uid: d.id,
+                            email,
+                            displayName: u.displayName || email.split('@')[0] || 'مستخدم',
+                            photoURL: u.photoURL || '',
+                            followersCount: u.followersCount || 0
+                        };
+                    })
+                    .filter(u => u.uid !== S.user?.uid)
+                    .sort((a, b) => (a.displayName || '').localeCompare(b.displayName || '', 'ar'));
+                renderMembersList();
+            } catch (e) {
+                console.error('loadMembersList error:', e);
+                listEl.innerHTML = `<p class="directory-empty">⚠️ تعذر تحميل قائمة الأعضاء — تأكد من صلاحيات Firestore</p>`;
+            }
+        }
+
+        window.renderMembersList = function() {
+            const listEl = document.getElementById('members-list');
+            if (!listEl) return;
+            const term = (document.getElementById('members-search')?.value || '').trim().toLowerCase();
+            const rows = (S.membersDirectory || []).filter(e =>
+                !term || (e.displayName || '').toLowerCase().includes(term) || (e.email || '').toLowerCase().includes(term)
+            );
+            if (rows.length === 0) {
+                listEl.innerHTML = `<p class="directory-empty">لا يوجد أعضاء مطابقين</p>`;
+                return;
+            }
+            listEl.innerHTML = rows.map(e => {
+                const initial = (e.displayName || '?').charAt(0).toUpperCase();
+                const avatar = avatarImgHtml(e.photoURL, 'directory-avatar', initial) || `<div class="directory-avatar">${_escapeHtml(initial)}</div>`;
+                const following = S.followingSet.has(e.uid);
+                const safeName = _escapeHtml(e.displayName).replace(/'/g, "\\'");
+                return `
+                <div class="directory-item">
+                    ${avatar}
+                    <div class="directory-info">
+                        <div class="directory-name">${_escapeHtml(e.displayName)}</div>
+                        <div class="directory-email">${e.followersCount || 0} متابِع</div>
+                    </div>
+                    <div class="directory-actions">
+                        <button class="dir-btn chat-btn" onclick="openFriendChat('${e.uid}','${safeName}','${(e.photoURL||'').replace(/'/g,"\\'")}')" title="ابدأ محادثة">💬</button>
+                        <button class="dir-btn follow-btn ${following ? 'following' : ''}" onclick="toggleFollow('${e.uid}','${safeName}')">${following ? '✓ متابَع' : '+ متابعة'}</button>
+                    </div>
+                </div>`;
+            }).join('');
+        };
+
+        // ===== FRIEND-TO-FRIEND CHAT (member <-> member DMs) =====
+        // 'friendsChat' collection: each message has { uid (sender), toUid, participants:[uidA,uidB]
+        // sorted, conversationId: same sorted pair joined by '_', senderName/senderPhoto,
+        // toName/toPhoto (denormalized so the conversations list can show the other side even
+        // before they've replied), text, timestamp }.
+        function _convId(a, b) { return [a, b].sort().join('_'); }
+
+        let _friendChatUnsub = null;
+        let _friendChatCid = null;
+        let _friendChatWith = null; // { uid, name, photo }
+
+        function _renderFriendMsgs(msgs) {
+            const area = document.getElementById('friend-chat-messages-area');
+            if (!area) return;
+            if (msgs.length === 0) {
+                area.innerHTML = `<div class="wachat-empty" style="display:flex"><div class="wachat-empty-icon">💬</div><p>لا توجد رسائل بعد<br/>ابدأ المحادثة!</p></div>`;
+                return;
+            }
+            const wasAtBottom = (area.scrollHeight - area.scrollTop - area.clientHeight) < 80;
+            let html = '';
+            let lastDate = '';
+            msgs.forEach(msg => {
+                const isMine = msg.uid === S.user?.uid;
+                const name = isMine ? (S.userProfile?.displayName || S.user.displayName || 'أنت') : (msg.senderName || 'مستخدم');
+                const ts = msg.timestamp;
+                const d = ts ? (ts.toDate ? ts.toDate() : new Date(ts)) : new Date();
+                const dateStr = d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'long' });
+                const timeStr = d.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+                if (dateStr !== lastDate) {
+                    html += `<div class="wachat-date-badge">${_escapeHtml(dateStr)}</div>`;
+                    lastDate = dateStr;
+                }
+                const initial = (msg.senderName || '?').charAt(0).toUpperCase();
+                const avatarHtml = !isMine ? (avatarImgHtml(msg.senderPhoto, 'wabubble-avatar', initial) || `<div class="wabubble-avatar">${_escapeHtml(initial)}</div>`) : '';
+                const safeText = _escapeHtml(msg.text || '').replace(/\n/g, '<br>');
+                const deleteBtn = isMine ? `<button class="wabubble-delete-btn" onclick="deleteFriendMsg('${msg.id}')" title="حذف الرسالة">🗑</button>` : '';
+                const statusHtml = isMine ? '<span class="wabubble-tick">✓✓</span>' : '';
+                html += `
+                <div class="wabubble ${isMine ? 'mine' : 'theirs'}" id="frmsg-${msg.id}">
+                    ${!isMine ? avatarHtml : ''}
+                    <div class="wabubble-content">
+                        ${!isMine ? `<span class="wabubble-sender">${_escapeHtml(name)}</span>` : ''}
+                        <div class="wabubble-text">${safeText}</div>
+                        <div class="wabubble-meta">
+                            ${deleteBtn}
+                            <span class="wabubble-time">${timeStr}</span>
+                            ${statusHtml}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            area.innerHTML = html;
+            if (wasAtBottom) area.scrollTop = area.scrollHeight;
+        }
+
+        function _ensureFriendChatListener(cid) {
+            if (_friendChatUnsub) { _friendChatUnsub(); _friendChatUnsub = null; }
+            const q = query(collection(db, 'friendsChat'), where('conversationId', '==', cid), where('participants', 'array-contains', S.user.uid), orderBy('timestamp', 'asc'));
+            _friendChatUnsub = onSnapshot(q, snap => {
+                const msgs = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+                _renderFriendMsgs(msgs);
+            }, err => {
+                console.error('friend chat listener error:', err);
+                const area = document.getElementById('friend-chat-messages-area');
+                if (area) area.innerHTML = `<p class="directory-empty">⚠️ تعذر تحميل الرسائل — تأكد من صلاحيات Firestore</p>`;
+            });
+        }
+
+        window.openFriendChat = function(uid, name, photo) {
+            if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
+            if (uid === S.user.uid) { showToast('❌ ما تقدرش تكلم نفسك 😅', '#ffb020'); return; }
+            closeMembersModal();
+            closeConversationsModal();
+            _friendChatWith = { uid, name: name || 'مستخدم', photo: photo || '' };
+            _friendChatCid = _convId(S.user.uid, uid);
+            document.getElementById('friend-chat-name').textContent = _friendChatWith.name;
+            document.getElementById('friend-chat-status').textContent = 'محادثة خاصة';
+            document.getElementById('friend-chat-avatar').textContent = (_friendChatWith.name || '?').charAt(0).toUpperCase();
+            document.getElementById('friend-chat-messages-area').innerHTML = `<p class="directory-empty">⏳ جاري تحميل الرسائل...</p>`;
+            document.getElementById('friend-chat-modal').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            _ensureFriendChatListener(_friendChatCid);
+        };
+
+        window.closeFriendChat = function() {
+            document.getElementById('friend-chat-modal').classList.remove('open');
+            document.body.style.overflow = '';
+            if (_friendChatUnsub) { _friendChatUnsub(); _friendChatUnsub = null; }
+            _friendChatCid = null;
+            _friendChatWith = null;
+        };
+
+        window.sendFriendMsg = async function() {
+            if (!S.user || !_friendChatWith) return;
+            const input = document.getElementById('friend-chat-input');
+            const text = (input.value || '').trim();
+            if (!text) return;
+            input.value = '';
+            const myName = S.userProfile?.displayName || S.user.displayName || 'مستخدم';
+            const myPhoto = S.userProfile?.photoURL || S.user.photoURL || '';
+            try {
+                await addDoc(collection(db, 'friendsChat'), {
+                    uid: S.user.uid,
+                    toUid: _friendChatWith.uid,
+                    participants: [S.user.uid, _friendChatWith.uid].sort(),
+                    conversationId: _friendChatCid,
+                    senderName: myName,
+                    senderPhoto: myPhoto,
+                    toName: _friendChatWith.name,
+                    toPhoto: _friendChatWith.photo,
+                    text,
+                    timestamp: serverTimestamp()
+                });
+            } catch (e) {
+                console.error('sendFriendMsg error:', e);
+                showToast('❌ فشل الإرسال: ' + e.message, '#ff7a7a');
+                input.value = text;
+            }
+        };
+
+        window.deleteFriendMsg = async function(msgId) {
+            if (!S.user) return;
+            if (!confirm('حذف الرسالة؟')) return;
+            try {
+                await deleteDoc(doc(db, 'friendsChat', msgId));
+            } catch (e) {
+                console.error('deleteFriendMsg error:', e);
+                showToast('❌ خطأ: ' + e.message, '#ff7a7a');
+            }
+        };
+
+        window.openConversationsModal = function() {
+            if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
+            closeMenuPanel();
+            document.getElementById('conversations-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            loadConversationsList();
+        };
+
+        window.closeConversationsModal = function() {
+            document.getElementById('conversations-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        };
+
+        async function loadConversationsList() {
+            const listEl = document.getElementById('conversations-list');
+            if (!listEl || !S.user) return;
+            listEl.innerHTML = `<p class="directory-empty">⏳ جاري التحميل...</p>`;
+            try {
+                const q = query(collection(db, 'friendsChat'), where('participants', 'array-contains', S.user.uid));
+                const snap = await getDocs(q);
+                const map = new Map();
+                snap.docs.forEach(d => {
+                    const m = d.data();
+                    const otherUid = (m.participants || []).find(p => p !== S.user.uid);
+                    if (!otherUid) return;
+                    const ts = m.timestamp ? (m.timestamp.toDate ? m.timestamp.toDate().getTime() : new Date(m.timestamp).getTime()) : 0;
+                    const existing = map.get(otherUid);
+                    if (!existing || ts > existing.ts) {
+                        const isMine = m.uid === S.user.uid;
+                        map.set(otherUid, {
+                            uid: otherUid,
+                            name: isMine ? (m.toName || 'مستخدم') : (m.senderName || 'مستخدم'),
+                            photo: isMine ? (m.toPhoto || '') : (m.senderPhoto || ''),
+                            lastText: m.text || '',
+                            ts
+                        });
+                    }
+                });
+                const rows = Array.from(map.values()).sort((a, b) => b.ts - a.ts);
+                if (rows.length === 0) {
+                    listEl.innerHTML = `<p class="directory-empty">لسه معملتش أي محادثة — روح "الأعضاء" وابدأ كلام مع حد 👋</p>`;
+                    return;
+                }
+                listEl.innerHTML = rows.map(r => {
+                    const initial = (r.name || '?').charAt(0).toUpperCase();
+                    const avatar = avatarImgHtml(r.photo, 'directory-avatar', initial) || `<div class="directory-avatar">${_escapeHtml(initial)}</div>`;
+                    const safeName = _escapeHtml(r.name).replace(/'/g, "\\'");
+                    const safePhoto = (r.photo || '').replace(/'/g, "\\'");
+                    return `
+                    <div class="directory-item" style="cursor:pointer" onclick="openFriendChat('${r.uid}','${safeName}','${safePhoto}')">
+                        ${avatar}
+                        <div class="directory-info">
+                            <div class="directory-name">${_escapeHtml(r.name)}</div>
+                            <div class="directory-email">${_escapeHtml((r.lastText || '').slice(0, 40))}</div>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch (e) {
+                console.error('loadConversationsList error:', e);
+                listEl.innerHTML = `<p class="directory-empty">⚠️ تعذر تحميل المحادثات — تأكد من صلاحيات Firestore</p>`;
+            }
         }
 
         window.openProfileModal = function() {
@@ -3329,6 +4171,7 @@
             previewProfilePhoto(currentPhoto);
             const initials = (currentName || 'G').charAt(0).toUpperCase();
             document.getElementById('profile-initials').textContent = initials;
+            renderProfileFollowStats();
             document.getElementById('profile-save-msg').style.display = 'none';
             document.getElementById('profile-save-err').style.display = 'none';
             modal.style.display = 'flex';
@@ -3401,6 +4244,7 @@
                 document.getElementById('menu-user-role-text').textContent = S.isAdmin ? (S.isMainAdmin ? '👑 مشرف رئيسي' : '🔑 مشرف عادي') : '👤 مستخدم';
                 document.getElementById('menu-admin-section').style.display = S.isAdmin ? 'block' : 'none';
                 document.getElementById('menu-add-admin-btn').style.display = S.isMainAdmin ? '' : 'none';
+                document.getElementById('menu-accounts-btn').style.display = S.isMainAdmin ? '' : 'none';
             }
             panel.classList.add('open');
             ov.style.display = 'block';
@@ -3445,9 +4289,9 @@
             document.querySelectorAll('.panel-tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tabId));
             if (tabId === 'admin-ratings') renderAdminRatings();
             if (tabId === 'admin-comments') renderAdminComments();
-            if (tabId === 'admin-admins') renderAdminList();
+            if (tabId === 'admin-admins') { renderAdminList(); renderUsersDirectory(); }
             if (tabId === 'admin-videos') renderAdminVideoList();
-            if (tabId === 'admin-users') renderSuspendedList();
+            if (tabId === 'admin-users') renderUsersDirectory();
         };
 
         // ===== ADD / EDIT MODALS =====
@@ -3636,21 +4480,30 @@
             }
         };
 
-        window.handleGearClick = function() {
-            if (S.isAdmin) {
-                togglePanel();
-            } else {
-                showToast('🔑 سجّل دخولك كمشرف', '#ffb020');
-                togglePanel();
-            }
+        // Opens the control-panel side drawer (formerly reached via the separate gear
+        // button — now it's reached only from the hamburger (☰) menu). Optionally jumps
+        // straight to a given admin tab.
+        window.openAdminPanel = function(tab) {
+            if (!S.user) { showToast('🔑 سجّل دخولك أولاً', '#ffb020'); return; }
+            closeMenuPanel();
+            if (!S.isAdmin) { showToast('🔑 سجّل دخولك كمشرف', '#ffb020'); return; }
+            updateUI();
+            renderAdminList();
+            renderAdminRatings();
+            renderAdminComments();
+            renderAdminVideoList();
+            renderUsersDirectory();
+            const panel = document.getElementById('side-panel');
+            const ov = document.getElementById('overlay');
+            panel.classList.add('open');
+            ov.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            if (tab) switchPanelTab(tab);
         };
 
         window.handleSignOut = async function() {
-            if (S.adminChatUnsubscribe) { S.adminChatUnsubscribe(); S.adminChatUnsubscribe = null; }
-            if (S.chatUnsubscribe) { S.chatUnsubscribe(); S.chatUnsubscribe = null; }
-            if (_wachatUnsub) { _wachatUnsub(); _wachatUnsub = null; }
-            if (S.friendsChatUnsubscribe) { S.friendsChatUnsubscribe(); S.friendsChatUnsubscribe = null; }
-            if (S.friendsChatPanelUnsub) { S.friendsChatPanelUnsub(); S.friendsChatPanelUnsub = null; }
+            _teardownWaChat();
+            if (_friendChatUnsub) { _friendChatUnsub(); _friendChatUnsub = null; }
             await signOut(auth);
             S.user = null;
             S.isAdmin = false;
@@ -3658,12 +4511,31 @@
             S.isBlocked = false;
             S.adminExists = false;
             S.isSuspended = false;
+            S.followingSet = new Set();
+            S.followersCount = 0;
+            S.followingCount = 0;
             closePanel();
             closeMenuPanel();
             closeWaChat();
+            closeFriendChat();
+            closeMembersModal();
+            closeConversationsModal();
             updateUI();
             showToast('👋 تم تسجيل الخروج');
         };
+
+        // ===== USER DIRECTORY (all accounts that have ever logged in) =====
+        async function upsertUserDirectory(fbUser, email) {
+            try {
+                await setDoc(doc(db, 'users', fbUser.uid), {
+                    uid: fbUser.uid,
+                    email,
+                    displayName: fbUser.displayName || email.split('@')[0],
+                    photoURL: fbUser.photoURL || '',
+                    lastLogin: new Date()
+                }, { merge: true });
+            } catch (e) { console.error('user directory upsert error:', e); }
+        }
 
         // ===== PROCESS USER =====
         let _processingUid = null;
@@ -3696,6 +4568,11 @@
                         await signOut(auth);
                         return;
                     }
+                    // Keep a lightweight directory of every account that has ever logged in.
+                    // This is what powers "كل الحسابات" in the admin/accounts management UI —
+                    // without it, the admin panel could only ever see people who happened to
+                    // have saved a profile before.
+                    upsertUserDirectory(fbUser, email);
                     const adminRef = doc(db, 'admins', email);
                     const userSnap = await getDoc(adminRef);
                     if (!userSnap.exists()) {
@@ -3714,6 +4591,7 @@
                             S.adminExists = true;
                             S.isBlocked = false;
                             S.fbLoading = false;
+                            _ensureWaChatListener();
                             updateUI();
                             if (shouldOpenPanel) openPanelNow();
                             return;
@@ -3724,6 +4602,7 @@
                             S.adminExists = true;
                             S.isBlocked = false;
                             S.fbLoading = false;
+                            _ensureWaChatListener();
                             updateUI();
                             if (shouldOpenPanel) openPanelNow();
                             return;
@@ -3736,6 +4615,7 @@
                     S.adminExists = true;
                     S.isBlocked = false;
                     S.fbLoading = false;
+                    _ensureWaChatListener();
                     updateUI();
                     if (shouldOpenPanel) openPanelNow();
                 })(), timeoutPromise]);
@@ -3767,7 +4647,7 @@
                 panel.classList.add('open');
                 ov.style.display = 'block';
                 document.body.style.overflow = 'hidden';
-                if (S.isAdmin) { renderAdminList(); renderAdminRatings(); renderAdminComments(); renderAdminVideoList(); }
+                if (S.isAdmin) { renderAdminList(); renderAdminRatings(); renderAdminComments(); renderAdminVideoList(); if (S.isMainAdmin) renderUsersDirectory(); }
                 setTimeout(() => showToast(S.isAdmin ? '👑 مرحباً بك يا مشرف!' : '👋 مرحباً بك!'), 300);
             }
         }
@@ -3824,16 +4704,6 @@
                 roleSpan.style.color = isAdmin ? '#ffc862' : '#d8a8ff';
                 roleSpan.style.borderColor = isAdmin ? 'rgba(255,176,32,0.2)' : 'rgba(168,85,247,0.2)';
             }
-            const gearBtn = document.getElementById('gear-btn');
-            if (isAdmin) {
-                gearBtn.classList.add('visible');
-                gearBtn.classList.add('active');
-                document.getElementById('gear-icon').setAttribute('fill', '#ffb020');
-            } else {
-                gearBtn.classList.remove('visible');
-                gearBtn.classList.remove('active');
-                document.getElementById('gear-icon').setAttribute('fill', 'rgba(255,255,255,0.4)');
-            }
             document.getElementById('add-video-btn').style.display = isAdmin ? 'block' : 'none';
             // Panel states
             const loading = fbLoading && !isAdmin && !isBlocked;
@@ -3850,6 +4720,17 @@
                 setImgWithFallback(document.getElementById('panel-avatar'), currentAvatarUrl(), () => {});
                 document.getElementById('panel-name').textContent = (S.userProfile && S.userProfile.displayName) || user.displayName || '';
                 document.getElementById('panel-role').textContent = isMainAdmin ? '👑 مشرف رئيسي' : '🔑 مشرف عادي';
+                const adminsTabBtn = document.querySelector('.panel-tab[data-tab="admin-admins"]');
+                const usersTabBtn = document.querySelector('.panel-tab[data-tab="admin-users"]');
+                if (adminsTabBtn) adminsTabBtn.style.display = isMainAdmin ? '' : 'none';
+                if (usersTabBtn) usersTabBtn.style.display = isMainAdmin ? '' : 'none';
+                if (!isMainAdmin) {
+                    // a regular admin can never land on a main-admin-only tab
+                    const activeTab = document.querySelector('.panel-tab.active');
+                    if (activeTab && (activeTab.dataset.tab === 'admin-admins' || activeTab.dataset.tab === 'admin-users')) {
+                        switchPanelTab('admin-ratings');
+                    }
+                }
             }
             if (isUser && user) {
                 setImgWithFallback(document.getElementById('user-avatar'), currentAvatarUrl(), () => {});
@@ -3862,6 +4743,7 @@
                 renderAdminRatings();
                 renderAdminComments();
                 renderAdminList();
+                if (isMainAdmin) renderUsersDirectory();
             }
             // Hamburger visibility
             const hb = document.getElementById('hamburger-btn');
@@ -3887,6 +4769,7 @@
                 // Load profile after login
                 if (S.user) {
                     await loadUserProfile(fbUser.uid);
+                    await loadFollowState(fbUser.uid);
                     updateUI();
                 }
             } else if (!fbUser) {
@@ -3908,6 +4791,7 @@
                 // Already logged in, ensure profile loaded
                 if (fbUser && S.user) {
                     await loadUserProfile(fbUser.uid);
+                    await loadFollowState(fbUser.uid);
                     updateUI();
                 }
             }
@@ -3915,7 +4799,7 @@
 
         // ESC
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') { closePanel(); closeAddModal(); closeEditModal(); closePlayer(); closeWaChat(); closeProfileModal(); closeMenuPanel(); }
+            if (e.key === 'Escape') { closePanel(); closeAddModal(); closeEditModal(); closePlayer(); closeWaChat(); closeProfileModal(); closeMenuPanel(); closeMembersModal(); closeConversationsModal(); closeFriendChat(); }
         });
 
         // Expose globals
@@ -3944,7 +4828,7 @@
         window.switchPanelTab = switchPanelTab;
         window.handleMainLogin = handleMainLogin;
         window.handleAdminLogin = handleAdminLogin;
-        window.handleGearClick = handleGearClick;
+        window.openAdminPanel = openAdminPanel;
         window.handleSignOut = handleSignOut;
         window.openMenuPanel = openMenuPanel;
         window.closeMenuPanel = closeMenuPanel;
@@ -3954,7 +4838,9 @@
         window.saveProfileChanges = saveProfileChanges;
         window.suspendUser = suspendUser;
         window.unsuspendUser = unsuspendUser;
-        window.quickUnsuspend = quickUnsuspend;
+        window.toggleAccountSuspension = toggleAccountSuspension;
+        window.setUserAdminRole = setUserAdminRole;
+        window.renderUsersDirectory = renderUsersDirectory;
         window.deleteCardComment = deleteCardComment;
         window.deletePlayerComment = deletePlayerComment;
         window.deleteAdminComment = deleteAdminComment;
@@ -3963,8 +4849,7 @@
         window.sendWaChat = sendWaChat;
         window.deleteWaMsg = deleteWaMsg;
         // Legacy menu shortcuts now route straight to the unified WaChat engine
-        window.openUserChatFromMenu = function() { openWaChat('admin'); };
-        window.openFriendsChatFromMenu = function() { openWaChat('friends'); };
+        window.openUserChatFromMenu = function() { openWaChat(); };
     </script>
 </body>
 </html>
